@@ -2,6 +2,8 @@
 
 An English-first, dark editorial prototype for an AI-curated gastronomy news product, with Austria and Global editions. Vienna reporting is included and prioritised inside Austria rather than separated into a quieter edition.
 
+For the durable product decisions, deferred features, known limitations, and new-task handoff, read [`docs/PROJECT_HANDOFF.md`](docs/PROJECT_HANDOFF.md).
+
 ## Run locally
 
 From this folder:
