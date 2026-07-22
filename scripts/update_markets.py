@@ -187,6 +187,100 @@ def build_milk(records: list[dict[str, Any]]) -> dict[str, Any]:
     )
 
 
+def build_eggs(records: list[dict[str, Any]]) -> dict[str, Any]:
+    history = select_series(
+        records,
+        lambda row: row.get("memberStateCode") == "AT" and row.get("farmingMethod") == "Barn",
+        date_field="endDate",
+        date_parser=eu_date,
+    )
+    return benchmark(
+        identifier="at-barn-eggs",
+        label="Eggs",
+        scope="Austria barn eggs",
+        unit="€/100 kg",
+        frequency="Weekly",
+        change_basis="vs previous week",
+        source="European Commission",
+        source_url=api_url("poultry/egg/prices", memberStateCodes="AT", farmingMethods="Barn"),
+        description="Austria wholesale reference for Class A barn eggs; a directional purchasing-cost benchmark.",
+        history=history,
+        decimals=2,
+        stale_after_days=21,
+    )
+
+
+def build_poultry(records: list[dict[str, Any]]) -> dict[str, Any]:
+    history = select_series(
+        records,
+        lambda row: row.get("memberStateCode") == "AT"
+        and row.get("productName") == "Whole broiler (65%)"
+        and row.get("priceType") == "Selling price",
+        date_field="endDate",
+        date_parser=eu_date,
+    )
+    return benchmark(
+        identifier="at-whole-broiler",
+        label="Chicken",
+        scope="Austria whole broiler",
+        unit="€/100 kg",
+        frequency="Weekly",
+        change_basis="vs previous week",
+        source="European Commission",
+        source_url=api_url("poultry/prices", memberStateCodes="AT", products="Whole broiler (65%)"),
+        description="Austria selling-price reference for whole broiler chicken, reported per 100 kg.",
+        history=history,
+        decimals=2,
+        stale_after_days=21,
+    )
+
+
+def build_pigmeat(records: list[dict[str, Any]]) -> dict[str, Any]:
+    history = select_series(
+        records,
+        lambda row: row.get("memberStateCode") == "AT" and row.get("pigClass") == "E",
+        date_field="endDate",
+        date_parser=eu_date,
+    )
+    return benchmark(
+        identifier="at-pigmeat-e",
+        label="Pigmeat",
+        scope="Austria class E",
+        unit="€/100 kg",
+        frequency="Weekly",
+        change_basis="vs previous week",
+        source="European Commission",
+        source_url=api_url("pigmeat/prices", memberStateCodes="AT"),
+        description="Austria weekly class E pig-carcass price; a directional meat-cost benchmark.",
+        history=history,
+        decimals=2,
+        stale_after_days=21,
+    )
+
+
+def build_butter(records: list[dict[str, Any]]) -> dict[str, Any]:
+    history = select_series(
+        records,
+        lambda row: row.get("memberStateCode") == "EU" and row.get("product") == "BUTTER",
+        date_field="endDate",
+        date_parser=eu_date,
+    )
+    return benchmark(
+        identifier="eu-butter",
+        label="Butter",
+        scope="European Union",
+        unit="€/100 kg",
+        frequency="Weekly",
+        change_basis="vs previous week",
+        source="European Commission",
+        source_url=api_url("dairy/prices", memberStateCodes="EU", products="BUTTER"),
+        description="European Union weekly butter reference price; Austria does not publish this series consistently.",
+        history=history,
+        decimals=2,
+        stale_after_days=21,
+    )
+
+
 def build_sunflower(records: list[dict[str, Any]]) -> dict[str, Any]:
     history = select_series(
         records,
@@ -292,6 +386,22 @@ def main() -> int:
         (
             "at-raw-milk",
             lambda: build_milk(fetch_json(api_url("rawMilk/prices", memberStateCodes="AT", products="Raw milk", years=[today.year - 1, today.year]))),
+        ),
+        (
+            "at-barn-eggs",
+            lambda: build_eggs(fetch_json(api_url("poultry/egg/prices", memberStateCodes="AT", beginDate=begin))),
+        ),
+        (
+            "at-whole-broiler",
+            lambda: build_poultry(fetch_json(api_url("poultry/prices", memberStateCodes="AT", beginDate=begin))),
+        ),
+        (
+            "at-pigmeat-e",
+            lambda: build_pigmeat(fetch_json(api_url("pigmeat/prices", memberStateCodes="AT", beginDate=begin))),
+        ),
+        (
+            "eu-butter",
+            lambda: build_butter(fetch_json(api_url("dairy/prices", memberStateCodes="EU", products="BUTTER", years=[today.year - 1, today.year]))),
         ),
         (
             "eu-sunflower-oil",

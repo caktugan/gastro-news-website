@@ -1,6 +1,10 @@
 import unittest
 
 from scripts.update_markets import (
+    build_butter,
+    build_eggs,
+    build_pigmeat,
+    build_poultry,
     build_wheat,
     parse_eu_price,
     percentage_change,
@@ -58,6 +62,31 @@ class MarketDataTests(unittest.TestCase):
         self.assertEqual(result["change_pct"], 1.3)
         self.assertEqual(result["scope"], "Austria")
         self.assertEqual(result["display_decimals"], 0)
+
+    def test_hospitality_input_series_use_the_intended_product(self):
+        dates = ("12/07/2026", "19/07/2026")
+        eggs = build_eggs([
+            {"memberStateCode": "AT", "farmingMethod": "Barn", "endDate": dates[0], "price": "€300,00"},
+            {"memberStateCode": "AT", "farmingMethod": "Barn", "endDate": dates[1], "price": "€315,00"},
+            {"memberStateCode": "AT", "farmingMethod": "Organic", "endDate": dates[1], "price": "€999,00"},
+        ])
+        poultry = build_poultry([
+            {"memberStateCode": "AT", "productName": "Whole broiler (65%)", "priceType": "Selling price", "endDate": dates[0], "price": "€350,00"},
+            {"memberStateCode": "AT", "productName": "Whole broiler (65%)", "priceType": "Selling price", "endDate": dates[1], "price": "€360,00"},
+        ])
+        pigmeat = build_pigmeat([
+            {"memberStateCode": "AT", "pigClass": "E", "endDate": dates[0], "price": "€170,00"},
+            {"memberStateCode": "AT", "pigClass": "E", "endDate": dates[1], "price": "€175,00"},
+        ])
+        butter = build_butter([
+            {"memberStateCode": "EU", "product": "BUTTER", "endDate": dates[0], "price": "€380,00"},
+            {"memberStateCode": "EU", "product": "BUTTER", "endDate": dates[1], "price": "€390,00"},
+        ])
+
+        self.assertEqual(eggs["value"], 315.0)
+        self.assertEqual(poultry["value"], 360.0)
+        self.assertEqual(pigmeat["value"], 175.0)
+        self.assertEqual(butter["value"], 390.0)
 
 
 if __name__ == "__main__":

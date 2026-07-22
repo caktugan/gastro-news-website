@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T19:48:48+00:00",
+  "generated_at": "2026-07-22T20:30:13+00:00",
   "status": "current",
   "ai_requests": 0,
   "methodology": "Official reference series only. Values are directional wholesale or macro benchmarks, not supplier quotes.",
@@ -133,6 +133,270 @@
         {
           "date": "2026-06-30",
           "value": 45.7
+        }
+      ]
+    },
+    {
+      "id": "at-barn-eggs",
+      "label": "Eggs",
+      "scope": "Austria barn eggs",
+      "value": 321.34,
+      "display_decimals": 2,
+      "unit": "€/100 kg",
+      "period": "2026-07-12",
+      "frequency": "Weekly",
+      "change_pct": 0.9,
+      "change_basis": "vs previous week",
+      "source": "European Commission",
+      "source_url": "https://api.tech.ec.europa.eu/agrifood/api/poultry/egg/prices?memberStateCodes=AT&farmingMethods=Barn",
+      "description": "Austria wholesale reference for Class A barn eggs; a directional purchasing-cost benchmark.",
+      "stale": false,
+      "history": [
+        {
+          "date": "2026-04-26",
+          "value": 320.91
+        },
+        {
+          "date": "2026-05-03",
+          "value": 320.73
+        },
+        {
+          "date": "2026-05-10",
+          "value": 323.06
+        },
+        {
+          "date": "2026-05-17",
+          "value": 322.02
+        },
+        {
+          "date": "2026-05-24",
+          "value": 318.18
+        },
+        {
+          "date": "2026-05-31",
+          "value": 318.86
+        },
+        {
+          "date": "2026-06-07",
+          "value": 322.01
+        },
+        {
+          "date": "2026-06-14",
+          "value": 321.59
+        },
+        {
+          "date": "2026-06-21",
+          "value": 318.42
+        },
+        {
+          "date": "2026-06-28",
+          "value": 324.49
+        },
+        {
+          "date": "2026-07-05",
+          "value": 318.4
+        },
+        {
+          "date": "2026-07-12",
+          "value": 321.34
+        }
+      ]
+    },
+    {
+      "id": "at-whole-broiler",
+      "label": "Chicken",
+      "scope": "Austria whole broiler",
+      "value": 380.05,
+      "display_decimals": 2,
+      "unit": "€/100 kg",
+      "period": "2026-07-12",
+      "frequency": "Weekly",
+      "change_pct": 1.7,
+      "change_basis": "vs previous week",
+      "source": "European Commission",
+      "source_url": "https://api.tech.ec.europa.eu/agrifood/api/poultry/prices?memberStateCodes=AT&products=Whole+broiler+%2865%25%29",
+      "description": "Austria selling-price reference for whole broiler chicken, reported per 100 kg.",
+      "stale": false,
+      "history": [
+        {
+          "date": "2026-04-26",
+          "value": 352.36
+        },
+        {
+          "date": "2026-05-03",
+          "value": 358.46
+        },
+        {
+          "date": "2026-05-10",
+          "value": 363.26
+        },
+        {
+          "date": "2026-05-17",
+          "value": 361.81
+        },
+        {
+          "date": "2026-05-24",
+          "value": 368.87
+        },
+        {
+          "date": "2026-05-31",
+          "value": 372.95
+        },
+        {
+          "date": "2026-06-07",
+          "value": 380.31
+        },
+        {
+          "date": "2026-06-14",
+          "value": 386.65
+        },
+        {
+          "date": "2026-06-21",
+          "value": 381.09
+        },
+        {
+          "date": "2026-06-28",
+          "value": 378.95
+        },
+        {
+          "date": "2026-07-05",
+          "value": 373.59
+        },
+        {
+          "date": "2026-07-12",
+          "value": 380.05
+        }
+      ]
+    },
+    {
+      "id": "at-pigmeat-e",
+      "label": "Pigmeat",
+      "scope": "Austria class E",
+      "value": 174.05,
+      "display_decimals": 2,
+      "unit": "€/100 kg",
+      "period": "2026-07-12",
+      "frequency": "Weekly",
+      "change_pct": -0.8,
+      "change_basis": "vs previous week",
+      "source": "European Commission",
+      "source_url": "https://api.tech.ec.europa.eu/agrifood/api/pigmeat/prices?memberStateCodes=AT",
+      "description": "Austria weekly class E pig-carcass price; a directional meat-cost benchmark.",
+      "stale": false,
+      "history": [
+        {
+          "date": "2026-04-26",
+          "value": 187.99
+        },
+        {
+          "date": "2026-05-03",
+          "value": 190.65
+        },
+        {
+          "date": "2026-05-10",
+          "value": 188.51
+        },
+        {
+          "date": "2026-05-17",
+          "value": 186.84
+        },
+        {
+          "date": "2026-05-24",
+          "value": 183.05
+        },
+        {
+          "date": "2026-05-31",
+          "value": 185.16
+        },
+        {
+          "date": "2026-06-07",
+          "value": 185.94
+        },
+        {
+          "date": "2026-06-14",
+          "value": 181.38
+        },
+        {
+          "date": "2026-06-21",
+          "value": 175.63
+        },
+        {
+          "date": "2026-06-28",
+          "value": 174.94
+        },
+        {
+          "date": "2026-07-05",
+          "value": 175.46
+        },
+        {
+          "date": "2026-07-12",
+          "value": 174.05
+        }
+      ]
+    },
+    {
+      "id": "eu-butter",
+      "label": "Butter",
+      "scope": "European Union",
+      "value": 387.7,
+      "display_decimals": 2,
+      "unit": "€/100 kg",
+      "period": "2026-07-12",
+      "frequency": "Weekly",
+      "change_pct": 1.1,
+      "change_basis": "vs previous week",
+      "source": "European Commission",
+      "source_url": "https://api.tech.ec.europa.eu/agrifood/api/dairy/prices?memberStateCodes=EU&products=BUTTER",
+      "description": "European Union weekly butter reference price; Austria does not publish this series consistently.",
+      "stale": false,
+      "history": [
+        {
+          "date": "2026-04-26",
+          "value": 408.54
+        },
+        {
+          "date": "2026-05-03",
+          "value": 400.76
+        },
+        {
+          "date": "2026-05-10",
+          "value": 397.96
+        },
+        {
+          "date": "2026-05-17",
+          "value": 394.88
+        },
+        {
+          "date": "2026-05-24",
+          "value": 394.33
+        },
+        {
+          "date": "2026-05-31",
+          "value": 395.27
+        },
+        {
+          "date": "2026-06-07",
+          "value": 404.84
+        },
+        {
+          "date": "2026-06-14",
+          "value": 392.46
+        },
+        {
+          "date": "2026-06-21",
+          "value": 385.35
+        },
+        {
+          "date": "2026-06-28",
+          "value": 383.13
+        },
+        {
+          "date": "2026-07-05",
+          "value": 383.31
+        },
+        {
+          "date": "2026-07-12",
+          "value": 387.7
         }
       ]
     },

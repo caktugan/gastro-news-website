@@ -129,6 +129,12 @@ class EnrichmentTests(unittest.TestCase):
     def test_current_gemini_default_is_available_model(self) -> None:
         self.assertEqual(enrich_austria.DEFAULT_GEMINI_MODEL, "gemini-3.1-flash-lite")
 
+    def test_headline_prompt_requires_variety_without_clickbait(self) -> None:
+        instructions = enrich_austria.enrichment_instructions()
+        self.assertIn("journalistic headline", instructions)
+        self.assertIn("Vary headline rhythm", instructions)
+        self.assertIn("Do not use clickbait", instructions)
+
     def test_daily_request_budget_is_persisted_and_enforced(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             ledger_path = Path(directory) / "usage.json"

@@ -272,6 +272,12 @@ const stories = {
   ]
 };
 
+stories.austria = [
+  ...stories.vienna.map((story) => ({ ...story, edition: "Austria" })),
+  ...stories.austria
+];
+stories.vienna = [];
+
 const localStoryImages = {
   Openings: "./assets/vienna-kitchen.webp",
   Restaurants: "./assets/vienna-kitchen.webp",
@@ -283,11 +289,16 @@ const localStoryImages = {
 
 const defaultStoryImage = "./assets/vienna-kitchen.webp";
 
-function permittedStoryImage(cluster, topic) {
+function storyImageForCluster(cluster, topic) {
   const candidate = cluster.image_url || cluster.sources?.find((source) => source.image_url)?.image_url;
-  return cluster.image_usage === "permitted" && /^https:\/\//.test(candidate || "")
+  return /^https:\/\//.test(candidate || "")
     ? candidate
     : localStoryImages[topic] || defaultStoryImage;
+}
+
+function storyImageAttributes(story) {
+  const fallback = localStoryImages[story.topic] || defaultStoryImage;
+  return `src="${safeText(story.image || fallback)}" data-fallback-src="${safeText(fallback)}" referrerpolicy="no-referrer"`;
 }
 
 function inferOpeningStatus(title, summary) {
@@ -310,11 +321,21 @@ function inferOpeningStatus(title, summary) {
 function relevanceScore(story) {
   const ageHours = Math.max(0, (Date.now() - new Date(story.publishedAt || 0).getTime()) / 36e5);
   const freshness = Math.max(0, 80 - ageHours / 3);
-  const local = /vienna|wien/i.test(story.location) ? 65 : story.edition === "Austria" ? 28 : 12;
+  const local = /vienna|wien/i.test(story.location) ? 48 : story.edition === "Austria" ? 34 : 12;
   const corroboration = Math.min(30, (story.independentSources || 0) * 12 + Math.max(0, story.sources - 1) * 4);
-  const opening = story.topic === "Openings" ? 18 : 0;
+  const business = story.topic === "Business" ? 24 : 0;
+  const industryEvidence = `${story.title || ""} ${story.summary || story.deck || ""}`;
+  const operatorImpact = /cost|price|inflation|wage|collective agreement|labour|labor|tax|insolven|bankrupt|revenue|profit|investment|supplier|wholesale|regulation|tourism|hotel|group|chain|franchise|company|market|export|import|energy|rent/i.test(industryEvidence) ? 22 : 0;
   const pressPenalty = story.coveragePattern === "likely_syndicated" ? 22 : 0;
-  return Math.round(freshness + local + corroboration + opening - pressPenalty);
+  return Math.round(freshness + local + corroboration + business + operatorImpact - pressPenalty);
+}
+
+function isNewsworthyOpening(story) {
+  if (story.topic !== "Openings") return true;
+  const evidence = `${story.title || ""} ${story.summary || story.deck || ""}`;
+  return (story.independentSources || 0) > 1
+    || (story.sources || 0) > 1
+    || /beloved|iconic|landmark|institution|michelin|starred|chain|group|flagship|first in|arrives|expansion|insolven|bankrupt|hundred|decade|jobs|employees|acquisition|takeover/i.test(evidence);
 }
 
 function safeText(value) {
@@ -399,7 +420,11 @@ function storyTopic(cluster) {
   const evidence = `${cluster.title || ""} ${cluster.summary || ""}`.toLowerCase();
   const directOpening = /\b(neueröffnung|eröffnet|neu in|neues lokal|neues restaurant|opening soon|opens|opened|new restaurant|new café|new cafe|new bar|schließt|geschlossen|closes|closure)\b/i;
   const venueLaunch = /\b(launches|startet|eröffnung)\b.{0,70}\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b|\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b.{0,70}\b(launches|startet|eröffnung)\b/i;
-  return directOpening.test(evidence) || venueLaunch.test(evidence) ? "Openings" : (cluster.topic || "Restaurants");
+  if (directOpening.test(evidence) || venueLaunch.test(evidence)) return "Openings";
+  if (/insolven|bankrupt|umsatz|revenue|gewinn|profit|verlust|loss|übernahme|acquisition|fusion|merger|invest|expan|franchise|kette|chain|gruppe|group|unternehmen|company|markt|market|preis|price|kosten|cost|miete|rent|steuer|tax|lohn|wage|kollektivvertrag|collective agreement|personal|staffing|arbeitsmarkt|labour|labor|tourismus|tourism|hotellerie|wholesale|supplier|lieferant/.test(evidence)) return "Business";
+  if (/nachhalt|sustainab|klima|climate|food waste|lebensmittelverschwendung|mehrweg|reusable|regional sourcing/.test(evidence)) return "Sustainability";
+  if (/ernennt|appointed|appoints|new chef|neuer küchenchef|geschäftsführer|managing director|ceo|personalie|joins|verlässt|departs/.test(evidence)) return "People";
+  return cluster.topic || "Restaurants";
 }
 
 function liveAustriaStories() {
@@ -431,7 +456,7 @@ function liveAustriaStories() {
         title: safeText(translation.title),
         deck: safeText(translation.deck),
         summary: safeText(translation.summary || translation.deck),
-        image: permittedStoryImage(cluster, topic),
+        image: storyImageForCluster(cluster, topic),
         imageCandidate: cluster.image_url || null,
         imageUsage: cluster.image_usage || "review_required",
         sources: cluster.source_count || sources.length,
@@ -488,7 +513,7 @@ function liveGlobalStories() {
       title: safeText(cluster.title),
       deck: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
       summary: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
-      image: permittedStoryImage(cluster, topic),
+      image: storyImageForCluster(cluster, topic),
       imageCandidate: cluster.image_url || null,
       imageUsage: cluster.image_usage || "review_required",
       sources: cluster.source_count || sources.length,
@@ -520,10 +545,7 @@ function liveGlobalStories() {
 
 const liveAustrians = liveAustriaStories();
 if (liveAustrians.length) {
-  stories.vienna = liveAustrians
-    .filter((story) => /vienna|wien/i.test(story.location))
-    .map((story) => ({ ...story, edition: "Vienna" }));
-  stories.austria = liveAustrians.filter((story) => !/vienna|wien/i.test(story.location));
+  stories.austria = liveAustrians;
 }
 
 const liveGlobals = liveGlobalStories();
@@ -558,13 +580,14 @@ function persistSavedStories() {
 const savedStore = readSavedStories();
 const state = {
   page: "news",
-  section: "vienna",
-  newsSection: "vienna",
+  section: "austria",
+  newsSection: "austria",
   topic: "All",
   sort: "top",
   eventFilter: "all",
-  trackerWeekOffset: 0,
+  trackerMonthOffset: 0,
   trackerFilter: "all",
+  marketId: null,
   saved: savedStore.ids,
   savedSnapshots: savedStore.snapshots,
   visibleCount: 18
@@ -595,6 +618,7 @@ const contextPanel = document.querySelector("#context-panel");
 const newsView = document.querySelector("#news-view");
 const calendarView = document.querySelector("#calendar-view");
 const trackerView = document.querySelector("#tracker-view");
+const marketView = document.querySelector("#market-view");
 const eventList = document.querySelector("#event-list");
 const trackerList = document.querySelector("#tracker-list");
 const marketPanel = document.querySelector("#market-panel");
@@ -609,7 +633,7 @@ const bookmarkIcon = `
 `;
 
 function allStories() {
-  return [...stories.vienna, ...stories.austria, ...stories.global];
+  return [...stories.austria, ...stories.global];
 }
 
 function currentStories() {
@@ -620,7 +644,7 @@ function currentStories() {
       .map((id) => currentById.get(id) || state.savedSnapshots.get(id))
       .filter(Boolean);
   } else if (state.section === "openings") {
-    items = [...stories.vienna, ...stories.austria].filter((story) => story.topic === "Openings");
+    items = stories.austria.filter((story) => story.topic === "Openings");
   } else if (state.section === "review") {
     items = allStories().filter((story) => story.isLive && (
       ["automated_unreviewed", "source_metadata_only"].includes(story.reviewStatus)
@@ -629,6 +653,9 @@ function currentStories() {
     ));
   } else {
     items = stories[state.section] || [];
+  }
+  if (["austria", "global"].includes(state.section)) {
+    items = items.filter(isNewsworthyOpening);
   }
   return [...items].sort((left, right) => state.sort === "latest"
     ? new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0)
@@ -701,14 +728,13 @@ function selectDailyBriefing(items, limit = 5) {
 function briefingLeadCard(story) {
   return `
     <article class="briefing-lead" data-story="${story.id}" tabindex="0" aria-label="Read lead briefing: ${story.title}">
-      <img src="${story.image || defaultStoryImage}" alt="" fetchpriority="high" />
+      <img ${storyImageAttributes(story)} alt="" fetchpriority="high" />
       ${saveButton(story, "hero-save")}
       <div class="briefing-lead-copy">
-        <div class="briefing-label"><span>Lead development</span><i>${story.location} · ${story.topic}</i></div>
+        <div class="briefing-label"><span>Top story</span><i>${story.location} · ${story.topic}</i></div>
         ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
         <h2>${story.title}</h2>
         <p>${story.summary || story.deck}</p>
-        <div class="briefing-impact"><span>Why it matters</span><p>${whyItMatters(story)}</p></div>
         ${storyMeta(story, true)}
       </div>
     </article>`;
@@ -724,14 +750,14 @@ function briefingQueueCard(story, index) {
         <p>${story.summary || story.deck}</p>
         ${storyMeta(story)}
       </div>
-      <img src="${story.image || defaultStoryImage}" alt="" loading="lazy" decoding="async" />
+      <img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" />
       ${saveButton(story, "briefing-save")}
     </article>`;
 }
 
 function feedCard(story, index) {
   const visual = story.image
-    ? `<div class="feed-image"><img src="${story.image}" alt="" loading="lazy" decoding="async" /></div>`
+    ? `<div class="feed-image"><img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" /></div>`
     : `<div class="feed-image-placeholder" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div>`;
 
   return `
@@ -756,20 +782,6 @@ function greetingForNow() {
   return "Good evening.";
 }
 
-function marketSparkline(history) {
-  const values = (history || []).map((item) => Number(item.value)).filter(Number.isFinite);
-  if (values.length < 2) return "";
-  const low = Math.min(...values);
-  const high = Math.max(...values);
-  const span = high - low || 1;
-  const points = values.map((value, index) => {
-    const x = values.length === 1 ? 50 : (index / (values.length - 1)) * 100;
-    const y = 24 - ((value - low) / span) * 20;
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(" ");
-  return `<svg class="market-sparkline" viewBox="0 0 100 28" role="img" aria-label="Recent ${values.length}-observation trend"><polyline points="${points}"></polyline></svg>`;
-}
-
 function renderMarkets() {
   if (!marketPanel || !marketStrip) return;
   const payload = window.MISE_MARKETS;
@@ -790,20 +802,87 @@ function renderMarkets() {
       maximumFractionDigits: item.display_decimals || 0
     }).format(Number(item.value));
     return `
-      <a class="market-card" href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer" aria-label="Open source for ${safeText(item.label)}">
+      <button class="market-card" data-market="${safeText(item.id)}" type="button" aria-label="View market detail for ${safeText(item.label)}">
         <div class="market-card-top"><span>${safeText(item.scope)}</span><i>${safeText(item.frequency)}</i></div>
         <h3>${safeText(item.label)}</h3>
         <div class="market-value"><strong>${value}</strong><span>${safeText(item.unit)}</span></div>
-        ${marketSparkline(item.history)}
         <div class="market-change ${direction}"><strong>${changeLabel}</strong><span>${safeText(item.change_basis)}</span></div>
-        <div class="market-source"><span>${safeText(item.source)} · ${observation}</span>${item.stale ? "<strong>Stale cache</strong>" : "<strong>Source ↗</strong>"}</div>
-        <p>${safeText(item.description)}</p>
-      </a>`;
+        <div class="market-source"><span>${observation}</span>${item.stale ? "<strong>Stale</strong>" : "<strong>View →</strong>"}</div>
+      </button>`;
   }).join("");
 
   const generated = payload.generated_at ? relativeTime(payload.generated_at) : "recently";
   document.querySelector("#market-status").textContent = `${payload.status === "current" ? "Official data" : "Partial refresh"} · refreshed ${generated} · 0 AI requests`;
   document.querySelector("#market-methodology").textContent = payload.methodology || "Reference series are directional benchmarks, not supplier quotes.";
+  document.querySelectorAll("[data-market]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.marketId = button.dataset.market;
+      switchPage("market");
+    });
+  });
+}
+
+function marketDetailChart(history) {
+  const points = (history || []).map((item) => ({ date: item.date, value: Number(item.value) })).filter((item) => Number.isFinite(item.value));
+  if (points.length < 2) return `<div class="market-chart-empty">Not enough observations for a chart.</div>`;
+  const width = 760;
+  const height = 280;
+  const padding = 26;
+  const values = points.map((item) => item.value);
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const span = high - low || 1;
+  const coordinates = points.map((item, index) => ({
+    ...item,
+    x: padding + (index / (points.length - 1)) * (width - padding * 2),
+    y: height - padding - ((item.value - low) / span) * (height - padding * 2)
+  }));
+  const line = coordinates.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+  const area = `${padding},${height - padding} ${line} ${width - padding},${height - padding}`;
+  const first = points[0];
+  const last = points.at(-1);
+  return `
+    <div class="market-detail-chart">
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Price history from ${safeText(first.date)} to ${safeText(last.date)}">
+        <line x1="${padding}" y1="${padding}" x2="${width - padding}" y2="${padding}"></line>
+        <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}"></line>
+        <polygon points="${area}"></polygon>
+        <polyline points="${line}"></polyline>
+        ${coordinates.map((point) => `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="3"><title>${safeText(point.date)}: ${point.value}</title></circle>`).join("")}
+      </svg>
+      <div class="market-chart-axis"><span>${safeText(first.date)}</span><span>Low ${low.toLocaleString("en-GB")}</span><span>High ${high.toLocaleString("en-GB")}</span><span>${safeText(last.date)}</span></div>
+    </div>`;
+}
+
+function renderMarketDetail() {
+  const payload = window.MISE_MARKETS;
+  const items = payload?.benchmarks || [];
+  const item = items.find((candidate) => candidate.id === state.marketId) || items[0];
+  const container = document.querySelector("#market-detail");
+  if (!container || !item) return;
+  state.marketId = item.id;
+  const change = Number(item.change_pct);
+  const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+  const changeLabel = Number.isFinite(change) ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%` : "No comparison";
+  const value = new Intl.NumberFormat("en-GB", {
+    minimumFractionDigits: item.display_decimals || 0,
+    maximumFractionDigits: item.display_decimals || 0
+  }).format(Number(item.value));
+  const period = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    .format(new Date(`${item.period}T12:00:00`));
+  container.innerHTML = `
+    <header class="market-detail-header">
+      <div><p class="eyebrow">HOSPITALITY MARKETS · ${safeText(item.scope)}</p><h2>${safeText(item.label)}</h2><p>${safeText(item.description)}</p></div>
+      <div class="market-detail-quote"><strong>${value}</strong><span>${safeText(item.unit)}</span><em class="${direction}">${changeLabel} ${safeText(item.change_basis)}</em></div>
+    </header>
+    ${marketDetailChart(item.history)}
+    <div class="market-detail-facts">
+      <div><span>Latest observation</span><strong>${period}</strong></div>
+      <div><span>Frequency</span><strong>${safeText(item.frequency)}</strong></div>
+      <div><span>Data condition</span><strong>${item.stale ? "Stale cached value" : "Current official series"}</strong></div>
+      <div><span>Source</span><strong>${safeText(item.source)}</strong></div>
+    </div>
+    <div class="market-detail-footer"><p>${safeText(payload.methodology || "Directional reference benchmark, not a supplier quote.")}</p><a href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer">Open official source ↗</a></div>`;
 }
 
 function renderTrendRadar() {
@@ -922,43 +1001,42 @@ function renderCalendar() {
   document.querySelector("#event-data-note").textContent = `${payload.events?.length || 0} events checked against official organizer pages on ${checkedAt} · ${reviewCount} feed-discovered ${reviewCount === 1 ? "lead" : "leads"} awaiting organizer verification · 0 AI requests. Always confirm details before travelling.`;
 }
 
-function startOfWeek(date = new Date()) {
+function startOfMonth(date = new Date()) {
   const result = new Date(date);
+  result.setDate(1);
   result.setHours(0, 0, 0, 0);
-  const day = result.getDay() || 7;
-  result.setDate(result.getDate() - day + 1);
   return result;
 }
 
 function renderTracker() {
-  const weekStart = startOfWeek();
-  weekStart.setDate(weekStart.getDate() - state.trackerWeekOffset * 7);
-  const weekEnd = new Date(weekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
-  weekEnd.setHours(23, 59, 59, 999);
-  const weekItems = [...stories.vienna, ...stories.austria]
+  const monthStart = startOfMonth();
+  monthStart.setMonth(monthStart.getMonth() - state.trackerMonthOffset);
+  const monthEnd = new Date(monthStart);
+  monthEnd.setMonth(monthEnd.getMonth() + 1);
+  monthEnd.setMilliseconds(-1);
+  const monthItems = stories.austria
     .filter((story) => story.topic === "Openings")
     .filter((story) => {
       const published = new Date(story.publishedAt || 0);
-      return published >= weekStart && published <= weekEnd;
+      return published >= monthStart && published <= monthEnd;
     })
     .sort((left, right) => new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0));
-  const statuses = weekItems.reduce((counts, story) => {
+  const statuses = monthItems.reduce((counts, story) => {
     counts[story.openingStatus || "Unconfirmed"] = (counts[story.openingStatus || "Unconfirmed"] || 0) + 1;
     return counts;
   }, {});
   const items = state.trackerFilter === "all"
-    ? weekItems
-    : weekItems.filter((story) => (story.openingStatus || "Unconfirmed") === state.trackerFilter);
-  const weekLabel = `${new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" }).format(weekStart)}–${new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" }).format(weekEnd)}`;
+    ? monthItems
+    : monthItems.filter((story) => (story.openingStatus || "Unconfirmed") === state.trackerFilter);
+  const monthLabel = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(monthStart);
 
-  document.querySelector("#tracker-week-label").textContent = weekLabel;
+  document.querySelector("#tracker-month-label").textContent = monthLabel;
   document.querySelector("#tracker-overview").innerHTML = `
-    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerWeekOffset ? "Last week" : "This week"} in reporting</h2><p>Opening and closure reports published during ${weekLabel}. Dates show when the source reported the development, not necessarily the venue's effective opening or closing date.</p></div>
+    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerMonthOffset ? "Last month" : "This month"} in reporting</h2><p>Opening and closure reports published during ${monthLabel}. Dates show when the source reported the development, not necessarily the venue's effective opening or closing date.</p></div>
     <div class="tracker-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
 
-  document.querySelectorAll("[data-tracker-week]").forEach((button) => {
-    button.classList.toggle("active", Number(button.dataset.trackerWeek) === state.trackerWeekOffset);
+  document.querySelectorAll("[data-tracker-month]").forEach((button) => {
+    button.classList.toggle("active", Number(button.dataset.trackerMonth) === state.trackerMonthOffset);
   });
   document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
     button.classList.toggle("active", button.dataset.trackerFilter === state.trackerFilter);
@@ -978,7 +1056,7 @@ function renderTracker() {
         </div>
         ${saveButton(story, "tracker-save")}
       </article>`;
-  }).join("") : `<div class="empty-state">No ${state.trackerFilter === "all" ? "opening or closure reports" : state.trackerFilter.toLowerCase() + " reports"} were published during ${weekLabel}.</div>`;
+  }).join("") : `<div class="empty-state">No ${state.trackerFilter === "all" ? "opening or closure reports" : state.trackerFilter.toLowerCase() + " reports"} were published during ${monthLabel}.</div>`;
   renderSocialWatch();
   bindCards();
 }
@@ -1012,6 +1090,7 @@ function renderPageShell() {
   newsView.hidden = state.page !== "news";
   calendarView.hidden = state.page !== "calendar";
   trackerView.hidden = state.page !== "tracker";
+  marketView.hidden = state.page !== "market";
   document.querySelectorAll("[data-page]").forEach((button) => {
     button.classList.toggle("active", button.dataset.page === state.page);
   });
@@ -1021,8 +1100,11 @@ function renderPageShell() {
     document.querySelector("#section-title").textContent = "Plan what is next.";
     freshness.textContent = "Official event sources";
   } else if (state.page === "tracker") {
-    document.querySelector("#section-title").textContent = "This week's movement.";
+    document.querySelector("#section-title").textContent = "This month's movement.";
     freshness.textContent = livePayload?.generated_at ? `News updated ${relativeTime(livePayload.generated_at)}` : "Sample dataset";
+  } else if (state.page === "market") {
+    document.querySelector("#section-title").textContent = "Cost intelligence.";
+    freshness.textContent = window.MISE_MARKETS?.generated_at ? `Markets updated ${relativeTime(window.MISE_MARKETS.generated_at)}` : "Market data unavailable";
   } else {
     document.querySelector("#section-title").textContent = state.section === "saved" ? "Saved briefings." : greetingForNow();
     freshness.textContent = livePayload?.generated_at ? `Updated ${relativeTime(livePayload.generated_at)}` : "Sample dataset";
@@ -1041,11 +1123,14 @@ function render() {
     renderTracker();
     return;
   }
+  if (state.page === "market") {
+    renderMarketDetail();
+    return;
+  }
   renderMarkets();
   renderTrendRadar();
   const items = currentStories();
   const isSaved = state.section === "saved";
-  const isTracker = state.section === "openings";
   const isReview = state.section === "review";
 
   document.querySelectorAll("[data-section]").forEach((button) => {
@@ -1053,54 +1138,39 @@ function render() {
   });
 
   const headings = {
-    vienna: "What Vienna is talking about",
-    austria: "What Austria is talking about",
+    austria: "Industry news for Austrian hospitality",
     global: "What the world is talking about",
     saved: "Your saved briefings",
-    openings: "Vienna and Austria opening signals",
+    openings: "Austria opening signals",
     review: "Stories awaiting editorial review"
   };
-  feedHeading.textContent = headings[state.section] || headings.vienna;
+  feedHeading.textContent = headings[state.section] || headings.austria;
   const briefingTitles = {
-    vienna: "The Vienna briefing",
-    austria: "The Austria briefing",
-    global: "The global briefing",
-    saved: "Your saved briefing",
+    austria: "Austria's top stories",
+    global: "Global top stories",
+    saved: "Saved top stories",
     openings: "Opening intelligence",
     review: "Editorial review briefing"
   };
-  document.querySelector("#daily-briefing-title").textContent = briefingTitles[state.section] || briefingTitles.vienna;
+  document.querySelector("#daily-briefing-title").textContent = briefingTitles[state.section] || briefingTitles.austria;
 
-  filterRow.style.display = isSaved || isTracker || isReview ? "none" : "flex";
+  filterRow.style.display = isSaved || isReview ? "none" : "flex";
   const livePayload = window.MISE_LIVE_NEWS;
   const globalEnglishAvailable = livePayload?.clusters?.filter((cluster) => cluster.edition === "global" && cluster.language === "en").length || liveGlobals.length;
-  document.querySelector("#vienna-count").textContent = stories.vienna.length;
   document.querySelector("#austria-count").textContent = stories.austria.length;
   document.querySelector("#global-count").textContent = stories.global.length;
-  document.querySelector("#monitored-count").textContent = livePayload?.article_count || (state.section === "global" ? "412" : "164");
-  document.querySelector("#monitored-caption").textContent = livePayload
-    ? `across ${livePayload.source_count || 8} connected feeds`
-    : "across configured sources";
   const freshness = document.querySelector("#freshness-label");
   if (freshness) freshness.textContent = livePayload?.generated_at
     ? `Updated ${relativeTime(livePayload.generated_at)}`
     : "Sample dataset";
   document.querySelector("#feed-status-label").textContent = state.section === "global" && liveGlobals.length
     ? `${livePayload?.source_count || "Multiple"} live feeds · ${liveGlobals.length} recent of ${globalEnglishAvailable} English stories`
-    : ["vienna", "austria", "openings", "review"].includes(state.section) && liveAustrians.length
-      ? `${livePayload?.source_count || "Multiple"} live feeds · ${stories.vienna.length} Vienna + ${stories.austria.length} Austria briefings`
+    : ["austria", "openings", "review"].includes(state.section) && liveAustrians.length
+      ? `${livePayload?.source_count || "Multiple"} connected feeds · ${stories.austria.length} Austria briefings including Vienna`
       : "Editorial prototype · Sample stories";
 
-  contextPanel.hidden = !(isTracker || isReview);
-  if (isTracker) {
-    const statuses = items.reduce((result, story) => {
-      result[story.openingStatus || "Unconfirmed"] = (result[story.openingStatus || "Unconfirmed"] || 0) + 1;
-      return result;
-    }, {});
-    contextPanel.innerHTML = `
-      <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>Track what is opening—and closing.</h2><p>Signals from publishers, venue announcements and local discovery sources. Every entry remains linked to its evidence.</p></div>
-      <div class="context-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
-  } else if (isReview) {
+  contextPanel.hidden = !isReview;
+  if (isReview) {
     const syndicated = items.filter((story) => story.coveragePattern === "likely_syndicated").length;
     const imageCandidates = items.filter((story) => story.imageCandidate && story.imageUsage !== "permitted").length;
     contextPanel.innerHTML = `
@@ -1113,7 +1183,6 @@ function render() {
       saved: "No saved stories yet. Use the bookmark on any briefing to keep it here.",
       openings: "No opening or closure signals are available in the current briefing.",
       review: "No stories currently require editorial review.",
-      vienna: "No Vienna stories are available in the current briefing.",
       austria: "No Austria stories are available in the current briefing.",
       global: "No global stories are available in the current briefing."
     };
@@ -1121,7 +1190,6 @@ function render() {
     document.querySelector("#daily-briefing-status").textContent = "No briefing items available";
     heroLayout.style.gridTemplateColumns = "1fr";
     storyFeed.innerHTML = "";
-    renderTrends([]);
     bindCards();
     return;
   }
@@ -1133,7 +1201,6 @@ function render() {
     storyFeed.innerHTML = "";
     scrollSentinel.hidden = true;
     document.querySelector("#daily-briefing-status").textContent = "No briefing items match this topic";
-    renderTrends(items);
     return;
   }
 
@@ -1146,7 +1213,7 @@ function render() {
     <div class="briefing-queue">${secondary.map((story, index) => briefingQueueCard(story, index + 2)).join("")}</div>
   `;
   const briefingSources = new Set(briefingItems.flatMap((story) => story.sourceNames || [])).size;
-  document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} essential developments · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} sources · source-ranked`;
+  document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} top stories · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} sources · ranked for industry relevance`;
 
   const briefingIds = new Set(briefingItems.map((story) => story.id));
   const feedItems = filteredItems.filter((story) => !briefingIds.has(story.id));
@@ -1161,32 +1228,22 @@ function render() {
     ? `Showing ${loadedCount} of ${filteredItems.length} · loading more…`
     : `All ${filteredItems.length} stories loaded`;
 
-  renderTrends(items);
   bindCards();
 }
 
-function renderTrends(items) {
-  const trendList = document.querySelector("#trend-list");
-  if (!items.length) {
-    trendList.innerHTML = `<p class="pulse-label">Save stories to build your signals.</p>`;
-    return;
-  }
-  const coverage = [...items.reduce((counts, story) => {
-    counts.set(story.topic, (counts.get(story.topic) || 0) + 1);
-    return counts;
-  }, new Map()).entries()]
-    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
-    .slice(0, 3);
-  trendList.innerHTML = coverage.map(([topic, count], index) => `
-    <div class="trend-item">
-      <span>0${index + 1}</span>
-      <p>${topic}<br /><small>Current briefing</small></p>
-      <span class="up">${count} ${count === 1 ? "story" : "stories"}</span>
-    </div>
-  `).join("");
+function bindImageFallbacks(root = document) {
+  root.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+    image.addEventListener("error", () => {
+      if (image.src !== new URL(image.dataset.fallbackSrc, window.location.href).href) {
+        image.src = image.dataset.fallbackSrc;
+      }
+    }, { once: true });
+  });
 }
 
 function bindCards() {
+  bindImageFallbacks();
+
   document.querySelectorAll("[data-story]").forEach((card) => {
     card.addEventListener("click", () => openStory(card.dataset.story));
     card.addEventListener("keydown", (event) => {
@@ -1232,7 +1289,7 @@ function storyFacts(story) {
     `${story.sources} ${story.sources === 1 ? "source" : "sources"}`,
     story.independentSources > 1 ? `${story.independentSources} independently classified sources` : "Single-source claim",
     story.openingStatus || null,
-    story.imageCandidate && story.imageUsage !== "permitted" ? "Publisher image awaiting rights review" : null
+    story.imageCandidate && story.imageUsage !== "permitted" ? "Publisher-feed thumbnail · production rights review required" : null
   ];
   return facts.filter(Boolean);
 }
@@ -1240,7 +1297,7 @@ function storyFacts(story) {
 function whyItMatters(story) {
   if (story.openingStatus === "Closed") return "Closures affect neighbourhood hospitality, employment and the local competitive landscape. The status remains tied to the publisher evidence shown below.";
   if (story.topic === "Openings") return "New venues are an early signal of how Vienna and Austria’s dining landscape is changing—by neighbourhood, format and price point.";
-  if (/vienna|wien/i.test(story.location)) return "This story has direct local relevance for Vienna’s hospitality community and is prioritised in the city edition.";
+  if (/vienna|wien/i.test(story.location)) return "This story has direct local relevance for Vienna’s hospitality community and is prioritised in the Austria edition.";
   if (story.topic === "Business") return "The development may affect operating costs, staffing, investment or competitive conditions across hospitality businesses.";
   return "MISE ranks this story using freshness, geographic relevance, source quality and corroboration signals.";
 }
@@ -1324,7 +1381,7 @@ function openStory(id) {
 
   drawerContent.innerHTML = `
     <div class="drawer-hero">
-      <img src="${story.image || defaultStoryImage}" alt="" decoding="async" />
+      <img ${storyImageAttributes(story)} alt="" decoding="async" />
     </div>
     <div class="drawer-body">
       <span class="feed-topic" data-topic="${story.topic}">${placeLabel} · ${story.topic}</span>
@@ -1351,6 +1408,7 @@ function openStory(id) {
       ${storyDetails}
     </div>
   `;
+  bindImageFallbacks(drawerContent);
 
   storyOverlay.classList.add("open");
   storyOverlay.setAttribute("aria-hidden", "false");
@@ -1369,7 +1427,7 @@ function closeStory() {
 function switchSection(section) {
   state.page = "news";
   state.section = section;
-  if (["vienna", "austria", "global"].includes(section)) state.newsSection = section;
+  if (["austria", "global"].includes(section)) state.newsSection = section;
   state.topic = "All";
   state.visibleCount = 18;
   document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.topic === "All"));
@@ -1379,7 +1437,7 @@ function switchSection(section) {
 
 function switchPage(page) {
   state.page = page;
-  if (page === "news" && !["vienna", "austria", "global", "saved"].includes(state.section)) {
+  if (page === "news" && !["austria", "global", "saved"].includes(state.section)) {
     state.section = state.newsSection;
   }
   state.visibleCount = 18;
@@ -1469,9 +1527,9 @@ document.querySelectorAll("[data-event-filter]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-tracker-week]").forEach((button) => {
+document.querySelectorAll("[data-tracker-month]").forEach((button) => {
   button.addEventListener("click", () => {
-    state.trackerWeekOffset = Number(button.dataset.trackerWeek) || 0;
+    state.trackerMonthOffset = Number(button.dataset.trackerMonth) || 0;
     renderTracker();
   });
 });
@@ -1488,6 +1546,8 @@ document.querySelector(".site-header .brand").addEventListener("click", (event) 
   state.section = state.newsSection;
   switchPage("news");
 });
+
+document.querySelector("#market-back").addEventListener("click", () => switchPage("news"));
 
 document.querySelectorAll(".filter-chip").forEach((chip) => {
   chip.addEventListener("click", () => {

@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=13" />
+    <link rel="stylesheet" href="./styles.css?v=14" />
   </head>
   <body>
     <div class="app-shell">
@@ -23,7 +23,7 @@
         <nav class="top-navigation" aria-label="Primary navigation">
           <button class="active" data-page="news" type="button">News</button>
           <button data-page="calendar" type="button">Calendar</button>
-          <button data-page="tracker" type="button">Weekly tracker</button>
+          <button data-page="tracker" type="button">Monthly tracker</button>
         </nav>
         <div class="header-actions">
           <button class="saved-header-button" data-section="saved" type="button" aria-label="Saved stories">
@@ -54,8 +54,7 @@
 
         <div class="product-view" id="news-view">
         <section class="edition-switcher" aria-label="Select news edition">
-          <button class="edition-tab active" data-section="vienna" type="button">Vienna <span id="vienna-count">0</span></button>
-          <button class="edition-tab" data-section="austria" type="button">Austria <span id="austria-count">7</span></button>
+          <button class="edition-tab active" data-section="austria" type="button">Austria <span id="austria-count">7</span></button>
           <button class="edition-tab" data-section="global" type="button">Global <span id="global-count">7</span></button>
           <div class="edition-line"></div>
           <span class="prototype-label" id="feed-status-label">Editorial prototype · Sample stories</span>
@@ -66,42 +65,29 @@
         <section class="daily-briefing" id="daily-briefing" aria-labelledby="daily-briefing-title">
           <div class="daily-briefing-heading">
             <div>
-              <p class="eyebrow">TODAY'S INDUSTRY BRIEFING</p>
-              <h2 id="daily-briefing-title">The Vienna briefing</h2>
+              <p class="eyebrow">TOP NEWS</p>
+              <h2 id="daily-briefing-title">Austria's top stories</h2>
             </div>
             <p id="daily-briefing-status">Selecting the developments that matter now…</p>
           </div>
           <div class="briefing-layout" id="hero-layout" aria-label="Top briefing stories"></div>
         </section>
 
-        <section class="market-panel" id="market-panel" aria-labelledby="market-title">
-          <div class="market-panel-heading">
-            <div>
-              <p class="eyebrow">OPERATOR COST WATCH</p>
-              <h2 id="market-title">Key input benchmarks</h2>
-            </div>
-            <p id="market-status">Official reference series · no AI</p>
+        <details class="trend-radar" id="trend-radar">
+          <summary class="trend-radar-bar">
+            <div><p class="eyebrow">INDUSTRY SIGNALS</p><h2 id="trend-radar-title">Trend radar</h2></div>
+            <div><p id="trend-radar-status">Checking current publisher attention…</p><span>Expand <b>+</b></span></div>
+          </summary>
+          <div class="trend-radar-body">
+            <div class="trend-radar-grid" id="trend-radar-grid"></div>
+            <p class="trend-radar-note" id="trend-radar-note"></p>
           </div>
-          <div class="market-strip" id="market-strip"></div>
-          <p class="market-methodology" id="market-methodology"></p>
-        </section>
-
-        <section class="trend-radar" id="trend-radar" aria-labelledby="trend-radar-title">
-          <div class="trend-radar-heading">
-            <div>
-              <p class="eyebrow">SOURCE-DRIVEN SIGNALS</p>
-              <h2 id="trend-radar-title">Industry trend radar</h2>
-            </div>
-            <p id="trend-radar-status">Checking current publisher attention…</p>
-          </div>
-          <div class="trend-radar-grid" id="trend-radar-grid"></div>
-          <p class="trend-radar-note" id="trend-radar-note"></p>
-        </section>
+        </details>
 
         <section class="feed-section">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">THE DAILY PASS</p>
+              <p class="eyebrow">INDUSTRY DESK</p>
               <h2 id="feed-heading">What Austria is talking about</h2>
             </div>
             <div class="filter-row" id="filter-row">
@@ -109,9 +95,8 @@
               <button class="rank-chip" data-sort="latest" type="button">Latest</button>
               <span class="filter-separator"></span>
               <button class="filter-chip active" data-topic="All" type="button">All</button>
-              <button class="filter-chip" data-topic="Openings" type="button">New openings</button>
               <button class="filter-chip" data-topic="Restaurants" type="button">Restaurants</button>
-              <button class="filter-chip" data-topic="Business" type="button">Business</button>
+              <button class="filter-chip" data-topic="Business" type="button">Business & economy</button>
               <button class="filter-chip" data-topic="Food & Wine" type="button">Food & wine</button>
             </div>
           </div>
@@ -121,19 +106,13 @@
               <div class="story-feed" id="story-feed"></div>
               <div class="scroll-sentinel" id="scroll-sentinel" aria-live="polite">Loading more stories…</div>
             </div>
-            <aside class="pulse-card" aria-label="Gastronomy pulse">
-              <div class="pulse-header">
-                <div><p class="eyebrow">LIVE SIGNALS</p><h3>Gastro pulse</h3></div>
-                <span class="live-dot">Latest fetch</span>
+            <aside class="market-panel" id="market-panel" aria-labelledby="market-title">
+              <div class="market-panel-heading">
+                <div><p class="eyebrow">MARKETS</p><h2 id="market-title">The Hospitality Tape</h2></div>
+                <p id="market-status">Official reference series · no AI</p>
               </div>
-              <div class="pulse-stat">
-                <span>Items in latest fetch</span>
-                <strong id="monitored-count">164</strong>
-                <small id="monitored-caption">across connected feeds</small>
-              </div>
-              <div class="pulse-divider"></div>
-              <p class="pulse-label">Coverage mix</p>
-              <div class="trend-list" id="trend-list"></div>
+              <div class="market-strip" id="market-strip"></div>
+              <p class="market-methodology" id="market-methodology"></p>
             </aside>
           </div>
         </section>
@@ -161,13 +140,13 @@
         <section class="product-view tracker-view" id="tracker-view" hidden>
           <div class="tracker-overview" id="tracker-overview"></div>
           <div class="tracker-heading">
-            <div><p class="eyebrow">WEEKLY MOVEMENT</p><h2>Opening and closure reports by week</h2></div>
-            <p id="tracker-week-label"></p>
+            <div><p class="eyebrow">MONTHLY MOVEMENT</p><h2>Opening and closure reports by month</h2></div>
+            <p id="tracker-month-label"></p>
           </div>
           <div class="tracker-toolbar">
-            <div class="tracker-week-controls" aria-label="Select tracker week">
-              <button data-tracker-week="1" type="button">Last week</button>
-              <button class="active" data-tracker-week="0" type="button">This week</button>
+            <div class="tracker-week-controls" aria-label="Select tracker month">
+              <button data-tracker-month="1" type="button">Last month</button>
+              <button class="active" data-tracker-month="0" type="button">This month</button>
             </div>
             <div class="tracker-filter-controls" aria-label="Filter opening tracker">
               <button class="active" data-tracker-filter="all" type="button">All movement</button>
@@ -186,6 +165,11 @@
             <div class="social-watch-grid" id="social-watch-grid"></div>
             <p class="data-note social-watch-note" id="social-watch-note"></p>
           </section>
+        </section>
+
+        <section class="product-view market-view" id="market-view" hidden>
+          <button class="market-back" id="market-back" type="button">← Back to news</button>
+          <div id="market-detail"></div>
         </section>
       </main>
     </div>
@@ -219,10 +203,10 @@
     <script src="./data/austria-english.js?v=1"></script>
     <script src="./data/austria-auto.js?v=2"></script>
     <script src="./data/events.js?v=2"></script>
-    <script src="./data/markets.js?v=1"></script>
+    <script src="./data/markets.js?v=2"></script>
     <script src="./data/trends.js?v=1"></script>
     <script src="./data/social-watch.js?v=1"></script>
     <script src="./data/update-status.js?v=1"></script>
-    <script src="./app.js?v=21"></script>
+    <script src="./app.js?v=22"></script>
   </body>
 </html>
