@@ -1,0 +1,359 @@
+window.MISE_TRENDS = {
+  "schema_version": 1,
+  "generated_at": "2026-07-22T19:11:39.864598Z",
+  "ai_requests": 0,
+  "window_days": 14,
+  "methodology": "Curated multilingual keyword themes ranked by recent cluster count, distinct publishers and Austria relevance. Coverage direction compares each theme's share of all available stories, reducing RSS retention bias. It describes publisher attention, not market growth. Every signal links to its evidence.",
+  "signals": [
+    {
+      "id": "expansion-and-formats",
+      "label": "Expansion & new formats",
+      "description": "New locations, franchising and hybrid concepts reshaping the competitive map.",
+      "status": "Steady coverage",
+      "current_count": 43,
+      "previous_count": 4,
+      "current_share_pct": 14.8,
+      "previous_share_pct": 13.8,
+      "coverage_delta_pp": 1.0,
+      "current_window_total": 291,
+      "previous_window_total": 29,
+      "source_count": 17,
+      "austria_count": 15,
+      "global_count": 28,
+      "window_days": 14,
+      "score": 180.5,
+      "evidence": [
+        {
+          "cluster_id": "ad7f2d5b3ee270ba",
+          "title": "Neues Bistro in der Josefstadt setzt auf darmfreundliche Küche",
+          "summary": "Barbara Aichinger eröffnete vor Kurzem ihr eigenes Café \"Mini Mayr\" in der Josefstädter Straße 52. Auf der Speisekarte stehen leichte Gerichte wie Suppen und Salat. Auch ein neues Trend-Getränk, den Hojicha-Latte, gibt es hier. WIEN/JOSEFSTADT. Neuzuwachs in der Josefstadt: Bei „Mini Mayr“ stehen leichte Gerichte, Salate, kalte Suppen sowie frisch zubereitete Säfte und Smoothies auf der Karte. Dahinter steht Barbara Aichinger, die sich um Küche, Gestaltung, Marketing und…",
+          "url": "https://www.meinbezirk.at/josefstadt/c-wirtschaft/neues-bistro-in-der-josefstadt-setzt-auf-darmfreundliche-kueche_a8809701",
+          "source": "MeinBezirk Austria Gastronomy",
+          "published_at": "2026-07-22T11:29:13Z",
+          "edition": "austria",
+          "source_count": 2
+        },
+        {
+          "cluster_id": "e8d0f1b9771e9a8a",
+          "title": "Schinkenfleckerl & Gin Tonic: Sebastian Kurz lädt zum vierten Mal an die Salzach",
+          "summary": "Am Vorabend der Eröffnung der Salzburger Festspiele bitten Markus Friesacher und Sebastian Kurz ins Café Bazar zu Schinkenfleckerl und Gin Tonic.",
+          "url": "https://kurier.at/politik/inland/gin-tonic-schinkenfleckerl-sebastian-kurz-markus-friesacher-cafe-bazar/403177639",
+          "source": "KURIER Genuss",
+          "published_at": "2026-07-22T18:24:23Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "cfe75b5780d9e48f",
+          "title": "Mirage Garden im Wiener Prater eröffnet",
+          "summary": "Neue Location verbindet mediterranes Flair mit Streetfood und Akrobatik.",
+          "url": "https://www.gast.at/gastro-hotel/gastronomie/mirage-garden-im-wiener-prater-eroeffnet",
+          "source": "ÖGZ / gast.at",
+          "published_at": "2026-07-20T11:48:59Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "d056e90c8a760c17",
+          "title": "Vandemoortele: Backwaren-Erzeuger startet Gastro-Konzept",
+          "summary": "Mit Bakery Canteen testet die Vandemoortele-Tochter Croustico ein neues Franchise-Konzept. Nach dem Start in Antwerpen soll das Format weiter expandieren.",
+          "url": "https://www.ahgz.at/gastro-und-gv/news/belgien-vandemoortele-setzt-auf-franchise-konzept-94508",
+          "source": "AHGZ Austria Gastro & GV",
+          "published_at": "2026-07-20T11:00:00Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "b4c2715d93e02e05",
+          "title": "Salzburger Festspiele: Jedermann-Premiere in perfektem Rahmen",
+          "summary": "Salzburg: Mit der Premiere des „Jedermann“ gilt die Festspiel-Saison 2026 zumindest als inoffiziell eröffnet.",
+          "url": "https://www.ahgz.at/hotel/news/salzburger-festspiele-jedermann-premiere-in-perfektem-rahmen-94553",
+          "source": "AHGZ Austria Gastro & GV",
+          "published_at": "2026-07-20T09:00:00Z",
+          "edition": "austria",
+          "source_count": 1
+        }
+      ]
+    },
+    {
+      "id": "sourcing-and-sustainability",
+      "label": "Sourcing & sustainability",
+      "description": "Local supply, waste reduction and environmental claims affecting purchasing decisions.",
+      "status": "Cooling coverage",
+      "current_count": 18,
+      "previous_count": 5,
+      "current_share_pct": 6.2,
+      "previous_share_pct": 17.2,
+      "coverage_delta_pp": -11.1,
+      "current_window_total": 291,
+      "previous_window_total": 29,
+      "source_count": 10,
+      "austria_count": 8,
+      "global_count": 10,
+      "window_days": 14,
+      "score": 80.0,
+      "evidence": [
+        {
+          "cluster_id": "0aca6e1712454a15",
+          "title": "Falkensteiner: FMTG legt freiwillige Nachhaltigkeits-Bilanz vor",
+          "summary": "Die Tourismusgruppe senkt ihre Scope-2-Emissionen, steigert den Anteil erneuerbarer Energien und definiert die nächsten Schritte ihrer Klimastrategie.",
+          "url": "https://www.ahgz.at/hotel/news/falkensteiner-fmtg-legt-freiwillige-nachhaltigkeits-bilanz-vor-94558",
+          "source": "AHGZ Austria Gastro & GV",
+          "published_at": "2026-07-22T07:05:00Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "097437ea4287213f",
+          "title": "MCI-Professorin erhält internationale Auszeichnung",
+          "summary": "Birgit Bosio, Professorin am MCI Department Tourismus & Freizeitwirtschaft, wurde bei den PRME Education Awards in Kairo für ihr Lehrkonzept zu den Sustainable Development Goals ausgezeichnet.",
+          "url": "https://www.gast.at/gastro-hotel/tourismusbranche/mci-professorin-erhaelt-internationale-auszeichnung",
+          "source": "ÖGZ / gast.at",
+          "published_at": "2026-07-22T06:56:36Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "3386e772c5c4d96a",
+          "title": "Wirtschaftskammer gratuliert zur erfolgreichen Café-Übernahme",
+          "summary": "Mit der Übernahme des Cafés beim Autohaus Bogner haben sich Zsuzsanna und László Graszl den Traum von der Selbstständigkeit erfüllt. Das erfahrene Gastronomen-Ehepaar bereichert seit dem Frühjahr die Gastronomieszene in Mattersburg. Wirtschaftskammer-Regionalstellenobfrau Melanie Eckhardt gratulierte persönlich zur erfolgreichen Betriebsübernahme. MATTERSBURG. Im Frühjahr hat Zsuzsanna Graszl gemeinsam mit ihrem Mann László das Café beim Autohaus Bogner in der Bahnstraße in…",
+          "url": "https://www.meinbezirk.at/mattersburg/c-wirtschaft/wirtschaftskammer-gratuliert-zur-erfolgreichen-caf-uebernahme_a8808231",
+          "source": "MeinBezirk Austria Gastronomy",
+          "published_at": "2026-07-21T08:42:04Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "701af4e2d8e3d0ff",
+          "title": "Konsumentenwandel: 11er: Wenn Klassiker zu Innovationstreibern werden",
+          "summary": "Zwischen Convenience, Regionalität und bewusster Ernährung: Warum erfolgreiche Innovationen in der Gastronomie heute weniger mit Neuerfindung als mit kluger Neuinterpretation zu tun haben. Thomas Schwarz, Geschäftsleitung 11er erläutert, warum die einfache Lösung oft die beste ist und Unternehmen wie 11er längst nicht mehr „nur“ Zulieferer sondern echte Sparringspartner für Gastronomie und Hotellerie sind.",
+          "url": "https://www.ahgz.at/gastro-und-gv/news/konsumentenwandel-11erwenn-klassiker-zu-innovationstreibern-werden-94519",
+          "source": "AHGZ Austria Gastro & GV",
+          "published_at": "2026-07-18T04:00:00Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "93ca6ce77d90af97",
+          "title": "Getränketrends im Hitzesommer",
+          "summary": "Der Sommer 2026 zählt zu den heißesten der vergangenen Jahre und verändert das Konsumverhalten der Gäste spürbar. Während die Temperaturen regelmäßig die 30-Grad-Marke überschreiten, steigt die Nachfrage nach erfrischenden Getränken deutlich. Für die Gastronomie bietet dieser Hitzesommer eine große Chance: Wer seine Getränkekarte gezielt an die aktuellen Trends anpasst, saisonale Highlights schafft und Getränke als […] Der Beitrag Getränketrends im Hitzesommer erschien…",
+          "url": "https://gastro.news/getraenketrends-im-hitzesommer",
+          "source": "Gastro.News",
+          "published_at": "2026-07-15T13:49:07Z",
+          "edition": "austria",
+          "source_count": 1
+        }
+      ]
+    },
+    {
+      "id": "beverage-shifts",
+      "label": "Beverage shifts",
+      "description": "Coffee, wine and alcohol alternatives creating new menu and margin opportunities.",
+      "status": "Cooling coverage",
+      "current_count": 15,
+      "previous_count": 3,
+      "current_share_pct": 5.2,
+      "previous_share_pct": 10.3,
+      "coverage_delta_pp": -5.2,
+      "current_window_total": 291,
+      "previous_window_total": 29,
+      "source_count": 11,
+      "austria_count": 9,
+      "global_count": 6,
+      "window_days": 14,
+      "score": 76.5,
+      "evidence": [
+        {
+          "cluster_id": "ad7f2d5b3ee270ba",
+          "title": "Neues Bistro in der Josefstadt setzt auf darmfreundliche Küche",
+          "summary": "Barbara Aichinger eröffnete vor Kurzem ihr eigenes Café \"Mini Mayr\" in der Josefstädter Straße 52. Auf der Speisekarte stehen leichte Gerichte wie Suppen und Salat. Auch ein neues Trend-Getränk, den Hojicha-Latte, gibt es hier. WIEN/JOSEFSTADT. Neuzuwachs in der Josefstadt: Bei „Mini Mayr“ stehen leichte Gerichte, Salate, kalte Suppen sowie frisch zubereitete Säfte und Smoothies auf der Karte. Dahinter steht Barbara Aichinger, die sich um Küche, Gestaltung, Marketing und…",
+          "url": "https://www.meinbezirk.at/josefstadt/c-wirtschaft/neues-bistro-in-der-josefstadt-setzt-auf-darmfreundliche-kueche_a8809701",
+          "source": "MeinBezirk Austria Gastronomy",
+          "published_at": "2026-07-22T11:29:13Z",
+          "edition": "austria",
+          "source_count": 2
+        },
+        {
+          "cluster_id": "e8d0f1b9771e9a8a",
+          "title": "Schinkenfleckerl & Gin Tonic: Sebastian Kurz lädt zum vierten Mal an die Salzach",
+          "summary": "Am Vorabend der Eröffnung der Salzburger Festspiele bitten Markus Friesacher und Sebastian Kurz ins Café Bazar zu Schinkenfleckerl und Gin Tonic.",
+          "url": "https://kurier.at/politik/inland/gin-tonic-schinkenfleckerl-sebastian-kurz-markus-friesacher-cafe-bazar/403177639",
+          "source": "KURIER Genuss",
+          "published_at": "2026-07-22T18:24:23Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "c86bda4cbc41c8c4",
+          "title": "Community Awards: Das ist das beliebteste Café in Wien 2026",
+          "summary": "Von klassischer Kaffeehauskultur bis zu modernen Specialty-Cafés: Wien hat unzählige Orte, an denen Kaffee, Tee und Matcha zum Lieblingsritual werden. Bei den 1000things Community Awards 2026 habt ihr abgestimmt und verraten, welches Café eure erste Wahl ist. Also: Tasse kurz abstellen und gespannt bleiben – hier kommt das beliebteste Café in Wien 2026! Außerdem standen […] The post Community Awards: Das ist das beliebteste Café in Wien 2026 appeared first on 1000things .",
+          "url": "https://www.1000thingsmagazine.com/de/a/2211548/community-awards-cafe-wien-2026",
+          "source": "1000things Vienna",
+          "published_at": "2026-07-22T05:30:00Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "3b047e12d192e175",
+          "title": "NEU: Stiegl-Sommerbrise Rosé alkoholfreiEine feinperlige Erfrischung in Rosa",
+          "summary": "Egal, ob als zart lachsfarbener Aperitif an einem lauen Sommerabend oder als fruchtig-frischer Durstlöscher nach dem Sport – die Stiegl-Sommerbrise Rosé alkoholfrei ist in jeder Hinsicht das ideale Getränk für die warme Jahreszeit. Denn das gebraute Erfrischungsgetränk überzeugt nicht nur mit seinem Aroma und der herrlichen Feinperligkeit, sondern auch damit, dass es das erste alkoholfreie Rosé-Biermischgetränk in […] The post NEU: Stiegl-Sommerbrise Rosé alkoholfreiEine…",
+          "url": "https://prost-magazin.at/2026/07/21/neu-stiegl-sommerbrise-rose-alkoholfreieine-feinperlige-erfrischung-in-rosa",
+          "source": "PROST Magazin",
+          "published_at": "2026-07-21T12:20:05Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "3386e772c5c4d96a",
+          "title": "Wirtschaftskammer gratuliert zur erfolgreichen Café-Übernahme",
+          "summary": "Mit der Übernahme des Cafés beim Autohaus Bogner haben sich Zsuzsanna und László Graszl den Traum von der Selbstständigkeit erfüllt. Das erfahrene Gastronomen-Ehepaar bereichert seit dem Frühjahr die Gastronomieszene in Mattersburg. Wirtschaftskammer-Regionalstellenobfrau Melanie Eckhardt gratulierte persönlich zur erfolgreichen Betriebsübernahme. MATTERSBURG. Im Frühjahr hat Zsuzsanna Graszl gemeinsam mit ihrem Mann László das Café beim Autohaus Bogner in der Bahnstraße in…",
+          "url": "https://www.meinbezirk.at/mattersburg/c-wirtschaft/wirtschaftskammer-gratuliert-zur-erfolgreichen-caf-uebernahme_a8808231",
+          "source": "MeinBezirk Austria Gastronomy",
+          "published_at": "2026-07-21T08:42:04Z",
+          "edition": "austria",
+          "source_count": 1
+        }
+      ]
+    },
+    {
+      "id": "experience-led-hospitality",
+      "label": "Experience-led hospitality",
+      "description": "Pop-ups, collaborations and programmed events turning visits into occasions.",
+      "status": "Rising coverage",
+      "current_count": 15,
+      "previous_count": 0,
+      "current_share_pct": 5.2,
+      "previous_share_pct": 0.0,
+      "coverage_delta_pp": 5.2,
+      "current_window_total": 291,
+      "previous_window_total": 29,
+      "source_count": 9,
+      "austria_count": 6,
+      "global_count": 9,
+      "window_days": 14,
+      "score": 70.5,
+      "evidence": [
+        {
+          "cluster_id": "4c8a1837dd56a3e0",
+          "title": "Montmartre feiert seine 93. Fête des Vendanges",
+          "summary": "Die 93. Fête des Vendanges de Montmartre kehrt im Oktober 2026 unter dem Motto „The 18th Arrondissement Leads the Beat“ zurück. Das Festival, das fast 1,5 Millionen Besucher anzieht, ist die drittgrößte Veranstaltung der Stadt Paris. Fünf Tage lang verwandelt sich der gesamte 18. Arrondissement in eine riesige Open-Air-Bühne, auf der Musik, Gastronomie, Kulturerbe und […]",
+          "url": "https://gastroportal.at/montmartre-feiert-93-fete-des-vendanges/102996",
+          "source": "GASTRO.at",
+          "published_at": "2026-07-22T08:53:53Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "ee673be2ee1807a1",
+          "title": "Finca Obskura: Empanadas im Weingarten",
+          "summary": "Filmschaffende, Naturwein und argentinische Jause: Lukas Valenta Rinner und Yael Svoboda starten in Neustift am Walde eine Pop-up-Buschenschank mit Wiener Wein und Buenos-Aires-Flair. Der Beitrag Finca Obskura: Empanadas im Weingarten erschien zuerst auf Gastro.News .",
+          "url": "https://gastro.news/finca-obskura-empanadas-im-weingarten",
+          "source": "Gastro.News",
+          "published_at": "2026-07-20T09:08:15Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "7a66b95d41622723",
+          "title": "Finca Obskura startet Pop-Up-Buschenschank",
+          "summary": "Aus der Filmwelt in den Weingarten: Lukas Valenta Rinner und Yael Svoboda bespielen an ausgewählten Terminen einen Heurigen in Wien.",
+          "url": "https://www.gaultmillau.at/news/finca-obscura-startet-pop-up-buschenschank",
+          "source": "Gault&Millau Austria",
+          "published_at": "2026-07-15T07:53:59Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "73cfc9a29eaab4a6",
+          "title": "Coke Music Festival 2026 bringt pulsierende Beats nach Wien",
+          "summary": "Am Sonntag, den 4. Oktober 2026, verwandelt sich die Wiener Marx Halle von 14:00 bis 23:00 Uhr in eine pulsierende Erlebniswelt: Das legendäre Coke Music Festival feiert seine Österreich-Premiere. Ein energiegeladener Mix aus Live-Musik, kreativen Highlights und ausgelassener Stimmung verspricht, die Grenzen eines klassischen Konzerts neu zu definieren. Coca-Colas Engagement für die heimische Szene Valeria […]",
+          "url": "https://gastroportal.at/coke-music-festival-2026-marx-halle/102600",
+          "source": "GASTRO.at",
+          "published_at": "2026-07-14T11:12:52Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "d774926ca29f5e5e",
+          "title": "Sommer-Pop-Up auf Gut Minihof",
+          "summary": "Thomas Hahn und Gerald Röhrling laden zu einem limitierten Pop-Up zwischen Garten, Feuer und Tafel.",
+          "url": "https://www.gaultmillau.at/news/sommer-pop-up-auf-gut-minihof",
+          "source": "Gault&Millau Austria",
+          "published_at": "2026-07-14T09:35:15Z",
+          "edition": "austria",
+          "source_count": 1
+        }
+      ]
+    },
+    {
+      "id": "workforce-and-training",
+      "label": "Workforce & training",
+      "description": "Recruitment, retention, pay and skills development across hospitality teams.",
+      "status": "Rising coverage",
+      "current_count": 12,
+      "previous_count": 0,
+      "current_share_pct": 4.1,
+      "previous_share_pct": 0.0,
+      "coverage_delta_pp": 4.1,
+      "current_window_total": 291,
+      "previous_window_total": 29,
+      "source_count": 11,
+      "austria_count": 6,
+      "global_count": 6,
+      "window_days": 14,
+      "score": 64.5,
+      "evidence": [
+        {
+          "cluster_id": "56fd9363790ae305",
+          "title": "Johann Lafer kehrt ins Gösser Bräu zurück",
+          "summary": "Vor 50 Jahren schloss Johann Lafer im Grazer Gösser Bräu seine Lehre ab. Nun kehrte der Spitzenkoch zurück – und rückte die Zukunft der Ausbildung in den Fokus. The post Johann Lafer kehrt ins Gösser Bräu zurück appeared first on Rolling Pin .",
+          "url": "https://rollingpin.com/news/johann-lafer-kehrt-ins-goesser-braeu-zurueck",
+          "source": "Rolling Pin",
+          "published_at": "2026-07-22T14:44:12Z",
+          "edition": "austria",
+          "source_count": 3
+        },
+        {
+          "cluster_id": "c1197bd499b977d9",
+          "title": "Neun von zehn Betrieben finden kaum Personal",
+          "summary": "Viele Unternehmen kämpfen weiterhin mit erheblichen Problemen bei der Personalsuche.",
+          "url": "https://www.gast.at/allgemein/neun-von-zehn-betrieben-finden-kaum-personal",
+          "source": "ÖGZ / gast.at",
+          "published_at": "2026-07-20T11:02:59Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "042ed1985c5e4013",
+          "title": "Convenience neu gedacht",
+          "summary": "Convenience hat in der Gastronomie noch immer mit Vorurteilen zu kämpfen. Für viele klingt der Begriff nach Fertiggerichten, Einheitsgeschmack und mangelnder Handwerkskunst. Doch die Realität in professionellen Küchen sieht längst anders aus. Zwischen Fachkräftemangel, steigenden Personalkosten und einem immer anspruchsvolleren Gästepublikum hat sich Convenience von der Notlösung zum strategischen Werkzeug entwickelt. Wer heute erfolgreich wirtschaften […]",
+          "url": "https://gastroportal.at/convenience-in-der-gastronomie-2/102933",
+          "source": "GASTRO.at",
+          "published_at": "2026-07-20T08:22:52Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "83b440bca2b70127",
+          "title": "Karriere in der Wiener Top-Hotellerie",
+          "summary": "Eine Rallye durch zehn Wiener Top-Hotels, spannende Challenges und Austausch mit prominenten Gästen: Der Young Talents Day am 8. Juli 2026 war für 60 Lehrlinge aus der gehobenen Hotellerie ein Tag voller Einblicke, Begegnungen und Impulse. Die Auszubildenden lernten sich untereinander kennen, knüpften Kontakte zu wichtigen Branchenvertretern und feierten gemeinsam. Starke Marke für die Wiener […]",
+          "url": "https://gastroportal.at/young-talents-day-karriere-top-hotellerie/102865",
+          "source": "GASTRO.at",
+          "published_at": "2026-07-17T11:25:58Z",
+          "edition": "austria",
+          "source_count": 1
+        },
+        {
+          "cluster_id": "b6097751e42232c1",
+          "title": "Zwei Küchen, ein Tisch: Staff Meal im Jola und Lara",
+          "summary": "Von Bánh mì über Buchteln bis hin zum mexikanischen Eintopf: Was das Team zweier Haubenbetriebe gemeinsam kocht und isst, noch bevor der erste Gast eintrifft. Inklusive Rezept-Tipp.",
+          "url": "https://www.gaultmillau.at/news/staff-meal-im-jola-und-lara",
+          "source": "Gault&Millau Austria",
+          "published_at": "2026-07-17T08:29:59Z",
+          "edition": "austria",
+          "source_count": 1
+        }
+      ]
+    }
+  ]
+};

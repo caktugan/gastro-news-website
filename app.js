@@ -1,0 +1,1552 @@
+const stories = {
+  vienna: [],
+  austria: [
+    {
+      id: "vienna-dining-wave",
+      edition: "Austria",
+      topic: "Restaurants",
+      location: "Vienna",
+      time: "32 min ago",
+      title: "Vienna’s next dining wave is moving beyond the Ring",
+      deck: "Independent kitchens are choosing neighbourhood intimacy over grand dining rooms—and quietly changing how the city eats.",
+      image: "./assets/vienna-kitchen.webp",
+      sources: 8,
+      initials: ["RP", "FS", "W"],
+      brief: [
+        "A cluster of chef-led openings is concentrating in Vienna’s outer inner districts, where smaller rooms and flexible menus reduce operating pressure.",
+        "The new formats favour concise seasonal menus, counter seating and direct relationships with regional producers.",
+        "Industry observers see the shift as a durable response to staffing and cost pressure—not simply a design trend."
+      ],
+      why: "The format changes the economics of opening a serious restaurant in Vienna. Smaller teams and rooms can lower risk while creating a more personal kind of hospitality, giving independent operators a credible alternative to high-capital fine dining.",
+      sourceNames: ["Rolling Pin · Sample coverage", "Falstaff · Sample reporting", "Local operator statement"]
+    },
+    {
+      id: "vienna-bakery-wave",
+      edition: "Austria",
+      topic: "Food & Wine",
+      location: "Vienna",
+      time: "1 hr ago",
+      title: "Independent bakeries reshape Vienna’s morning ritual",
+      deck: "A new generation of small bakeries is bringing milling, fermentation and neighbourhood identity back into focus.",
+      image: "./assets/vienna-bakery.webp",
+      sources: 5,
+      initials: ["FS", "ST"],
+      brief: [
+        "New bakery concepts are pairing long-fermented bread with compact coffee and breakfast programmes.",
+        "Operators are using visible production and direct grain sourcing to distinguish themselves from chain formats.",
+        "Morning trade is becoming a meaningful all-day hospitality entry point rather than a standalone retail moment."
+      ],
+      why: "Bakery-led hospitality reaches customers more frequently than destination dining. That makes it an important testing ground for local sourcing, premium everyday pricing and smaller-footprint concepts.",
+      sourceNames: ["Local reporting · Sample", "Producer interview · Sample", "Trade desk · Sample"]
+    },
+    {
+      id: "wachau-harvest",
+      edition: "Austria",
+      topic: "Sustainability",
+      location: "Wachau",
+      time: "2 hrs ago",
+      title: "Wachau growers prepare for a more compressed harvest",
+      deck: "Vineyard teams are adapting staffing and cellar plans as ripening windows become harder to predict.",
+      image: "./assets/wachau-vineyard.webp",
+      sources: 6,
+      initials: ["WV", "ÖW", "P"],
+      brief: [
+        "Growers are preparing for shorter picking windows across several terraced vineyard sites.",
+        "More flexible seasonal staffing and faster grape transport are becoming operational priorities.",
+        "Producers are also reassessing canopy management and water retention for future vintages."
+      ],
+      why: "Vintage conditions affect restaurant wine lists, release schedules and pricing well beyond the vineyard. Earlier operational signals help buyers plan allocations and communicate changes to guests.",
+      sourceNames: ["Regional growers · Sample", "Wine trade desk · Sample", "Producer release · Sample"]
+    },
+    {
+      id: "collective-agreement",
+      edition: "Austria",
+      topic: "Business",
+      location: "Austria",
+      time: "48 min ago",
+      title: "Hospitality employers look for clarity on the next labour agreement",
+      deck: "Scheduling, weekend pay and staff retention remain at the centre of the industry conversation.",
+      image: null,
+      sources: 11,
+      initials: ["WK", "OR", "DS"],
+      brief: [
+        "Employer and employee representatives remain focused on predictable scheduling and compensation for high-demand periods.",
+        "Independent operators say implementation details matter as much as headline wage changes.",
+        "Recruitment pressure remains uneven, with regional and seasonal businesses facing distinct constraints."
+      ],
+      why: "Labour terms shape menu prices, opening hours and the viability of service formats. Clear rules allow operators to plan capacity instead of reacting week by week.",
+      sourceNames: ["WKO · Sample coverage", "Public broadcaster · Sample", "Labour representative · Sample"]
+    },
+    {
+      id: "alpine-hotel-menus",
+      edition: "Austria",
+      topic: "Restaurants",
+      location: "Salzburg",
+      time: "3 hrs ago",
+      title: "Alpine hotels are giving their restaurants a life of their own",
+      deck: "New dining identities are designed to attract local guests—not only overnight visitors.",
+      image: "./assets/vienna-kitchen.webp",
+      sources: 7,
+      initials: ["HT", "RP", "FS"],
+      brief: [
+        "Hotels are separating restaurant brands from the parent property to build stronger local recognition.",
+        "Street-facing entrances, independent booking and more focused menus are common parts of the shift.",
+        "The strategy can smooth seasonal demand by adding a dependable local audience."
+      ],
+      why: "A restaurant that works as a local destination can diversify hotel revenue and strengthen year-round staffing. It also forces clearer positioning than the traditional all-purpose hotel dining room.",
+      sourceNames: ["Hotel trade press · Sample", "Operator interview · Sample", "Regional desk · Sample"]
+    },
+    {
+      id: "vegetable-led-menus",
+      edition: "Austria",
+      topic: "Food & Wine",
+      location: "Graz",
+      time: "4 hrs ago",
+      title: "Vegetable-led menus move past the substitute mindset",
+      deck: "Chefs are treating plants as the organising idea of a dish rather than an alternative version of it.",
+      image: "./assets/live-fire.webp",
+      sources: 4,
+      initials: ["G", "FS"],
+      brief: [
+        "New menus are reducing their dependence on imitation proteins and focusing on technique, preservation and texture.",
+        "Regional pulses, mushrooms and fermented vegetables are increasingly central to menu development.",
+        "Operators report that clear culinary language performs better than dietary labelling alone."
+      ],
+      why: "The shift creates a broader audience than strictly vegan positioning and can improve ingredient flexibility. It also gives Austrian produce a stronger role in contemporary restaurant identity.",
+      sourceNames: ["Chef interview · Sample", "Regional reporting · Sample", "Menu analysis · Sample"]
+    },
+    {
+      id: "coffee-costs",
+      edition: "Austria",
+      topic: "Business",
+      location: "Austria",
+      time: "5 hrs ago",
+      title: "Coffee operators rethink pricing without losing the daily guest",
+      deck: "Smaller menus and clearer sourcing stories are emerging as cafés absorb another round of cost pressure.",
+      image: null,
+      sources: 9,
+      initials: ["WK", "P", "K"],
+      brief: [
+        "Specialty operators are simplifying menus to protect quality and service speed.",
+        "Many are pairing measured price changes with more explicit communication about sourcing and labour.",
+        "Food attachments and retail beans remain important ways to improve the economics of each visit."
+      ],
+      why: "Coffee is one of hospitality’s most frequent price signals. How cafés communicate increases can influence broader customer expectations around quality, wages and ingredient costs.",
+      sourceNames: ["Trade survey · Sample", "Operator interviews · Sample", "Market note · Sample"]
+    }
+  ],
+  global: [
+    {
+      id: "live-fire-technique",
+      edition: "Global",
+      topic: "Restaurants",
+      location: "Global",
+      time: "24 min ago",
+      title: "Live-fire cooking moves from theatre to technique",
+      deck: "The next generation of open-fire restaurants is quieter, more precise and increasingly vegetable-led.",
+      image: "./assets/live-fire.webp",
+      sources: 14,
+      initials: ["ET", "MG", "RB"],
+      brief: [
+        "Chefs are using coals and embers for controlled heat, preservation and texture rather than spectacle alone.",
+        "New restaurant designs place fire at the centre while investing heavily in ventilation and energy efficiency.",
+        "Vegetables and whole-animal cookery are giving the format a broader culinary vocabulary."
+      ],
+      why: "Live fire is maturing into an operating system rather than a visual theme. The most interesting concepts now connect technique, menu design and waste reduction in ways that can travel across markets.",
+      sourceNames: ["Eater · Sample coverage", "Michelin Guide · Sample", "Restaurant trade press · Sample"]
+    },
+    {
+      id: "shorter-tasting-menus",
+      edition: "Global",
+      topic: "Restaurants",
+      location: "Europe",
+      time: "1 hr ago",
+      title: "The tasting menu gets shorter—and more confident",
+      deck: "Leading restaurants are trading endurance for rhythm, giving guests fewer courses and clearer choices.",
+      image: "./assets/vienna-kitchen.webp",
+      sources: 10,
+      initials: ["MG", "ET", "FT"],
+      brief: [
+        "Several ambitious restaurants are reducing course counts while protecting the narrative arc of the meal.",
+        "Shorter formats improve table timing, labour planning and accessibility for guests.",
+        "Optional additions are replacing rigid extended menus in many concepts."
+      ],
+      why: "Fine dining is responding to a guest who still wants craft but is more selective about time and spend. The operational benefits may make shorter formats more resilient as well as more welcoming.",
+      sourceNames: ["Michelin Guide · Sample", "European food desk · Sample", "Restaurant interview · Sample"]
+    },
+    {
+      id: "fermentation-labs",
+      edition: "Global",
+      topic: "Sustainability",
+      location: "Copenhagen",
+      time: "2 hrs ago",
+      title: "Restaurant fermentation labs become shared infrastructure",
+      deck: "Independent kitchens are pooling research, equipment and surplus produce instead of building isolated programmes.",
+      image: "./assets/wachau-vineyard.webp",
+      sources: 7,
+      initials: ["MAD", "FC", "ET"],
+      brief: [
+        "Shared fermentation spaces are giving smaller restaurants access to equipment and food-safety expertise.",
+        "The model creates a productive destination for seasonal surplus from farms and markets.",
+        "Participants are developing shared base products while retaining distinct finishing techniques."
+      ],
+      why: "Shared production can turn sustainability from a branding promise into practical infrastructure. The model is especially relevant to cities with many small independent restaurants and strong regional farms.",
+      sourceNames: ["Nordic food desk · Sample", "Research collective · Sample", "Chef statement · Sample"]
+    },
+    {
+      id: "restaurant-groups-scale",
+      edition: "Global",
+      topic: "Business",
+      location: "London",
+      time: "46 min ago",
+      title: "Restaurant groups pursue slower, more deliberate growth",
+      deck: "Operators are prioritising repeatable culture and purchasing power over a rapid race for locations.",
+      image: null,
+      sources: 18,
+      initials: ["CT", "RB", "FT"],
+      brief: [
+        "Several mid-sized groups are slowing openings to strengthen management pipelines and procurement.",
+        "Smaller city clusters are preferred over widely dispersed portfolios.",
+        "Leadership teams are treating training systems as a prerequisite for expansion rather than a later fix."
+      ],
+      why: "Measured growth suggests the sector is absorbing lessons from the last expansion cycle. The strongest groups may look less like property portfolios and more like durable operating cultures.",
+      sourceNames: ["The Caterer · Sample", "Restaurant Business · Sample", "Financial desk · Sample"]
+    },
+    {
+      id: "regional-awards",
+      edition: "Global",
+      topic: "People",
+      location: "Asia-Pacific",
+      time: "3 hrs ago",
+      title: "Regional awards widen the map of destination dining",
+      deck: "Smaller cities are gaining visibility as guides and lists look beyond established capitals.",
+      image: "./assets/vienna-kitchen.webp",
+      sources: 12,
+      initials: ["50", "MG", "SC"],
+      brief: [
+        "Recent award coverage is directing more attention toward restaurants outside traditional dining capitals.",
+        "Local ingredients and distinct regional service cultures are central to the newly visible destinations.",
+        "Tourism bodies increasingly treat restaurant recognition as part of broader place strategy."
+      ],
+      why: "Recognition can materially change travel patterns and restaurant demand. It also raises questions about whether local infrastructure and staffing can absorb sudden global attention.",
+      sourceNames: ["Awards body · Sample", "Michelin Guide · Sample", "Regional culture desk · Sample"]
+    },
+    {
+      id: "cocoa-transparency",
+      edition: "Global",
+      topic: "Food & Wine",
+      location: "Global",
+      time: "4 hrs ago",
+      title: "Pastry kitchens ask harder questions about cocoa",
+      deck: "Traceability, flavour and price volatility are changing how chefs specify chocolate.",
+      image: "./assets/vienna-bakery.webp",
+      sources: 9,
+      initials: ["FC", "P", "RB"],
+      brief: [
+        "Pastry teams are seeking more detailed origin and producer information from suppliers.",
+        "Price volatility is encouraging tighter menus and more deliberate use of chocolate.",
+        "Some chefs are broadening dessert programmes with grains, fruit and caramelised dairy."
+      ],
+      why: "Cocoa connects climate exposure, farm economics and menu pricing in a single ingredient. Better specification can improve both flavour decisions and supply-chain accountability.",
+      sourceNames: ["Food climate desk · Sample", "Pastry publication · Sample", "Supplier note · Sample"]
+    },
+    {
+      id: "restaurant-reservations",
+      edition: "Global",
+      topic: "Business",
+      location: "New York",
+      time: "6 hrs ago",
+      title: "Reservation platforms compete on the guest relationship",
+      deck: "Restaurants want more control over customer data, deposits and communication before the visit.",
+      image: null,
+      sources: 13,
+      initials: ["RB", "ET", "CN"],
+      brief: [
+        "Operators are evaluating platforms based on guest data access and communication tools, not discovery alone.",
+        "Deposits and cancellation policies continue to evolve by service style and price point.",
+        "Restaurants increasingly want booking systems to connect with direct marketing and loyalty tools."
+      ],
+      why: "The reservation layer is becoming core customer infrastructure. Control over that relationship affects margins, repeat visits and a restaurant’s ability to communicate without relying on a marketplace.",
+      sourceNames: ["Restaurant Business · Sample", "Technology desk · Sample", "Operator survey · Sample"]
+    }
+  ]
+};
+
+const localStoryImages = {
+  Openings: "./assets/vienna-kitchen.webp",
+  Restaurants: "./assets/vienna-kitchen.webp",
+  People: "./assets/vienna-kitchen.webp",
+  Business: "./assets/live-fire.webp",
+  "Food & Wine": "./assets/vienna-bakery.webp",
+  Sustainability: "./assets/wachau-vineyard.webp"
+};
+
+const defaultStoryImage = "./assets/vienna-kitchen.webp";
+
+function permittedStoryImage(cluster, topic) {
+  const candidate = cluster.image_url || cluster.sources?.find((source) => source.image_url)?.image_url;
+  return cluster.image_usage === "permitted" && /^https:\/\//.test(candidate || "")
+    ? candidate
+    : localStoryImages[topic] || defaultStoryImage;
+}
+
+function inferOpeningStatus(title, summary) {
+  const text = `${title || ""} ${summary || ""}`.toLowerCase();
+  const foldedText = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const titleText = String(title || "").toLowerCase();
+  const foldedTitle = titleText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (/closed|closes|closing|closure|to close|will close|geschlossen|schlie(?:ß|ss)t/.test(titleText)) return "Closed";
+  if (/to open|opening soon|will open|pre-opening|scheduled|angekundigt|kommt nach|eroffnet im|eroffnet am/.test(foldedTitle)) return "Opening soon";
+  if (/\bopened\b|\bopens\b|\bnow open\b|\blaunches\b|neueroffnung|neu eroffnet|eroffnete|hat eroffnet/.test(foldedTitle)) return "Newly opened";
+  if (/insolven/.test(text) && !/closed|closes|closing|closure|to close|will close|geschlossen/.test(text)) return "Unconfirmed";
+  if (/\bclosing\b|\bto close\b|\bwill close\b/.test(text)) return "Closed";
+  if (/closed|closes|closure|insolven|geschlossen|schlie(?:ß|ss)t/.test(text)) return "Closed";
+  if (/to open|opening soon|will open|pre-opening|scheduled|angekündigt|kommt nach|eröffnet im|eröffnet am/.test(text)) return "Opening soon";
+  if (/rumou?r|geplant|plant ein/.test(text)) return "Unconfirmed";
+  if (/\bopened\b|\bopens\b|\bnow open\b|\blaunches\b|neueroffnung|neu eroffnet|eroffnete|hat eroffnet/.test(foldedText)) return "Newly opened";
+  return "Unconfirmed";
+}
+
+function relevanceScore(story) {
+  const ageHours = Math.max(0, (Date.now() - new Date(story.publishedAt || 0).getTime()) / 36e5);
+  const freshness = Math.max(0, 80 - ageHours / 3);
+  const local = /vienna|wien/i.test(story.location) ? 65 : story.edition === "Austria" ? 28 : 12;
+  const corroboration = Math.min(30, (story.independentSources || 0) * 12 + Math.max(0, story.sources - 1) * 4);
+  const opening = story.topic === "Openings" ? 18 : 0;
+  const pressPenalty = story.coveragePattern === "likely_syndicated" ? 22 : 0;
+  return Math.round(freshness + local + corroboration + opening - pressPenalty);
+}
+
+function safeText(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function sourceInitials(name) {
+  return String(name || "Source")
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function relativeTime(value) {
+  const published = new Date(value);
+  const elapsed = Date.now() - published.getTime();
+  if (!Number.isFinite(elapsed)) return "Recently";
+  const minutes = Math.max(1, Math.floor(elapsed / 60000));
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? "" : "s"} ago`;
+}
+
+function renderPipelineHealth() {
+  const details = document.querySelector("#data-health");
+  const summary = document.querySelector("#data-health-summary");
+  const panel = document.querySelector("#data-health-panel");
+  const payload = window.MISE_UPDATE_STATUS;
+  if (!details || !summary || !panel) return;
+
+  if (!payload?.stages?.length) {
+    details.dataset.status = "unknown";
+    summary.textContent = "Status unavailable";
+    panel.innerHTML = `<p class="data-health-empty">Run the data refresh to create a health report.</p>`;
+    return;
+  }
+
+  const status = ["current", "partial", "failed"].includes(payload.overall_status)
+    ? payload.overall_status
+    : "unknown";
+  details.dataset.status = status;
+  summary.textContent = status === "current"
+    ? "All data current"
+    : status === "partial"
+      ? `${payload.issue_count || 1} data issue${payload.issue_count === 1 ? "" : "s"}`
+      : "Refresh needs attention";
+  const statusLabels = { current: "Current", partial: "Partial", failed: "Failed", skipped: "Skipped" };
+  panel.innerHTML = `
+    <div class="data-health-heading">
+      <div><p class="eyebrow">DATA DESK</p><strong>${safeText(summary.textContent)}</strong></div>
+      <time datetime="${safeText(payload.generated_at)}">Updated ${relativeTime(payload.generated_at)}</time>
+    </div>
+    <div class="data-health-stages">
+      ${payload.stages.map((stage) => `
+        <div class="data-health-stage" data-status="${safeText(stage.status)}">
+          <span class="stage-dot" aria-hidden="true"></span>
+          <div><strong>${safeText(stage.label)}</strong><small>${safeText(stage.summary)}</small></div>
+          <em>${statusLabels[stage.status] || "Unknown"}</em>
+        </div>`).join("")}
+    </div>
+    <p class="data-health-note">A partial refresh keeps the last verified cached value instead of inventing a replacement.</p>`;
+}
+
+function storyTopic(cluster) {
+  const evidence = `${cluster.title || ""} ${cluster.summary || ""}`.toLowerCase();
+  const directOpening = /\b(neueröffnung|eröffnet|neu in|neues lokal|neues restaurant|opening soon|opens|opened|new restaurant|new café|new cafe|new bar|schließt|geschlossen|closes|closure)\b/i;
+  const venueLaunch = /\b(launches|startet|eröffnung)\b.{0,70}\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b|\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b.{0,70}\b(launches|startet|eröffnung)\b/i;
+  return directOpening.test(evidence) || venueLaunch.test(evidence) ? "Openings" : (cluster.topic || "Restaurants");
+}
+
+function liveAustriaStories() {
+  const payload = window.MISE_LIVE_NEWS;
+  const translations = {
+    ...(window.MISE_AUSTRIA_ENGLISH || {}),
+    ...(window.MISE_AUSTRIA_AUTO?.translations || {})
+  };
+  const clusters = payload?.clusters;
+  if (!Array.isArray(clusters)) return [];
+
+  return clusters
+    .filter((cluster) => cluster.edition === "austria" && translations[cluster.id])
+    .map((cluster) => {
+      const translation = translations[cluster.id];
+      const sources = (cluster.sources || [])
+        .filter((source) => /^https:\/\//.test(source.url || ""))
+        .filter((source, index, all) => all.findIndex((candidate) => candidate.source_name === source.source_name) === index);
+      const lead = sources[0];
+      if (!lead) return null;
+      const topic = storyTopic(cluster);
+      const sourceNames = sources.map((source) => safeText(source.source_name));
+      return {
+        id: `live-at-${cluster.id}`,
+        edition: "Austria",
+        topic,
+        location: translation.location || "Austria",
+        time: relativeTime(cluster.published_at),
+        title: safeText(translation.title),
+        deck: safeText(translation.deck),
+        summary: safeText(translation.summary || translation.deck),
+        image: permittedStoryImage(cluster, topic),
+        imageCandidate: cluster.image_url || null,
+        imageUsage: cluster.image_usage || "review_required",
+        sources: cluster.source_count || sources.length,
+        initials: sourceNames.map(sourceInitials),
+        sourceNames,
+        sourceLinks: sources.map((source) => ({
+          name: safeText(source.source_name),
+          title: safeText(source.title),
+          url: source.url,
+          initial: sourceInitials(source.source_name),
+          role: source.corroboration_role || "independent_editorial"
+        })),
+        brief: [],
+        briefType: "source_translation",
+        clusterConfidence: cluster.cluster_confidence,
+        independentSources: cluster.independent_source_count || 0,
+        coveragePattern: cluster.coverage_pattern || "single_source",
+        isCluster: (cluster.source_count || sources.length) > 1,
+        isLive: true,
+        isTranslated: true,
+        reviewStatus: cluster.review_status || "automated_unreviewed",
+        openingStatus: topic === "Openings" ? inferOpeningStatus(translation.title, translation.summary) : null,
+        publishedAt: cluster.published_at,
+        url: lead.url
+      };
+    })
+    .filter(Boolean);
+}
+
+function liveGlobalStories() {
+  const payload = window.MISE_LIVE_NEWS;
+  const clusters = payload?.clusters;
+  if (!Array.isArray(clusters)) return [];
+
+  return clusters
+    .filter((cluster) => cluster.edition === "global" && cluster.language === "en")
+    .map((cluster) => {
+      const sources = (cluster.sources || [])
+        .filter((source) => /^https:\/\//.test(source.url || ""))
+        .filter((source, index, all) => all.findIndex((candidate) => candidate.source_name === source.source_name) === index);
+      const lead = sources[0];
+      if (!lead) return null;
+      const topic = storyTopic(cluster);
+      const sourceNames = sources.map((source) => safeText(source.source_name));
+      const initials = sourceNames.map(sourceInitials);
+      return {
+      id: `live-${cluster.id}`,
+      edition: "Global",
+      topic,
+      location: lead.country === "US" ? "United States" : lead.country || "Global",
+      time: relativeTime(cluster.published_at),
+      title: safeText(cluster.title),
+      deck: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
+      summary: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
+      image: permittedStoryImage(cluster, topic),
+      imageCandidate: cluster.image_url || null,
+      imageUsage: cluster.image_usage || "review_required",
+      sources: cluster.source_count || sources.length,
+      initials,
+      sourceNames,
+      sourceLinks: sources.map((source) => ({
+        name: safeText(source.source_name),
+        title: safeText(source.title),
+        url: source.url,
+        initial: sourceInitials(source.source_name),
+        role: source.corroboration_role || "independent_editorial"
+      })),
+      brief: (cluster.brief?.bullets || []).map((bullet) => safeText(bullet.text)),
+      briefType: cluster.brief?.type,
+      clusterConfidence: cluster.cluster_confidence,
+      independentSources: cluster.independent_source_count || 0,
+      coveragePattern: cluster.coverage_pattern || "single_source",
+      isCluster: (cluster.source_count || sources.length) > 1,
+      isLive: true,
+      reviewStatus: cluster.review_status || cluster.brief?.review_status || "source_metadata_only",
+      openingStatus: topic === "Openings" ? inferOpeningStatus(cluster.title, cluster.summary) : null,
+      publishedAt: cluster.published_at,
+      url: lead.url
+    };
+    })
+    .filter(Boolean);
+}
+
+const liveAustrians = liveAustriaStories();
+if (liveAustrians.length) {
+  stories.vienna = liveAustrians
+    .filter((story) => /vienna|wien/i.test(story.location))
+    .map((story) => ({ ...story, edition: "Vienna" }));
+  stories.austria = liveAustrians.filter((story) => !/vienna|wien/i.test(story.location));
+}
+
+const liveGlobals = liveGlobalStories();
+if (liveGlobals.length) stories.global = liveGlobals;
+
+function readSavedStories() {
+  try {
+    const value = JSON.parse(window.localStorage.getItem("mise.savedStories") || "[]");
+    return new Set(Array.isArray(value) ? value.filter((id) => typeof id === "string") : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function persistSavedStories() {
+  try {
+    window.localStorage.setItem("mise.savedStories", JSON.stringify([...state.saved]));
+  } catch {
+    // Browsing remains functional when storage is blocked or unavailable.
+  }
+}
+
+const state = {
+  page: "news",
+  section: "vienna",
+  newsSection: "vienna",
+  topic: "All",
+  sort: "top",
+  eventFilter: "all",
+  trackerWeekOffset: 0,
+  trackerFilter: "all",
+  saved: readSavedStories(),
+  visibleCount: 18
+};
+
+const heroLayout = document.querySelector("#hero-layout");
+const storyFeed = document.querySelector("#story-feed");
+const feedHeading = document.querySelector("#feed-heading");
+const filterRow = document.querySelector("#filter-row");
+const storyOverlay = document.querySelector("#story-overlay");
+const drawerContent = document.querySelector("#drawer-content");
+const searchOverlay = document.querySelector("#search-overlay");
+const searchInput = document.querySelector("#search-input");
+const searchResults = document.querySelector("#search-results");
+const toast = document.querySelector("#toast");
+const scrollSentinel = document.querySelector("#scroll-sentinel");
+const contextPanel = document.querySelector("#context-panel");
+const newsView = document.querySelector("#news-view");
+const calendarView = document.querySelector("#calendar-view");
+const trackerView = document.querySelector("#tracker-view");
+const eventList = document.querySelector("#event-list");
+const trackerList = document.querySelector("#tracker-list");
+const marketPanel = document.querySelector("#market-panel");
+const marketStrip = document.querySelector("#market-strip");
+const trendRadar = document.querySelector("#trend-radar");
+const trendRadarGrid = document.querySelector("#trend-radar-grid");
+let storyReturnFocus = null;
+let searchReturnFocus = null;
+
+const bookmarkIcon = `
+  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"></path></svg>
+`;
+
+function allStories() {
+  return [...stories.vienna, ...stories.austria, ...stories.global];
+}
+
+function currentStories() {
+  let items;
+  if (state.section === "saved") {
+    items = allStories().filter((story) => state.saved.has(story.id));
+  } else if (state.section === "openings") {
+    items = [...stories.vienna, ...stories.austria].filter((story) => story.topic === "Openings");
+  } else if (state.section === "review") {
+    items = allStories().filter((story) => story.isLive && (
+      ["automated_unreviewed", "source_metadata_only"].includes(story.reviewStatus)
+      || story.coveragePattern === "likely_syndicated"
+      || (story.imageCandidate && story.imageUsage !== "permitted")
+    ));
+  } else {
+    items = stories[state.section] || [];
+  }
+  return [...items].sort((left, right) => state.sort === "latest"
+    ? new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0)
+    : relevanceScore(right) - relevanceScore(left));
+}
+
+function sourceStack(story) {
+  return `<span class="source-stack">${story.initials.map((initial) => `<i>${initial}</i>`).join("")}</span>`;
+}
+
+function storyMeta(story, light = false) {
+  return `
+    <div class="story-meta ${light ? "light" : ""}">
+      ${sourceStack(story)}
+      <span>${story.sources} ${story.sources === 1 ? "source" : "sources"}</span><span>·</span><span>${story.time}</span>
+    </div>
+  `;
+}
+
+function trackerEvidence(story) {
+  const roles = (story.sourceLinks || []).map((source) => source.role || "independent_editorial");
+  if (roles.some((role) => /social|community/.test(role))) {
+    return { label: "Social post", className: "social" };
+  }
+  if (roles.length && roles.every((role) => /first_party|official_primary|official_first_party/.test(role))) {
+    return { label: "First-party announcement", className: "first-party" };
+  }
+  if (roles.length && roles.every((role) => role === "press_release")) {
+    return { label: "Press release", className: "press-release" };
+  }
+  if ((story.independentSources || 0) > 1) {
+    return { label: "Corroborated reporting", className: "corroborated" };
+  }
+  return { label: "Publisher report", className: "reporting" };
+}
+
+function saveButton(story, className) {
+  const saved = state.saved.has(story.id);
+  return `<button class="${className} ${saved ? "saved" : ""}" data-save="${story.id}" type="button" aria-label="${saved ? "Remove from saved stories" : "Save story"}">${bookmarkIcon}</button>`;
+}
+
+function heroCard(story) {
+  return `
+    <article class="hero-card" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+      <img src="${story.image || defaultStoryImage}" alt="" fetchpriority="high" />
+      ${saveButton(story, "hero-save")}
+      <div class="hero-copy">
+        <div class="story-kicker"><span></span>${story.location} · ${story.topic}</div>
+        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
+        <h2>${story.title}</h2>
+        <p>${story.summary || story.deck}</p>
+        ${storyMeta(story, true)}
+      </div>
+    </article>
+  `;
+}
+
+function compactCard(story) {
+  return `
+    <article class="compact-card" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+      <img src="${story.image || defaultStoryImage}" alt="" loading="lazy" decoding="async" />
+      ${saveButton(story, "compact-save")}
+      <div class="compact-card-content">
+        <div class="story-kicker"><span></span>${story.location} · ${story.topic}</div>
+        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
+        <h3>${story.title}</h3>
+        ${storyMeta(story, true)}
+      </div>
+    </article>
+  `;
+}
+
+function selectDailyBriefing(items, limit = 5) {
+  if (!items.length) return [];
+  const selected = [items[0]];
+  const selectedIds = new Set([items[0].id]);
+  const usedTopics = new Set([items[0].topic]);
+
+  for (const story of items.slice(1)) {
+    if (selected.length >= limit) break;
+    if (!usedTopics.has(story.topic)) {
+      selected.push(story);
+      selectedIds.add(story.id);
+      usedTopics.add(story.topic);
+    }
+  }
+  for (const story of items.slice(1)) {
+    if (selected.length >= limit) break;
+    if (!selectedIds.has(story.id)) {
+      selected.push(story);
+      selectedIds.add(story.id);
+    }
+  }
+  return selected;
+}
+
+function briefingLeadCard(story) {
+  return `
+    <article class="briefing-lead" data-story="${story.id}" tabindex="0" aria-label="Read lead briefing: ${story.title}">
+      <img src="${story.image || defaultStoryImage}" alt="" fetchpriority="high" />
+      ${saveButton(story, "hero-save")}
+      <div class="briefing-lead-copy">
+        <div class="briefing-label"><span>Lead development</span><i>${story.location} · ${story.topic}</i></div>
+        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
+        <h2>${story.title}</h2>
+        <p>${story.summary || story.deck}</p>
+        <div class="briefing-impact"><span>Why it matters</span><p>${whyItMatters(story)}</p></div>
+        ${storyMeta(story, true)}
+      </div>
+    </article>`;
+}
+
+function briefingQueueCard(story, index) {
+  return `
+    <article class="briefing-queue-story" data-story="${story.id}" tabindex="0" aria-label="Read briefing item ${index}: ${story.title}">
+      <span class="briefing-rank">0${index}</span>
+      <div class="briefing-queue-copy">
+        <span>${story.location} · ${story.topic}${story.openingStatus ? ` · ${story.openingStatus}` : ""}</span>
+        <h3>${story.title}</h3>
+        <p>${story.summary || story.deck}</p>
+        ${storyMeta(story)}
+      </div>
+      <img src="${story.image || defaultStoryImage}" alt="" loading="lazy" decoding="async" />
+      ${saveButton(story, "briefing-save")}
+    </article>`;
+}
+
+function feedCard(story, index) {
+  const visual = story.image
+    ? `<div class="feed-image"><img src="${story.image}" alt="" loading="lazy" decoding="async" /></div>`
+    : `<div class="feed-image-placeholder" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div>`;
+
+  return `
+    <article class="feed-story" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+      ${visual}
+      <div class="feed-copy">
+        <span class="feed-topic" data-topic="${story.topic}">${story.location} · ${story.topic}</span>
+        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
+        <h3>${story.title}</h3>
+        <p>${story.summary || story.deck}</p>
+        ${storyMeta(story)}
+      </div>
+      ${saveButton(story, "feed-save")}
+    </article>
+  `;
+}
+
+function greetingForNow() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning.";
+  if (hour < 18) return "Good afternoon.";
+  return "Good evening.";
+}
+
+function marketSparkline(history) {
+  const values = (history || []).map((item) => Number(item.value)).filter(Number.isFinite);
+  if (values.length < 2) return "";
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const span = high - low || 1;
+  const points = values.map((value, index) => {
+    const x = values.length === 1 ? 50 : (index / (values.length - 1)) * 100;
+    const y = 24 - ((value - low) / span) * 20;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  return `<svg class="market-sparkline" viewBox="0 0 100 28" role="img" aria-label="Recent ${values.length}-observation trend"><polyline points="${points}"></polyline></svg>`;
+}
+
+function renderMarkets() {
+  if (!marketPanel || !marketStrip) return;
+  const payload = window.MISE_MARKETS;
+  const items = payload?.benchmarks || [];
+  marketPanel.hidden = !items.length;
+  if (!items.length) return;
+
+  marketStrip.innerHTML = items.map((item) => {
+    const change = Number(item.change_pct);
+    const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+    const changeLabel = Number.isFinite(change)
+      ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
+      : "No comparison";
+    const observation = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
+      .format(new Date(`${item.period}T12:00:00`));
+    const value = new Intl.NumberFormat("en-GB", {
+      minimumFractionDigits: item.display_decimals || 0,
+      maximumFractionDigits: item.display_decimals || 0
+    }).format(Number(item.value));
+    return `
+      <a class="market-card" href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer" aria-label="Open source for ${safeText(item.label)}">
+        <div class="market-card-top"><span>${safeText(item.scope)}</span><i>${safeText(item.frequency)}</i></div>
+        <h3>${safeText(item.label)}</h3>
+        <div class="market-value"><strong>${value}</strong><span>${safeText(item.unit)}</span></div>
+        ${marketSparkline(item.history)}
+        <div class="market-change ${direction}"><strong>${changeLabel}</strong><span>${safeText(item.change_basis)}</span></div>
+        <div class="market-source"><span>${safeText(item.source)} · ${observation}</span>${item.stale ? "<strong>Stale cache</strong>" : "<strong>Source ↗</strong>"}</div>
+        <p>${safeText(item.description)}</p>
+      </a>`;
+  }).join("");
+
+  const generated = payload.generated_at ? relativeTime(payload.generated_at) : "recently";
+  document.querySelector("#market-status").textContent = `${payload.status === "current" ? "Official data" : "Partial refresh"} · refreshed ${generated} · 0 AI requests`;
+  document.querySelector("#market-methodology").textContent = payload.methodology || "Reference series are directional benchmarks, not supplier quotes.";
+}
+
+function renderTrendRadar() {
+  if (!trendRadar || !trendRadarGrid) return;
+  const payload = window.MISE_TRENDS;
+  const signals = payload?.signals || [];
+  trendRadar.hidden = !signals.length;
+  if (!signals.length) return;
+
+  trendRadarGrid.innerHTML = signals.map((signal, index) => {
+    const delta = Number(signal.coverage_delta_pp);
+    const direction = delta >= 3 ? "rising" : delta <= -3 ? "cooling" : "steady";
+    const deltaLabel = Number.isFinite(delta) ? `${delta > 0 ? "+" : ""}${delta.toFixed(1)} pp` : "Current";
+    const localShare = signal.current_count ? Math.round((signal.austria_count / signal.current_count) * 100) : 0;
+    const evidence = (signal.evidence || [])
+      .filter((item) => /^https:\/\//.test(item.url || ""))
+      .map((item) => {
+        const date = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
+          .format(new Date(item.published_at));
+        return `
+          <a class="trend-evidence-row" href="${safeText(item.url)}" target="_blank" rel="noopener noreferrer">
+            <span><strong>${safeText(item.source)}</strong><i>${safeText(item.edition === "austria" ? "Austria" : "Global")} · ${date}</i></span>
+            <p>${safeText(item.title)}</p>
+            <b>↗</b>
+          </a>`;
+      }).join("");
+    return `
+      <details class="trend-signal ${index === 0 ? "lead-trend" : ""}">
+        <summary>
+          <div class="trend-signal-top"><span class="trend-index">0${index + 1}</span><span class="trend-status ${direction}">${safeText(signal.status)}</span></div>
+          <h3>${safeText(signal.label)}</h3>
+          <p>${safeText(signal.description)}</p>
+          <div class="trend-signal-metrics">
+            <span><strong>${signal.current_count}</strong> stories</span>
+            <span><strong>${signal.source_count}</strong> publishers</span>
+            <span class="trend-delta ${direction}"><strong>${deltaLabel}</strong> coverage share</span>
+          </div>
+          <div class="trend-market-mix" aria-label="${localShare}% Austria coverage and ${100 - localShare}% global coverage">
+            <i style="width:${localShare}%"></i>
+          </div>
+          <div class="trend-market-labels"><span>Austria ${signal.austria_count}</span><span>Global ${signal.global_count}</span></div>
+          <span class="trend-open-label">Evidence from ${Math.min(5, signal.evidence?.length || 0)} stories <b>+</b></span>
+        </summary>
+        <div class="trend-evidence-list">${evidence || "<p>No linkable evidence is available.</p>"}</div>
+      </details>`;
+  }).join("");
+
+  document.querySelector("#trend-radar-status").textContent = `${payload.window_days || 14}-day coverage window · ${signals.length} signals · 0 AI requests`;
+  document.querySelector("#trend-radar-note").textContent = payload.methodology || "Signals describe publisher attention and link to their evidence.";
+}
+
+function formatEventRange(startDate, endDate) {
+  const start = new Date(`${startDate}T12:00:00`);
+  const end = new Date(`${endDate || startDate}T12:00:00`);
+  const day = new Intl.DateTimeFormat("en-GB", { day: "numeric" });
+  const month = new Intl.DateTimeFormat("en-GB", { month: "short" });
+  if (startDate === endDate || !endDate) return `${day.format(start)} ${month.format(start)}`;
+  if (start.getMonth() === end.getMonth()) return `${day.format(start)}–${day.format(end)} ${month.format(end)}`;
+  return `${day.format(start)} ${month.format(start)}–${day.format(end)} ${month.format(end)}`;
+}
+
+function renderCalendar() {
+  const payload = window.MISE_EVENTS || { events: [] };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcoming = (payload.events || [])
+    .filter((event) => new Date(`${event.endDate || event.startDate}T23:59:59`) >= today)
+    .filter((event) => state.eventFilter === "all" || event.region === state.eventFilter)
+    .sort((left, right) => left.startDate.localeCompare(right.startDate));
+
+  document.querySelector("#event-count").textContent = upcoming.length;
+  document.querySelectorAll("[data-event-filter]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.eventFilter === state.eventFilter);
+  });
+
+  if (!upcoming.length) {
+    eventList.innerHTML = `<div class="empty-state">No verified upcoming events match this region.</div>`;
+  } else {
+    const months = new Map();
+    upcoming.forEach((event) => {
+      const key = event.startDate.slice(0, 7);
+      if (!months.has(key)) months.set(key, []);
+      months.get(key).push(event);
+    });
+    eventList.innerHTML = [...months.entries()].map(([monthKey, events]) => {
+      const monthLabel = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" })
+        .format(new Date(`${monthKey}-15T12:00:00`));
+      return `
+        <section class="event-month">
+          <h3>${monthLabel}</h3>
+          <div class="event-month-list">
+            ${events.map((event) => `
+              <article class="event-card">
+                <time datetime="${event.startDate}"><strong>${formatEventRange(event.startDate, event.endDate)}</strong><span>${event.city}</span></time>
+                <div class="event-copy">
+                  <div class="event-tags"><span>${event.type}</span><span>${event.audience}</span><span class="event-verification ${event.verificationStatus === "stale" ? "stale" : ""}">${event.verificationStatus === "stale" ? "Recheck needed" : "Official page checked"}</span></div>
+                  <h4>${event.title}</h4>
+                  <p>${event.summary}</p>
+                  <small>${event.venue}</small>
+                </div>
+                <a href="${event.url}" target="_blank" rel="noopener noreferrer" aria-label="Open official page for ${event.title}">
+                  <span>${event.source}</span><strong>Official details ↗</strong>
+                </a>
+              </article>
+            `).join("")}
+          </div>
+        </section>`;
+    }).join("");
+  }
+
+  const checkedAt = payload.checkedAt
+    ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
+      .format(new Date(`${payload.checkedAt}T12:00:00`))
+    : "not recorded";
+  const reviewCount = payload.reviewCandidateCount || 0;
+  document.querySelector("#event-data-note").textContent = `${payload.events?.length || 0} events checked against official organizer pages on ${checkedAt} · ${reviewCount} feed-discovered ${reviewCount === 1 ? "lead" : "leads"} awaiting organizer verification · 0 AI requests. Always confirm details before travelling.`;
+}
+
+function startOfWeek(date = new Date()) {
+  const result = new Date(date);
+  result.setHours(0, 0, 0, 0);
+  const day = result.getDay() || 7;
+  result.setDate(result.getDate() - day + 1);
+  return result;
+}
+
+function renderTracker() {
+  const weekStart = startOfWeek();
+  weekStart.setDate(weekStart.getDate() - state.trackerWeekOffset * 7);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
+  const weekItems = [...stories.vienna, ...stories.austria]
+    .filter((story) => story.topic === "Openings")
+    .filter((story) => {
+      const published = new Date(story.publishedAt || 0);
+      return published >= weekStart && published <= weekEnd;
+    })
+    .sort((left, right) => new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0));
+  const statuses = weekItems.reduce((counts, story) => {
+    counts[story.openingStatus || "Unconfirmed"] = (counts[story.openingStatus || "Unconfirmed"] || 0) + 1;
+    return counts;
+  }, {});
+  const items = state.trackerFilter === "all"
+    ? weekItems
+    : weekItems.filter((story) => (story.openingStatus || "Unconfirmed") === state.trackerFilter);
+  const weekLabel = `${new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" }).format(weekStart)}–${new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" }).format(weekEnd)}`;
+
+  document.querySelector("#tracker-week-label").textContent = weekLabel;
+  document.querySelector("#tracker-overview").innerHTML = `
+    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerWeekOffset ? "Last week" : "This week"} at a glance</h2><p>Publisher reporting, first-party announcements and approved social posts published during ${weekLabel}. Every status remains tied to its source evidence.</p></div>
+    <div class="tracker-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
+
+  document.querySelectorAll("[data-tracker-week]").forEach((button) => {
+    button.classList.toggle("active", Number(button.dataset.trackerWeek) === state.trackerWeekOffset);
+  });
+  document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.trackerFilter === state.trackerFilter);
+  });
+
+  trackerList.innerHTML = items.length ? items.map((story) => {
+    const date = new Date(story.publishedAt);
+    const evidence = trackerEvidence(story);
+    return `
+      <article class="tracker-entry" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+        <time datetime="${story.publishedAt}"><span>${new Intl.DateTimeFormat("en-GB", { weekday: "short" }).format(date)}</span><strong>${new Intl.DateTimeFormat("en-GB", { day: "2-digit" }).format(date)}</strong><small>${new Intl.DateTimeFormat("en-GB", { month: "short" }).format(date)}</small></time>
+        <div class="tracker-copy">
+          <div><span class="feed-topic" data-topic="${story.topic}">${story.location}</span><span class="status-badge" data-status="${story.openingStatus || "Unconfirmed"}">${story.openingStatus || "Unconfirmed"}</span><span class="evidence-badge ${evidence.className}">${evidence.label}</span></div>
+          <h3>${story.title}</h3>
+          <p>${story.summary || story.deck}</p>
+          ${storyMeta(story)}
+        </div>
+        ${saveButton(story, "tracker-save")}
+      </article>`;
+  }).join("") : `<div class="empty-state">No ${state.trackerFilter === "all" ? "opening or closure reports" : state.trackerFilter.toLowerCase() + " reports"} were published during ${weekLabel}.</div>`;
+  renderSocialWatch();
+  bindCards();
+}
+
+function humanizeSignalType(value) {
+  return String(value || "social signal").replaceAll("_", " ");
+}
+
+function renderSocialWatch() {
+  const payload = window.MISE_SOCIAL_WATCH;
+  const grid = document.querySelector("#social-watch-grid");
+  const status = document.querySelector("#social-watch-status");
+  const note = document.querySelector("#social-watch-note");
+  if (!grid || !status || !note) return;
+  const channels = payload?.channels || [];
+  status.textContent = `${channels.length} reviewed channels · 0 posts scraped · 0 AI requests`;
+  grid.innerHTML = channels.length ? channels.map((channel) => {
+    const link = channel.links?.[0];
+    return `
+      <a class="social-source-card" href="${safeText(link)}" target="_blank" rel="noopener noreferrer">
+        <div><span>${safeText(channel.platform)}</span><i>${safeText(channel.region)}</i></div>
+        <h3>${safeText(channel.name)}</h3>
+        <p>${safeText(humanizeSignalType(channel.signal_type))}</p>
+        <strong>Open channel ↗</strong>
+      </a>`;
+  }).join("") : `<div class="empty-state">No reviewed social channels are currently available.</div>`;
+  note.textContent = "These are discovery and first-party channels, not verified news. An approved public post may appear as a clearly labelled Social post; material claims still require corroboration before MISE promotes them into a confirmed briefing.";
+}
+
+function renderPageShell() {
+  newsView.hidden = state.page !== "news";
+  calendarView.hidden = state.page !== "calendar";
+  trackerView.hidden = state.page !== "tracker";
+  document.querySelectorAll("[data-page]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.page === state.page);
+  });
+  const freshness = document.querySelector("#freshness-label");
+  const livePayload = window.MISE_LIVE_NEWS;
+  if (state.page === "calendar") {
+    document.querySelector("#section-title").textContent = "Plan what is next.";
+    freshness.textContent = "Official event sources";
+  } else if (state.page === "tracker") {
+    document.querySelector("#section-title").textContent = "This week's movement.";
+    freshness.textContent = livePayload?.generated_at ? `News updated ${relativeTime(livePayload.generated_at)}` : "Sample dataset";
+  } else {
+    document.querySelector("#section-title").textContent = state.section === "saved" ? "Saved briefings." : greetingForNow();
+    freshness.textContent = livePayload?.generated_at ? `Updated ${relativeTime(livePayload.generated_at)}` : "Sample dataset";
+  }
+}
+
+function render() {
+  renderPipelineHealth();
+  renderPageShell();
+  document.querySelector("#saved-count").textContent = state.saved.size;
+  if (state.page === "calendar") {
+    renderCalendar();
+    return;
+  }
+  if (state.page === "tracker") {
+    renderTracker();
+    return;
+  }
+  renderMarkets();
+  renderTrendRadar();
+  const items = currentStories();
+  const isSaved = state.section === "saved";
+  const isTracker = state.section === "openings";
+  const isReview = state.section === "review";
+
+  document.querySelectorAll("[data-section]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.section === state.section);
+  });
+
+  const headings = {
+    vienna: "What Vienna is talking about",
+    austria: "What Austria is talking about",
+    global: "What the world is talking about",
+    saved: "Your saved briefings",
+    openings: "Vienna and Austria opening signals",
+    review: "Stories awaiting editorial review"
+  };
+  feedHeading.textContent = headings[state.section] || headings.vienna;
+  const briefingTitles = {
+    vienna: "The Vienna briefing",
+    austria: "The Austria briefing",
+    global: "The global briefing",
+    saved: "Your saved briefing",
+    openings: "Opening intelligence",
+    review: "Editorial review briefing"
+  };
+  document.querySelector("#daily-briefing-title").textContent = briefingTitles[state.section] || briefingTitles.vienna;
+
+  filterRow.style.display = isSaved || isTracker || isReview ? "none" : "flex";
+  const livePayload = window.MISE_LIVE_NEWS;
+  const globalEnglishAvailable = livePayload?.clusters?.filter((cluster) => cluster.edition === "global" && cluster.language === "en").length || liveGlobals.length;
+  document.querySelector("#vienna-count").textContent = stories.vienna.length;
+  document.querySelector("#austria-count").textContent = stories.austria.length;
+  document.querySelector("#global-count").textContent = stories.global.length;
+  document.querySelector("#monitored-count").textContent = livePayload?.article_count || (state.section === "global" ? "412" : "164");
+  document.querySelector("#monitored-caption").textContent = livePayload
+    ? `across ${livePayload.source_count || 8} connected feeds`
+    : "across configured sources";
+  const freshness = document.querySelector("#freshness-label");
+  if (freshness) freshness.textContent = livePayload?.generated_at
+    ? `Updated ${relativeTime(livePayload.generated_at)}`
+    : "Sample dataset";
+  document.querySelector("#feed-status-label").textContent = state.section === "global" && liveGlobals.length
+    ? `${livePayload?.source_count || "Multiple"} live feeds · ${liveGlobals.length} recent of ${globalEnglishAvailable} English stories`
+    : ["vienna", "austria", "openings", "review"].includes(state.section) && liveAustrians.length
+      ? `${livePayload?.source_count || "Multiple"} live feeds · ${stories.vienna.length} Vienna + ${stories.austria.length} Austria briefings`
+      : "Editorial prototype · Sample stories";
+
+  contextPanel.hidden = !(isTracker || isReview);
+  if (isTracker) {
+    const statuses = items.reduce((result, story) => {
+      result[story.openingStatus || "Unconfirmed"] = (result[story.openingStatus || "Unconfirmed"] || 0) + 1;
+      return result;
+    }, {});
+    contextPanel.innerHTML = `
+      <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>Track what is opening—and closing.</h2><p>Signals from publishers, venue announcements and local discovery sources. Every entry remains linked to its evidence.</p></div>
+      <div class="context-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
+  } else if (isReview) {
+    const syndicated = items.filter((story) => story.coveragePattern === "likely_syndicated").length;
+    const imageCandidates = items.filter((story) => story.imageCandidate && story.imageUsage !== "permitted").length;
+    contextPanel.innerHTML = `
+      <div><p class="eyebrow">EDITORIAL CONTROL</p><h2>Review before trust.</h2><p>Automated translations, single-source claims and image candidates remain visibly reviewable before production publication.</p></div>
+      <div class="context-stats"><span><strong>${items.length}</strong>Unreviewed</span><span><strong>${syndicated}</strong>Shared-release risk</span><span><strong>${imageCandidates}</strong>Image rights checks</span></div>`;
+  }
+
+  if (!items.length) {
+    const emptyMessages = {
+      saved: "No saved stories yet. Use the bookmark on any briefing to keep it here.",
+      openings: "No opening or closure signals are available in the current briefing.",
+      review: "No stories currently require editorial review.",
+      vienna: "No Vienna stories are available in the current briefing.",
+      austria: "No Austria stories are available in the current briefing.",
+      global: "No global stories are available in the current briefing."
+    };
+    heroLayout.innerHTML = `<div class="empty-state">${emptyMessages[state.section] || "No stories are available."}</div>`;
+    document.querySelector("#daily-briefing-status").textContent = "No briefing items available";
+    heroLayout.style.gridTemplateColumns = "1fr";
+    storyFeed.innerHTML = "";
+    renderTrends([]);
+    bindCards();
+    return;
+  }
+
+  const filteredItems = items.filter((story) => state.topic === "All" || story.topic === state.topic);
+  if (!filteredItems.length) {
+    heroLayout.innerHTML = `<div class="empty-state">No stories match this topic in the current briefing.</div>`;
+    heroLayout.style.gridTemplateColumns = "1fr";
+    storyFeed.innerHTML = "";
+    scrollSentinel.hidden = true;
+    document.querySelector("#daily-briefing-status").textContent = "No briefing items match this topic";
+    renderTrends(items);
+    return;
+  }
+
+  heroLayout.style.gridTemplateColumns = "";
+  const briefingItems = selectDailyBriefing(filteredItems);
+  const lead = briefingItems[0];
+  const secondary = briefingItems.slice(1);
+  heroLayout.innerHTML = `
+    ${briefingLeadCard(lead)}
+    <div class="briefing-queue">${secondary.map((story, index) => briefingQueueCard(story, index + 2)).join("")}</div>
+  `;
+  const briefingSources = new Set(briefingItems.flatMap((story) => story.sourceNames || [])).size;
+  document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} essential developments · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} publishers · source-ranked`;
+
+  const briefingIds = new Set(briefingItems.map((story) => story.id));
+  const feedItems = filteredItems.filter((story) => !briefingIds.has(story.id));
+  const visibleFeedItems = feedItems.slice(0, state.visibleCount);
+
+  storyFeed.innerHTML = visibleFeedItems.length
+    ? visibleFeedItems.map(feedCard).join("")
+    : `<div class="empty-state">No stories match this topic in the current briefing.</div>`;
+  scrollSentinel.hidden = !feedItems.length || visibleFeedItems.length >= feedItems.length;
+  const loadedCount = Math.min(filteredItems.length, visibleFeedItems.length + briefingItems.length);
+  scrollSentinel.textContent = visibleFeedItems.length < feedItems.length
+    ? `Showing ${loadedCount} of ${filteredItems.length} · loading more…`
+    : `All ${filteredItems.length} stories loaded`;
+
+  renderTrends(items);
+  bindCards();
+}
+
+function renderTrends(items) {
+  const trendList = document.querySelector("#trend-list");
+  if (!items.length) {
+    trendList.innerHTML = `<p class="pulse-label">Save stories to build your signals.</p>`;
+    return;
+  }
+  const coverage = [...items.reduce((counts, story) => {
+    counts.set(story.topic, (counts.get(story.topic) || 0) + 1);
+    return counts;
+  }, new Map()).entries()]
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+    .slice(0, 3);
+  trendList.innerHTML = coverage.map(([topic, count], index) => `
+    <div class="trend-item">
+      <span>0${index + 1}</span>
+      <p>${topic}<br /><small>Current briefing</small></p>
+      <span class="up">${count} ${count === 1 ? "story" : "stories"}</span>
+    </div>
+  `).join("");
+}
+
+function bindCards() {
+  document.querySelectorAll("[data-story]").forEach((card) => {
+    card.addEventListener("click", () => openStory(card.dataset.story));
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openStory(card.dataset.story);
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-save]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleSaved(button.dataset.save);
+    });
+  });
+}
+
+function findStory(id) {
+  return allStories().find((story) => story.id === id);
+}
+
+function toggleSaved(id) {
+  const story = findStory(id);
+  if (!story) return;
+
+  if (state.saved.has(id)) {
+    state.saved.delete(id);
+    showToast("Removed from saved stories");
+  } else {
+    state.saved.add(id);
+    showToast("Saved for later");
+  }
+  persistSavedStories();
+  render();
+}
+
+function storyFacts(story) {
+  const facts = [
+    `${story.location} · ${story.topic}`,
+    `${story.sources} ${story.sources === 1 ? "publisher source" : "publisher sources"}`,
+    story.independentSources > 1 ? `${story.independentSources} independently classified sources` : "Single-source claim",
+    story.openingStatus || null,
+    story.imageCandidate && story.imageUsage !== "permitted" ? "Publisher image awaiting rights review" : null
+  ];
+  return facts.filter(Boolean);
+}
+
+function whyItMatters(story) {
+  if (story.openingStatus === "Closed") return "Closures affect neighbourhood hospitality, employment and the local competitive landscape. The status remains tied to the publisher evidence shown below.";
+  if (story.topic === "Openings") return "New venues are an early signal of how Vienna and Austria’s dining landscape is changing—by neighbourhood, format and price point.";
+  if (/vienna|wien/i.test(story.location)) return "This story has direct local relevance for Vienna’s hospitality community and is prioritised in the city edition.";
+  if (story.topic === "Business") return "The development may affect operating costs, staffing, investment or competitive conditions across hospitality businesses.";
+  return "MISE ranks this story using freshness, geographic relevance, source quality and corroboration signals.";
+}
+
+function openStory(id) {
+  const story = findStory(id);
+  if (!story) return;
+  storyReturnFocus = document.activeElement;
+  const placeLabel = story.location === story.edition
+    ? story.edition
+    : `${story.edition} · ${story.location}`;
+
+  const liveCoverage = story.isLive
+    ? story.sourceLinks.map((source) => `
+      <a class="source-row" href="${source.url}" target="_blank" rel="noopener noreferrer">
+        <span class="source-icon">${source.initial}</span>
+        <p>${source.name}<small>${source.title}</small></p>
+        <span>↗</span>
+      </a>
+    `).join("")
+    : "";
+
+  const storyDetails = story.isLive
+    ? `
+      <section class="ai-brief live-excerpt">
+        <div class="ai-label"><span>${story.isCluster ? "✦" : "↗"}</span>${story.isCluster
+          ? story.coveragePattern === "likely_syndicated"
+            ? `Multi-outlet coverage · ${story.sources} outlets · likely shared release`
+            : story.coveragePattern === "multi_outlet_unverified"
+              ? `Multi-outlet coverage · ${story.sources} outlets · independence unverified`
+            : `Evidence brief · ${story.independentSources} independent of ${story.sources} sources`
+          : story.isTranslated
+            ? "English source translation · original reporting linked"
+            : "Publisher feed excerpt · no AI summary"}</div>
+        ${story.isCluster && story.brief.length
+          ? `<ul>${story.brief.map((item) => `<li>${item}</li>`).join("")}</ul>`
+          : `<p>${story.deck}</p>`}
+      </section>
+
+      <section class="drawer-section">
+        <h3>${story.isCluster ? "Coverage" : "Original reporting"}</h3>
+        <div class="source-list">
+          ${liveCoverage}
+        </div>
+      </section>
+
+      <p class="disclosure">${story.isCluster
+        ? story.coveragePattern === "likely_syndicated"
+          ? "These outlets appear to be covering the same announcement and may rely on shared press material. MISE shows both links but does not treat repetition as independent confirmation. No article body was copied."
+          : story.coveragePattern === "multi_outlet_unverified"
+            ? "Multiple outlets cover this story, but MISE has not verified that their reporting is independently sourced. The links are grouped for comparison, not presented as confirmed corroboration."
+          : "This automated, unreviewed evidence brief uses short publisher feed excerpts. Each bullet remains traceable to the linked coverage; no article body was copied and no generative AI was used in this clustering pass."
+          : story.isTranslated
+          ? "MISE translated and summarized the publisher's public feed title and excerpt into English. The summary is limited to supplied evidence; the original-language headline and publisher link remain visible, and no article body was copied."
+          : "This preview uses the publisher's feed title, metadata and short excerpt. MISE has not generated a summary or copied the article body. Follow the source link for the complete reporting."}</p>
+    `
+    : `
+      <section class="ai-brief">
+        <div class="ai-label"><span>✦</span>AI briefing · reviewed format</div>
+        <ul>${story.brief.map((item) => `<li>${item}</li>`).join("")}</ul>
+      </section>
+
+      <section class="drawer-section">
+        <h3>Why it matters</h3>
+        <p>${story.why}</p>
+      </section>
+
+      <section class="drawer-section">
+        <h3>Coverage</h3>
+        <div class="source-list">
+          ${story.sourceNames.map((name, index) => `
+            <div class="source-row">
+              <span class="source-icon">${story.initials[index % story.initials.length]}</span>
+              <p>${name}<small>Representative source · Prototype</small></p>
+              <span>↗</span>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+
+      <p class="disclosure">This is a sample story created to demonstrate the editorial product and interface. It is not live reporting. In production, every claim would be linked to retrieved evidence and every source row would open the original publication.</p>
+    `;
+
+  drawerContent.innerHTML = `
+    <div class="drawer-hero">
+      <img src="${story.image || defaultStoryImage}" alt="" decoding="async" />
+    </div>
+    <div class="drawer-body">
+      <span class="feed-topic" data-topic="${story.topic}">${placeLabel} · ${story.topic}</span>
+      <h2 id="drawer-title">${story.title}</h2>
+      <p class="drawer-deck">${story.summary || story.deck}</p>
+      <div class="drawer-meta">${storyMeta(story)}</div>
+
+      <div class="trust-strip">
+        <span>${story.isTranslated ? "AI summary" : "Source excerpt"}</span>
+        <span>${story.isTranslated || story.reviewStatus === "automated_unreviewed" ? "Editorial review pending" : "Metadata review pending"}</span>
+        <span>Rank ${relevanceScore(story)}</span>
+      </div>
+
+      <section class="drawer-section fact-section">
+        <h3>Key facts</h3>
+        <ul>${storyFacts(story).map((fact) => `<li>${fact}</li>`).join("")}</ul>
+      </section>
+
+      <section class="drawer-section">
+        <h3>Why it matters</h3>
+        <p>${whyItMatters(story)}</p>
+      </section>
+
+      ${storyDetails}
+    </div>
+  `;
+
+  storyOverlay.classList.add("open");
+  storyOverlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  document.querySelector("#drawer-close").focus();
+}
+
+function closeStory() {
+  storyOverlay.classList.remove("open");
+  storyOverlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  if (storyReturnFocus?.isConnected) storyReturnFocus.focus();
+  storyReturnFocus = null;
+}
+
+function switchSection(section) {
+  state.page = "news";
+  state.section = section;
+  if (["vienna", "austria", "global"].includes(section)) state.newsSection = section;
+  state.topic = "All";
+  state.visibleCount = 18;
+  document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.topic === "All"));
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function switchPage(page) {
+  state.page = page;
+  if (page === "news" && !["vienna", "austria", "global", "saved"].includes(state.section)) {
+    state.section = state.newsSection;
+  }
+  state.visibleCount = 18;
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openSearch() {
+  searchReturnFocus = document.activeElement;
+  searchOverlay.classList.add("open");
+  searchOverlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  searchInput.value = "";
+  renderSearchResults("");
+  window.setTimeout(() => searchInput.focus(), 100);
+}
+
+function closeSearch() {
+  searchOverlay.classList.remove("open");
+  searchOverlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  if (searchReturnFocus?.isConnected) searchReturnFocus.focus();
+  searchReturnFocus = null;
+}
+
+function renderSearchResults(query) {
+  const term = query.trim().toLowerCase();
+  const results = allStories().filter((story) => {
+    const haystack = `${story.title} ${story.deck} ${story.topic} ${story.location}`.toLowerCase();
+    return !term || haystack.includes(term);
+  }).slice(0, 7);
+
+  searchResults.innerHTML = results.length
+    ? results.map((story) => `
+      <button class="search-result" data-search-story="${story.id}" type="button">
+        ${story.image ? `<img src="${story.image}" alt="" loading="lazy" decoding="async" />` : `<span class="mini-placeholder"></span>`}
+        <span><strong>${story.title}</strong><small>${story.edition} · ${story.topic} · ${story.sources} ${story.sources === 1 ? "source" : "sources"}</small></span>
+      </button>
+    `).join("")
+    : `<div class="empty-state">No briefings found.</div>`;
+
+  document.querySelectorAll("[data-search-story]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.searchStory;
+      closeSearch();
+      openStory(id);
+    });
+  });
+}
+
+let toastTimer;
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+}
+
+function trapModalFocus(event, container) {
+  const focusable = [...container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter((element) => !element.hidden && element.getClientRects().length);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+document.querySelectorAll("[data-section]").forEach((button) => {
+  button.addEventListener("click", () => switchSection(button.dataset.section));
+});
+
+document.querySelectorAll("[data-page]").forEach((button) => {
+  button.addEventListener("click", () => switchPage(button.dataset.page));
+});
+
+document.querySelectorAll("[data-event-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.eventFilter = button.dataset.eventFilter;
+    renderCalendar();
+  });
+});
+
+document.querySelectorAll("[data-tracker-week]").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.trackerWeekOffset = Number(button.dataset.trackerWeek) || 0;
+    renderTracker();
+  });
+});
+
+document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    state.trackerFilter = button.dataset.trackerFilter;
+    renderTracker();
+  });
+});
+
+document.querySelector(".site-header .brand").addEventListener("click", (event) => {
+  event.preventDefault();
+  state.section = state.newsSection;
+  switchPage("news");
+});
+
+document.querySelectorAll(".filter-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    state.topic = chip.dataset.topic;
+    state.visibleCount = 18;
+    document.querySelectorAll(".filter-chip").forEach((item) => item.classList.toggle("active", item === chip));
+    render();
+  });
+});
+
+document.querySelectorAll("[data-sort]").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    state.sort = chip.dataset.sort;
+    state.visibleCount = 18;
+    document.querySelectorAll("[data-sort]").forEach((item) => item.classList.toggle("active", item === chip));
+    render();
+  });
+});
+
+document.querySelectorAll(".topic-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (["saved", "openings", "review"].includes(state.section)) state.section = "vienna";
+    state.topic = link.dataset.topic;
+    state.visibleCount = 18;
+    document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.topic === state.topic));
+    render();
+    document.querySelector(".feed-section").scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+document.querySelector("#drawer-close").addEventListener("click", closeStory);
+storyOverlay.querySelector(".overlay-backdrop").addEventListener("click", closeStory);
+document.querySelector("#open-search").addEventListener("click", openSearch);
+document.querySelector("#search-close").addEventListener("click", closeSearch);
+searchOverlay.querySelector(".overlay-backdrop").addEventListener("click", closeSearch);
+searchInput.addEventListener("input", (event) => renderSearchResults(event.target.value));
+
+document.addEventListener("keydown", (event) => {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    openSearch();
+  }
+  if (event.key === "Tab") {
+    if (storyOverlay.classList.contains("open")) {
+      trapModalFocus(event, storyOverlay.querySelector(".story-drawer"));
+    } else if (searchOverlay.classList.contains("open")) {
+      trapModalFocus(event, searchOverlay.querySelector(".search-panel"));
+    }
+  }
+  if (event.key === "Escape") {
+    if (storyOverlay.classList.contains("open")) closeStory();
+    else if (searchOverlay.classList.contains("open")) closeSearch();
+  }
+});
+
+const formattedDate = new Intl.DateTimeFormat("en-GB", {
+  weekday: "long",
+  day: "2-digit",
+  month: "long"
+}).format(new Date()).toUpperCase();
+document.querySelector("#today-label").textContent = formattedDate.replace(",", " ·");
+
+const feedObserver = new IntersectionObserver((entries) => {
+  if (!entries[0].isIntersecting || scrollSentinel.hidden) return;
+  state.visibleCount += 18;
+  render();
+}, { rootMargin: "500px 0px" });
+feedObserver.observe(scrollSentinel);
+
+render();

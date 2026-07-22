@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MISE is an AI-curated briefing for Austrian and global gastronomy news."
+    />
+    <title>MISE — Gastronomy, distilled.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=13" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="site-header">
+        <a class="brand" href="#" aria-label="MISE news home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>MISE</span></a>
+        <nav class="top-navigation" aria-label="Primary navigation">
+          <button class="active" data-page="news" type="button">News</button>
+          <button data-page="calendar" type="button">Calendar</button>
+          <button data-page="tracker" type="button">Weekly tracker</button>
+        </nav>
+        <div class="header-actions">
+          <button class="saved-header-button" data-section="saved" type="button" aria-label="Saved stories">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"></path></svg>
+            <span>Saved</span><i class="saved-count" id="saved-count">0</i>
+          </button>
+          <button id="open-search" class="header-search" type="button" aria-label="Search stories">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 4 4"></path></svg>
+            <span>Search</span><kbd>⌘ K</kbd>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="topbar">
+          <div>
+            <p class="eyebrow" id="today-label">MONDAY · 20 JULY</p>
+            <h1 id="section-title">Good morning.</h1>
+          </div>
+          <div class="topbar-actions">
+            <div class="freshness" id="freshness-label">Checking latest update…</div>
+            <details class="data-health" id="data-health">
+              <summary><span class="data-health-dot" aria-hidden="true"></span><span id="data-health-summary">Data health</span></summary>
+              <div class="data-health-panel" id="data-health-panel"></div>
+            </details>
+          </div>
+        </section>
+
+        <div class="product-view" id="news-view">
+        <section class="edition-switcher" aria-label="Select news edition">
+          <button class="edition-tab active" data-section="vienna" type="button">Vienna <span id="vienna-count">0</span></button>
+          <button class="edition-tab" data-section="austria" type="button">Austria <span id="austria-count">7</span></button>
+          <button class="edition-tab" data-section="global" type="button">Global <span id="global-count">7</span></button>
+          <div class="edition-line"></div>
+          <span class="prototype-label" id="feed-status-label">Editorial prototype · Sample stories</span>
+        </section>
+
+        <section class="context-panel" id="context-panel" hidden></section>
+
+        <section class="daily-briefing" id="daily-briefing" aria-labelledby="daily-briefing-title">
+          <div class="daily-briefing-heading">
+            <div>
+              <p class="eyebrow">TODAY'S INDUSTRY BRIEFING</p>
+              <h2 id="daily-briefing-title">The Vienna briefing</h2>
+            </div>
+            <p id="daily-briefing-status">Selecting the developments that matter now…</p>
+          </div>
+          <div class="briefing-layout" id="hero-layout" aria-label="Top briefing stories"></div>
+        </section>
+
+        <section class="market-panel" id="market-panel" aria-labelledby="market-title">
+          <div class="market-panel-heading">
+            <div>
+              <p class="eyebrow">OPERATOR COST WATCH</p>
+              <h2 id="market-title">Key input benchmarks</h2>
+            </div>
+            <p id="market-status">Official reference series · no AI</p>
+          </div>
+          <div class="market-strip" id="market-strip"></div>
+          <p class="market-methodology" id="market-methodology"></p>
+        </section>
+
+        <section class="trend-radar" id="trend-radar" aria-labelledby="trend-radar-title">
+          <div class="trend-radar-heading">
+            <div>
+              <p class="eyebrow">SOURCE-DRIVEN SIGNALS</p>
+              <h2 id="trend-radar-title">Industry trend radar</h2>
+            </div>
+            <p id="trend-radar-status">Checking current publisher attention…</p>
+          </div>
+          <div class="trend-radar-grid" id="trend-radar-grid"></div>
+          <p class="trend-radar-note" id="trend-radar-note"></p>
+        </section>
+
+        <section class="feed-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">THE DAILY PASS</p>
+              <h2 id="feed-heading">What Austria is talking about</h2>
+            </div>
+            <div class="filter-row" id="filter-row">
+              <button class="rank-chip active" data-sort="top" type="button">Top</button>
+              <button class="rank-chip" data-sort="latest" type="button">Latest</button>
+              <span class="filter-separator"></span>
+              <button class="filter-chip active" data-topic="All" type="button">All</button>
+              <button class="filter-chip" data-topic="Openings" type="button">New openings</button>
+              <button class="filter-chip" data-topic="Restaurants" type="button">Restaurants</button>
+              <button class="filter-chip" data-topic="Business" type="button">Business</button>
+              <button class="filter-chip" data-topic="Food & Wine" type="button">Food & wine</button>
+            </div>
+          </div>
+
+          <div class="content-columns">
+            <div class="feed-column">
+              <div class="story-feed" id="story-feed"></div>
+              <div class="scroll-sentinel" id="scroll-sentinel" aria-live="polite">Loading more stories…</div>
+            </div>
+            <aside class="pulse-card" aria-label="Gastronomy pulse">
+              <div class="pulse-header">
+                <div><p class="eyebrow">LIVE SIGNALS</p><h3>Gastro pulse</h3></div>
+                <span class="live-dot">Live</span>
+              </div>
+              <div class="pulse-stat">
+                <span>Items in latest fetch</span>
+                <strong id="monitored-count">164</strong>
+                <small id="monitored-caption">across connected feeds</small>
+              </div>
+              <div class="pulse-divider"></div>
+              <p class="pulse-label">Coverage mix</p>
+              <div class="trend-list" id="trend-list"></div>
+            </aside>
+          </div>
+        </section>
+        </div>
+
+        <section class="product-view calendar-view" id="calendar-view" hidden>
+          <div class="page-intro">
+            <div>
+              <p class="eyebrow">VERIFIED DATES</p>
+              <h2>Upcoming gastronomy events</h2>
+              <p>Trade fairs, festivals, tastings and industry gatherings, linked directly to their official organizers.</p>
+            </div>
+            <div class="calendar-summary"><strong id="event-count">0</strong><span>upcoming events</span></div>
+          </div>
+          <div class="event-filter-row" aria-label="Filter events by region">
+            <button class="active" data-event-filter="all" type="button">All events</button>
+            <button data-event-filter="vienna" type="button">Vienna</button>
+            <button data-event-filter="austria" type="button">Austria</button>
+            <button data-event-filter="international" type="button">International</button>
+          </div>
+          <div class="event-list" id="event-list"></div>
+          <p class="data-note" id="event-data-note"></p>
+        </section>
+
+        <section class="product-view tracker-view" id="tracker-view" hidden>
+          <div class="tracker-overview" id="tracker-overview"></div>
+          <div class="tracker-heading">
+            <div><p class="eyebrow">WEEKLY MOVEMENT</p><h2>Opening and closing by week</h2></div>
+            <p id="tracker-week-label"></p>
+          </div>
+          <div class="tracker-toolbar">
+            <div class="tracker-week-controls" aria-label="Select tracker week">
+              <button data-tracker-week="1" type="button">Last week</button>
+              <button class="active" data-tracker-week="0" type="button">This week</button>
+            </div>
+            <div class="tracker-filter-controls" aria-label="Filter opening tracker">
+              <button class="active" data-tracker-filter="all" type="button">All movement</button>
+              <button data-tracker-filter="Newly opened" type="button">Opened</button>
+              <button data-tracker-filter="Opening soon" type="button">Opening soon</button>
+              <button data-tracker-filter="Closed" type="button">Closures</button>
+              <button data-tracker-filter="Unconfirmed" type="button">Needs confirmation</button>
+            </div>
+          </div>
+          <div class="tracker-list" id="tracker-list"></div>
+          <section class="social-watch" aria-labelledby="social-watch-title">
+            <div class="social-watch-heading">
+              <div><p class="eyebrow">SOCIAL SOURCE DESK</p><h2 id="social-watch-title">Vienna signal watch</h2></div>
+              <p id="social-watch-status">Preparing reviewed channels…</p>
+            </div>
+            <div class="social-watch-grid" id="social-watch-grid"></div>
+            <p class="data-note social-watch-note" id="social-watch-note"></p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="story-overlay" id="story-overlay" aria-hidden="true">
+      <button class="overlay-backdrop" type="button" aria-label="Close story"></button>
+      <article class="story-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <button class="drawer-close" id="drawer-close" type="button" aria-label="Close story">×</button>
+        <div id="drawer-content"></div>
+      </article>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" aria-hidden="true">
+      <button class="overlay-backdrop" type="button" aria-label="Close search"></button>
+      <section class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="search-field">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.8"></circle><path d="m16 16 4 4"></path></svg>
+          <input id="search-input" type="search" placeholder="Search chefs, restaurants, topics…" autocomplete="off" />
+          <button id="search-close" type="button">ESC</button>
+        </div>
+        <div class="search-body">
+          <p class="eyebrow" id="search-title">SEARCH THE BRIEFING</p>
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./data/live-news.js?v=8"></script>
+    <script src="./data/austria-english.js?v=1"></script>
+    <script src="./data/austria-auto.js?v=2"></script>
+    <script src="./data/events.js?v=2"></script>
+    <script src="./data/markets.js?v=1"></script>
+    <script src="./data/trends.js?v=1"></script>
+    <script src="./data/social-watch.js?v=1"></script>
+    <script src="./data/update-status.js?v=1"></script>
+    <script src="./app.js?v=21"></script>
+  </body>
+</html>

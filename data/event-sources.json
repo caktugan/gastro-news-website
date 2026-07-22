@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "vienna-coffee-festival",
+      "active": true,
+      "url": "https://viennacoffeefestival.cc/",
+      "required_markers": ["Vienna Coffee Festival", "11.", "13. September 2026"],
+      "event": {
+        "id": "vienna-coffee-festival-2026",
+        "title": "Vienna Coffee Festival",
+        "startDate": "2026-09-11",
+        "endDate": "2026-09-13",
+        "city": "Vienna",
+        "region": "vienna",
+        "venue": "Marx Halle",
+        "type": "Festival & tasting",
+        "audience": "Public & trade",
+        "summary": "Three days of specialty coffee, roasters, equipment, workshops and tastings for café operators, baristas and coffee enthusiasts.",
+        "source": "Vienna Coffee Festival"
+      }
+    },
+    {
+      "id": "vienna-wine-hiking-day",
+      "active": true,
+      "url": "https://www.wien.info/en/dine-drink/wine/wine-trail-366076",
+      "required_markers": ["Vienna Wine Hiking Day", "26 & 27 September, 2026"],
+      "event": {
+        "id": "vienna-wine-hiking-day-2026",
+        "title": "Vienna Wine Hiking Day",
+        "startDate": "2026-09-26",
+        "endDate": "2026-09-27",
+        "city": "Vienna",
+        "region": "vienna",
+        "venue": "Four routes through Vienna's wine districts",
+        "type": "Wine tasting",
+        "audience": "Public",
+        "summary": "Four vineyard routes with tasting stops from Vienna winemakers, running from 10:00 to 18:00 across both days.",
+        "source": "Vienna Tourist Board"
+      }
+    },
+    {
+      "id": "wko-gastronomy-seminar",
+      "active": true,
+      "url": "https://www.wko.at/veranstaltungen/70466989-64fd-44cf-aa0c-9d6706ccf9ef",
+      "required_markers": ["Gastronomie-Seminar", "24. Sep. 2026", "17:00 Uhr bis 19:30 Uhr"],
+      "event": {
+        "id": "wko-gastronomy-seminar-september-2026",
+        "title": "Gastronomy Seminar: Location and Opening Challenges",
+        "startDate": "2026-09-24",
+        "endDate": "2026-09-24",
+        "city": "Vienna",
+        "region": "vienna",
+        "venue": "Wirtschaftskammer Wien",
+        "type": "Industry seminar",
+        "audience": "Trade & founders",
+        "summary": "A practical Vienna Chamber of Commerce seminar for prospective restaurant, pizzeria and café operators covering location selection and opening challenges.",
+        "source": "WKO Vienna"
+      }
+    },
+    {
+      "id": "fafga",
+      "active": true,
+      "url": "https://www.fafga.at/",
+      "required_markers": ["FAFGA", "20. bis 22. September 2026", "Messe Innsbruck"],
+      "event": {
+        "id": "fafga-2026",
+        "title": "FAFGA Meets Future 2026",
+        "startDate": "2026-09-20",
+        "endDate": "2026-09-22",
+        "city": "Innsbruck",
+        "region": "austria",
+        "venue": "Messe Innsbruck",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "A hospitality, gastronomy and hotel-design trade fair focused on food, beverages, equipment, digitalization, sustainability and recruiting.",
+        "source": "Congress Messe Innsbruck"
+      }
+    },
+    {
+      "id": "alles-fuer-den-gast",
+      "active": true,
+      "url": "https://www.gastmesse.at/en/",
+      "required_markers": ["Alles für den Gast", "07.-10. November 2026", "Messezentrum Salzburg"],
+      "event": {
+        "id": "alles-fuer-den-gast-2026",
+        "title": "Alles für den Gast",
+        "startDate": "2026-11-07",
+        "endDate": "2026-11-10",
+        "city": "Salzburg",
+        "region": "austria",
+        "venue": "Messezentrum Salzburg",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "Austria's leading gastronomy and hospitality trade fair, covering food, beverages, equipment, technology and hotel operations.",
+        "source": "Messezentrum Salzburg"
+      }
+    },
+    {
+      "id": "biofach",
+      "active": true,
+      "url": "https://www.biofach.de/en",
+      "required_markers": ["BIOFACH", "16 - 19 February 2027", "Nuremberg Exhibition Centre"],
+      "event": {
+        "id": "biofach-2027",
+        "title": "BIOFACH 2027",
+        "startDate": "2027-02-16",
+        "endDate": "2027-02-19",
+        "city": "Nuremberg",
+        "region": "international",
+        "venue": "Exhibition Centre Nuremberg",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "The international organic-food industry meets for products, sourcing, policy, sustainability and market trends.",
+        "source": "NürnbergMesse"
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-07-22T19:11:50+00:00",
+  "activeSourceCount": 6,
+  "verifiedSourceCount": 6,
+  "errorSourceCount": 0,
+  "publishedEventCount": 6,
+  "sources": [
+    {
+      "sourceId": "vienna-coffee-festival",
+      "status": "verified",
+      "eventId": "vienna-coffee-festival-2026"
+    },
+    {
+      "sourceId": "vienna-wine-hiking-day",
+      "status": "verified",
+      "eventId": "vienna-wine-hiking-day-2026"
+    },
+    {
+      "sourceId": "wko-gastronomy-seminar",
+      "status": "verified",
+      "eventId": "wko-gastronomy-seminar-september-2026"
+    },
+    {
+      "sourceId": "fafga",
+      "status": "verified",
+      "eventId": "fafga-2026"
+    },
+    {
+      "sourceId": "alles-fuer-den-gast",
+      "status": "verified",
+      "eventId": "alles-fuer-den-gast-2026"
+    },
+    {
+      "sourceId": "biofach",
+      "status": "verified",
+      "eventId": "biofach-2027"
+    }
+  ],
+  "reviewCandidateCount": 3
+}

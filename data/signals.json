@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-22",
+  "policy": {
+    "purpose": "Social and community channels are source material for discovery, sentiment, eyewitness tips, emerging topics, and first-party announcements. Their posts may appear in MISE when clearly labelled by platform and source class.",
+    "publication_rule": "A public social/community post may be displayed as a labelled Social Post with its original link and uncertainty intact. Material claims require corroboration before they become a MISE news briefing or a confirmed opening/closure record.",
+    "official_accounts": "Posts by an organisation's verified or site-linked account may support claims about that organisation only and remain labelled first-party.",
+    "automation": "Use official APIs, newsletters, webhooks, or publisher permission. Do not scrape logged-in pages, evade rate limits, or collect private/user-profile data.",
+    "privacy": "Do not display usernames or quote individual users without editorial review and a clear public-interest reason."
+  },
+  "channels": [
+    {
+      "id": "reddit-austria",
+      "platform": "reddit",
+      "name": "r/Austria",
+      "url": "https://www.reddit.com/r/Austria/",
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "community_sentiment",
+      "status": "api_review",
+      "topics": ["gastronomy prices", "restaurant closures", "labour", "regional cuisine", "policy reactions"]
+    },
+    {
+      "id": "reddit-wien",
+      "platform": "reddit",
+      "name": "r/wien",
+      "url": "https://www.reddit.com/r/wien/",
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "local_community",
+      "status": "api_review",
+      "topics": ["Vienna openings", "closures", "recommendations", "neighbourhood signals"]
+    },
+    {
+      "id": "reddit-askaustria",
+      "platform": "reddit",
+      "name": "r/AskAustria",
+      "url": "https://www.reddit.com/r/AskAustria/",
+      "edition": "austria",
+      "language": "mixed",
+      "signal_type": "visitor_questions",
+      "status": "api_review",
+      "topics": ["visitor demand", "restaurant prices", "regional food discovery"]
+    },
+    {
+      "id": "reddit-finedining",
+      "platform": "reddit",
+      "name": "r/finedining",
+      "url": "https://www.reddit.com/r/finedining/",
+      "edition": "global",
+      "language": "en",
+      "signal_type": "expert_community",
+      "status": "api_review",
+      "topics": ["guides", "awards", "tasting menus", "chef moves", "destination dining"]
+    },
+    {
+      "id": "reddit-kitchenconfidential",
+      "platform": "reddit",
+      "name": "r/KitchenConfidential",
+      "url": "https://www.reddit.com/r/KitchenConfidential/",
+      "edition": "global",
+      "language": "en",
+      "signal_type": "industry_workforce",
+      "status": "api_review",
+      "topics": ["kitchen labour", "operations", "equipment", "workplace culture"]
+    },
+    {
+      "id": "reddit-chefit",
+      "platform": "reddit",
+      "name": "r/Chefit",
+      "url": "https://www.reddit.com/r/Chefit/",
+      "edition": "global",
+      "language": "en",
+      "signal_type": "professional_community",
+      "status": "api_review",
+      "topics": ["chef careers", "technique", "restaurant operations", "media trends"]
+    },
+    {
+      "id": "reddit-restaurantowners",
+      "platform": "reddit",
+      "name": "r/restaurantowners",
+      "url": "https://www.reddit.com/r/restaurantowners/",
+      "edition": "global",
+      "language": "en",
+      "signal_type": "operator_community",
+      "status": "api_review",
+      "topics": ["costs", "technology", "staffing", "marketing", "regulation"]
+    },
+    {
+      "id": "rolling-pin-linkedin",
+      "platform": "linkedin",
+      "name": "ROLLING PIN",
+      "url": "https://www.linkedin.com/company/rollingpin",
+      "edition": "austria",
+      "language": "mixed",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "falstaff-instagram",
+      "platform": "instagram",
+      "name": "Falstaff",
+      "url": "https://www.instagram.com/falstaff.magazin/",
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "gaultmillau-austria-instagram",
+      "platform": "instagram",
+      "name": "Gault&Millau Austria",
+      "url": "https://www.instagram.com/gaultmillau_austria/",
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "gastro-news-social",
+      "platform": "multi",
+      "name": "Gastro.News official channels",
+      "urls": [
+        "https://www.instagram.com/gastronews.wien",
+        "https://www.linkedin.com/company/gastro-news",
+        "https://www.youtube.com/c/GastronewsWien"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "gastroportal-social",
+      "platform": "multi",
+      "name": "GASTRO.at official channels",
+      "urls": [
+        "https://www.instagram.com/gastroportal/",
+        "https://www.linkedin.com/company/gastro-das-fachmagazin/",
+        "https://twitter.com/gastrowebportal"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "transgourmet-social",
+      "platform": "multi",
+      "name": "Transgourmet Austria official channels",
+      "urls": [
+        "https://www.instagram.com/transgourmet.oesterreich/",
+        "https://at.linkedin.com/company/transgourmetoesterreich",
+        "https://www.tiktok.com/@transgourmet_at"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "supplier_first_party",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "kroeswang-social",
+      "platform": "multi",
+      "name": "KRÖSWANG official channels",
+      "urls": [
+        "https://www.instagram.com/kroeswang_der_frischelieferant",
+        "https://www.linkedin.com/company/kr%C3%B6swang-gmbh/"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "supplier_first_party",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "eurogast-social",
+      "platform": "multi",
+      "name": "Eurogast Austria official channels",
+      "urls": [
+        "https://www.instagram.com/eurogast.oesterreich/",
+        "https://at.linkedin.com/company/eurogast-%C3%B6sterreich-gmbh"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "supplier_first_party",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "vienna-local-food-social",
+      "platform": "multi",
+      "name": "Vienna local food publishers",
+      "urls": [
+        "https://www.instagram.com/viennawurstelstand/",
+        "https://www.tiktok.com/@viennawurstelstand",
+        "https://www.instagram.com/goodnight.at_wien",
+        "https://www.tiktok.com/@goodnight.at_wien",
+        "https://www.instagram.com/stadtbekannt.at/",
+        "https://instagram.com/diefruehstueckerinnen/"
+      ],
+      "edition": "austria",
+      "region": "Vienna",
+      "language": "mixed",
+      "signal_type": "local_publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "vienna-opening-creators",
+      "platform": "multi",
+      "name": "Vienna restaurant-opening creators and tip channels",
+      "urls": [
+        "https://www.instagram.com/foodstagram_vienna/",
+        "https://www.vienna-foodblog.at/",
+        "https://www.instagram.com/goodnight.at_wien/",
+        "https://www.instagram.com/diefruehstueckerinnen/",
+        "https://www.instagram.com/viennawurstelstand/",
+        "https://wienneu.at/neue-lokale-wien/",
+        "https://www.neueroeffnung.info/wien/gastronomie"
+      ],
+      "edition": "austria",
+      "region": "Vienna",
+      "language": "mixed",
+      "signal_type": "opening_discovery",
+      "status": "manual_or_permissioned_api_review",
+        "publication_rule": "A public post may appear as a clearly labelled Social Post. Confirm the venue and opening status through the operator or an attributable editorial source before converting it into a news briefing or confirmed opening record. Label commercial collaborations when disclosed."
+    },
+    {
+      "id": "vienna-official-social",
+      "platform": "multi",
+      "name": "City of Vienna and Vienna Markets",
+      "urls": [
+        "https://www.facebook.com/wienermaerkte",
+        "https://instagram.com/stadtwien",
+        "https://www.tiktok.com/@stadtwien",
+        "https://x.com/Stadt_Wien"
+      ],
+      "edition": "austria",
+      "region": "Vienna",
+      "language": "de",
+      "signal_type": "official_first_party",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "austrian-food-magazine-social",
+      "platform": "multi",
+      "name": "Austrian food and sustainability publishers",
+      "urls": [
+        "https://www.instagram.com/alacartemagazin/",
+        "https://www.instagram.com/biorama_mag",
+        "https://www.instagram.com/wienerin_dasmagazin/",
+        "https://www.instagram.com/weekend.at",
+        "https://www.instagram.com/gusto_magazin/"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "orf-regional-social",
+      "platform": "multi",
+      "name": "ORF regional newsrooms",
+      "urls": [
+        "https://www.instagram.com/orfniederoesterreich",
+        "https://www.instagram.com/orfburgenland",
+        "https://www.instagram.com/orf_ooe/",
+        "https://www.instagram.com/ORFsalzburg/",
+        "https://www.instagram.com/orfsteiermark/",
+        "https://www.instagram.com/orftirol/",
+        "https://www.instagram.com/orfvorarlberg/"
+      ],
+      "edition": "austria",
+      "language": "de",
+      "signal_type": "public_broadcaster_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "global-trade-social",
+      "platform": "multi",
+      "name": "Global restaurant trade channels",
+      "urls": [
+        "https://www.instagram.com/restaurantbusinessonline/",
+        "https://www.instagram.com/nationsrestaurantnews/",
+        "https://www.linkedin.com/company/thecaterer"
+      ],
+      "edition": "global",
+      "language": "en",
+      "signal_type": "publisher_official",
+      "status": "manual_or_api_review"
+    },
+    {
+      "id": "austrian-hospitality-linkedin",
+      "platform": "linkedin",
+      "name": "Austrian hospitality executives and suppliers",
+      "edition": "austria",
+      "language": "mixed",
+      "signal_type": "executive_and_company_first_party",
+      "status": "manual_or_permissioned_api_review",
+      "topics": ["executive moves", "restaurant openings", "supplier investments", "logistics", "pricing announcements"],
+      "publication_rule": "Show a public post as a labelled LinkedIn source. Treat statements about the author or their organisation as first-party; corroborate broader market claims before briefing publication."
+    }
+  ]
+}

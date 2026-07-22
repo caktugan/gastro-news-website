@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-22T19:11:52.240508Z",
+  "status": "complete",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "prompt_version": 2,
+  "selected_cluster_count": 100,
+  "manual_translation_count": 25,
+  "pending_before_run": 2,
+  "processed_count": 2,
+  "remaining_pending_count": 0,
+  "published_auto_count": 72,
+  "daily_request_budget": {
+    "utc_day": "2026-07-22",
+    "limit": 15,
+    "used": 11,
+    "remaining": 4,
+    "attempted_item_count": 67
+  },
+  "budget_message": null,
+  "errors": []
+}

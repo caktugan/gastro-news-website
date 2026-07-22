@@ -1,0 +1,72 @@
+name: Refresh and deploy MISE
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: "17 1,7,13,19 * * *"
+      timezone: "Europe/Vienna"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  refresh-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore enrichment and fallback caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/.ai-usage.json
+            data/austria-enrichment.json
+            data/austria-auto.js
+            data/austria-enrichment-report.json
+            data/events.json
+            data/events.js
+            data/markets.json
+            data/markets.js
+          key: mise-data-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            mise-data-${{ runner.os }}-
+
+      - name: Refresh news, markets, trends, events, and English briefs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/update.py --max-api-requests 15
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build public-only site
+        run: python scripts/build_site.py
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
