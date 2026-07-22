@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-22T19:11:50+00:00",
+  "generatedAt": "2026-07-22T19:48:52+00:00",
   "checkedAt": "2026-07-22",
   "aiRequests": 0,
   "methodology": "Events publish only after their configured date and identity markers are found on an official organizer page. Expired events are removed automatically; feed-discovered leads remain in review.",

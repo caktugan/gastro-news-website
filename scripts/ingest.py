@@ -249,14 +249,15 @@ def title_key(title: str) -> str:
 
 def deduplicate(articles: list[dict]) -> list[dict]:
     seen_urls: set[str] = set()
-    seen_titles: set[str] = set()
+    seen_source_titles: set[tuple[str, str]] = set()
     result: list[dict] = []
     for article in articles:
         normalized_title = title_key(article["title"])
-        if article["url"] in seen_urls or normalized_title in seen_titles:
+        source_title = (article["source_id"], normalized_title)
+        if article["url"] in seen_urls or source_title in seen_source_titles:
             continue
         seen_urls.add(article["url"])
-        seen_titles.add(normalized_title)
+        seen_source_titles.add(source_title)
         result.append(article)
     return result
 
@@ -301,7 +302,6 @@ def main() -> int:
             articles, source_report = fetch_feed(source, args.timeout)
             fetched.extend(articles)
             source_reports.append(source_report)
-            print(f"{source['id']}: kept {len(articles)}", file=sys.stderr)
         except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError) as error:
             source_reports.append(
                 {
@@ -337,7 +337,10 @@ def main() -> int:
         "independently_corroborated_cluster_count"
     ]
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    print(
+        f"Ingested {len(articles)} items from {report['successful_source_count']} of "
+        f"{report['active_source_count']} active feeds into {report['cluster_count']} clusters."
+    )
     return 0 if report["successful_source_count"] else 1
 
 

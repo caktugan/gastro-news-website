@@ -51,7 +51,7 @@ def build_payload(source: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "generated_at": source.get("updated_at"),
-        "status": "current",
+        "status": "catalogued_unverified",
         "ai_requests": 0,
         "channel_count": len(channels),
         "publication_rule": source.get("policy", {}).get("publication_rule", ""),
@@ -69,7 +69,7 @@ def write_payload(payload: dict[str, Any]) -> None:
 def main() -> int:
     payload = build_payload(json.loads(INPUT.read_text(encoding="utf-8")))
     write_payload(payload)
-    print(f"Wrote {payload['channel_count']} social-source watch channels (0 posts retrieved, 0 AI requests).")
+    print(f"Wrote {payload['channel_count']} catalogued social-source channels (0 posts retrieved, 0 AI requests).")
     return 0
 
 

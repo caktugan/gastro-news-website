@@ -46,6 +46,41 @@ class EnrichmentTests(unittest.TestCase):
         self.assertEqual(enrich_austria.source_signature(original), enrich_austria.source_signature(copy.deepcopy(original)))
         self.assertNotEqual(enrich_austria.source_signature(original), enrich_austria.source_signature(changed))
 
+    def test_browser_output_only_publishes_current_non_manual_cache(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "translations.js"
+            current = cluster("current", "Current evidence")
+            current["source_signature"] = enrich_austria.source_signature(current)
+            stale = cluster("stale", "Changed evidence")
+            stale["source_signature"] = enrich_austria.source_signature(stale)
+            manual = cluster("manual", "Manual translation")
+            manual["source_signature"] = enrich_austria.source_signature(manual)
+            base = {
+                "publish": True,
+                "title": "English title",
+                "deck": "Supported deck.",
+                "summary": "Supported summary.",
+                "location": "Austria",
+                "relevance_score": 80,
+                "generated_at": "2026-07-22T12:00:00Z",
+                "model": "test-model",
+                "provider": "gemini",
+                "prompt_version": enrich_austria.PROMPT_VERSION,
+            }
+            cache = {"items": {
+                "current": {**base, "source_signature": current["source_signature"]},
+                "stale": {**base, "source_signature": "old-signature"},
+                "manual": {**base, "source_signature": manual["source_signature"]},
+            }}
+
+            count = enrich_austria.write_browser_data(output, cache, [current, stale, manual], {"manual"})
+            rendered = output.read_text(encoding="utf-8")
+
+            self.assertEqual(count, 1)
+            self.assertIn('"current"', rendered)
+            self.assertNotIn('"stale"', rendered)
+            self.assertNotIn('"manual"', rendered)
+
     def test_batch_validation_requires_every_id_once(self) -> None:
         stories = [cluster("1", "One"), cluster("2", "Two")]
         result = lambda identifier: {

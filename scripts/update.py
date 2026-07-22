@@ -20,7 +20,7 @@ STAGE_META = {
     "news": ("News feeds", ROOT / "data" / "ingestion-report.json"),
     "markets": ("Cost benchmarks", ROOT / "data" / "markets.json"),
     "trends": ("Trend radar", ROOT / "data" / "trends.json"),
-    "social": ("Social source watch", ROOT / "data" / "social-watch.json"),
+    "social": ("Social source directory", ROOT / "data" / "social-watch.json"),
     "events": ("Events calendar", ROOT / "data" / "event-update-report.json"),
     "enrichment": ("English edition", ROOT / "data" / "austria-enrichment-report.json"),
 }
@@ -114,7 +114,7 @@ def stage_health(outcome: dict[str, Any]) -> dict[str, Any]:
         stage["summary"] = f"{len(signals)} evidence-backed signals · 0 AI requests"
     elif identifier == "social":
         channels = int(report.get("channel_count", 0))
-        stage["summary"] = f"{channels} reviewed channels · no posts scraped · 0 AI requests"
+        stage["summary"] = f"{channels} catalogued channels · access unverified · 0 posts retrieved"
     elif identifier == "events":
         verified = int(report.get("verifiedSourceCount", 0))
         active = int(report.get("activeSourceCount", 0))

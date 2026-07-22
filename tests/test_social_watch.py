@@ -24,6 +24,7 @@ class SocialWatchTests(unittest.TestCase):
         self.assertNotIn("private-user", rendered)
         self.assertNotIn("not for publication", rendered)
         self.assertEqual(payload["ai_requests"], 0)
+        self.assertEqual(payload["status"], "catalogued_unverified")
 
 
 if __name__ == "__main__":

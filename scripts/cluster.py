@@ -258,7 +258,7 @@ def build_clusters(articles: list[dict], priorities: dict[str, int]) -> list[dic
             for left in range(len(group_articles))
             for right in range(left + 1, len(group_articles))
         ]
-        likely_syndicated = bool(summary_similarities and max(summary_similarities) >= 0.72)
+        likely_syndicated = bool(summary_similarities and min(summary_similarities) >= 0.72)
         coverage_pattern = (
             "single_source"
             if distinct_source_count == 1
@@ -339,7 +339,7 @@ def write_payload(payload: dict, cluster_path: Path, js_path: Path) -> None:
         "published_at", "source_count", "independent_source_count", "coverage_pattern",
         "cluster_confidence", "brief", "review_status",
     }
-    source_fields = {"source_name", "title", "url", "corroboration_role", "country", "image_url"}
+    source_fields = {"source_name", "source_type", "title", "url", "corroboration_role", "country", "image_url"}
     browser_clusters = []
     for cluster in payload["clusters"]:
         browser_cluster = {key: value for key, value in cluster.items() if key in cluster_fields}

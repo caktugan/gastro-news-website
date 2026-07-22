@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-22T19:11:52+00:00",
+  "generated_at": "2026-07-22T19:48:52+00:00",
   "overall_status": "current",
   "issue_count": 0,
   "stages": [
@@ -8,8 +8,8 @@
       "id": "news",
       "label": "News feeds",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:42+00:00",
-      "duration_ms": 63100,
+      "completed_at": "2026-07-22T19:48:46+00:00",
+      "duration_ms": 2074,
       "summary": "63 of 63 feeds responded · 442 items",
       "issues": 0
     },
@@ -17,8 +17,8 @@
       "id": "markets",
       "label": "Cost benchmarks",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:45+00:00",
-      "duration_ms": 3813,
+      "completed_at": "2026-07-22T19:48:48+00:00",
+      "duration_ms": 2616,
       "summary": "5 official benchmarks · 0 AI requests",
       "issues": 0
     },
@@ -26,26 +26,26 @@
       "id": "trends",
       "label": "Trend radar",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:46+00:00",
-      "duration_ms": 215,
+      "completed_at": "2026-07-22T19:48:48+00:00",
+      "duration_ms": 299,
       "summary": "5 evidence-backed signals · 0 AI requests",
       "issues": 0
     },
     {
       "id": "social",
-      "label": "Social source watch",
+      "label": "Social source directory",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:46+00:00",
-      "duration_ms": 92,
-      "summary": "8 reviewed channels · no posts scraped · 0 AI requests",
+      "completed_at": "2026-07-22T19:48:49+00:00",
+      "duration_ms": 122,
+      "summary": "8 catalogued channels · access unverified · 0 posts retrieved",
       "issues": 0
     },
     {
       "id": "events",
       "label": "Events calendar",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:50+00:00",
-      "duration_ms": 4140,
+      "completed_at": "2026-07-22T19:48:52+00:00",
+      "duration_ms": 3110,
       "summary": "6 of 6 official pages verified",
       "issues": 0
     },
@@ -53,9 +53,9 @@
       "id": "enrichment",
       "label": "English edition",
       "status": "current",
-      "completed_at": "2026-07-22T19:11:52+00:00",
-      "duration_ms": 1959,
-      "summary": "97 English briefs · gemini · 0 pending",
+      "completed_at": "2026-07-22T19:48:52+00:00",
+      "duration_ms": 148,
+      "summary": "77 English briefs · gemini · 0 pending",
       "issues": 0
     }
   ]

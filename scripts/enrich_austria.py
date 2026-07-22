@@ -445,7 +445,9 @@ def write_json(path: Path, payload: dict) -> None:
     temporary.replace(path)
 
 
-def write_browser_data(path: Path, cache: dict, selected_ids: set[str]) -> int:
+def write_browser_data(path: Path, cache: dict, selected: list[dict], excluded_ids: set[str] | None = None) -> int:
+    excluded_ids = excluded_ids or set()
+    selected_by_id = {cluster["id"]: cluster for cluster in selected}
     translations = {
         identifier: {
             "title": item["title"],
@@ -458,7 +460,13 @@ def write_browser_data(path: Path, cache: dict, selected_ids: set[str]) -> int:
             "provider": item.get("provider", "mistral"),
         }
         for identifier, item in cache.get("items", {}).items()
-        if identifier in selected_ids and item.get("publish")
+        if (
+            identifier in selected_by_id
+            and identifier not in excluded_ids
+            and item.get("publish")
+            and item.get("source_signature") == selected_by_id[identifier].get("source_signature")
+            and item.get("prompt_version") == PROMPT_VERSION
+        )
     }
     payload = {
         "schemaVersion": 1,
@@ -606,7 +614,7 @@ def main() -> int:
                 errors.append(str(error))
                 break
 
-    published_auto = write_browser_data(args.output, cache, selected_ids)
+    published_auto = write_browser_data(args.output, cache, selected, manual_ids)
     final_usage = usage_totals(load_usage_ledger(args.usage_ledger), usage_day(), provider)
     report = {
         "schema_version": 1,

@@ -339,6 +339,14 @@ function relativeTime(value) {
   const published = new Date(value);
   const elapsed = Date.now() - published.getTime();
   if (!Number.isFinite(elapsed)) return "Recently";
+  if (elapsed < -60000) {
+    const futureMinutes = Math.ceil(Math.abs(elapsed) / 60000);
+    if (futureMinutes < 60) return `in ${futureMinutes} min`;
+    const futureHours = Math.ceil(futureMinutes / 60);
+    if (futureHours < 24) return `in ${futureHours} hr${futureHours === 1 ? "" : "s"}`;
+    const futureDays = Math.ceil(futureHours / 24);
+    return `in ${futureDays} day${futureDays === 1 ? "" : "s"}`;
+  }
   const minutes = Math.max(1, Math.floor(elapsed / 60000));
   if (minutes < 60) return `${minutes} min ago`;
   const hours = Math.floor(minutes / 60);
@@ -396,10 +404,9 @@ function storyTopic(cluster) {
 
 function liveAustriaStories() {
   const payload = window.MISE_LIVE_NEWS;
-  const translations = {
-    ...(window.MISE_AUSTRIA_ENGLISH || {}),
-    ...(window.MISE_AUSTRIA_AUTO?.translations || {})
-  };
+  const manualTranslations = window.MISE_AUSTRIA_ENGLISH || {};
+  const automatedTranslations = window.MISE_AUSTRIA_AUTO?.translations || {};
+  const translations = { ...automatedTranslations, ...manualTranslations };
   const clusters = payload?.clusters;
   if (!Array.isArray(clusters)) return [];
 
@@ -407,6 +414,7 @@ function liveAustriaStories() {
     .filter((cluster) => cluster.edition === "austria" && translations[cluster.id])
     .map((cluster) => {
       const translation = translations[cluster.id];
+      const summaryProvenance = manualTranslations[cluster.id] ? "manual" : "ai";
       const sources = (cluster.sources || [])
         .filter((source) => /^https:\/\//.test(source.url || ""))
         .filter((source, index, all) => all.findIndex((candidate) => candidate.source_name === source.source_name) === index);
@@ -434,7 +442,8 @@ function liveAustriaStories() {
           title: safeText(source.title),
           url: source.url,
           initial: sourceInitials(source.source_name),
-          role: source.corroboration_role || "independent_editorial"
+          role: source.corroboration_role || "independent_editorial",
+          sourceType: source.source_type || "publisher"
         })),
         brief: [],
         briefType: "source_translation",
@@ -444,6 +453,7 @@ function liveAustriaStories() {
         isCluster: (cluster.source_count || sources.length) > 1,
         isLive: true,
         isTranslated: true,
+        summaryProvenance,
         reviewStatus: cluster.review_status || "automated_unreviewed",
         openingStatus: topic === "Openings" ? inferOpeningStatus(translation.title, translation.summary) : null,
         publishedAt: cluster.published_at,
@@ -489,7 +499,8 @@ function liveGlobalStories() {
         title: safeText(source.title),
         url: source.url,
         initial: sourceInitials(source.source_name),
-        role: source.corroboration_role || "independent_editorial"
+        role: source.corroboration_role || "independent_editorial",
+        sourceType: source.source_type || "publisher"
       })),
       brief: (cluster.brief?.bullets || []).map((bullet) => safeText(bullet.text)),
       briefType: cluster.brief?.type,
@@ -521,20 +532,30 @@ if (liveGlobals.length) stories.global = liveGlobals;
 function readSavedStories() {
   try {
     const value = JSON.parse(window.localStorage.getItem("mise.savedStories") || "[]");
-    return new Set(Array.isArray(value) ? value.filter((id) => typeof id === "string") : []);
+    if (Array.isArray(value)) {
+      return { ids: new Set(value.filter((id) => typeof id === "string")), snapshots: new Map() };
+    }
+    const ids = Array.isArray(value?.ids) ? value.ids.filter((id) => typeof id === "string") : [];
+    const snapshots = Object.entries(value?.stories || {}).filter(([, story]) => story && typeof story === "object");
+    return { ids: new Set(ids), snapshots: new Map(snapshots) };
   } catch {
-    return new Set();
+    return { ids: new Set(), snapshots: new Map() };
   }
 }
 
 function persistSavedStories() {
   try {
-    window.localStorage.setItem("mise.savedStories", JSON.stringify([...state.saved]));
+    window.localStorage.setItem("mise.savedStories", JSON.stringify({
+      version: 2,
+      ids: [...state.saved],
+      stories: Object.fromEntries([...state.savedSnapshots].filter(([id]) => state.saved.has(id)))
+    }));
   } catch {
     // Browsing remains functional when storage is blocked or unavailable.
   }
 }
 
+const savedStore = readSavedStories();
 const state = {
   page: "news",
   section: "vienna",
@@ -544,9 +565,20 @@ const state = {
   eventFilter: "all",
   trackerWeekOffset: 0,
   trackerFilter: "all",
-  saved: readSavedStories(),
+  saved: savedStore.ids,
+  savedSnapshots: savedStore.snapshots,
   visibleCount: 18
 };
+
+const availableStoryIds = new Set(allStories().map((story) => story.id));
+let prunedLegacySave = false;
+for (const id of [...state.saved]) {
+  if (!availableStoryIds.has(id) && !state.savedSnapshots.has(id)) {
+    state.saved.delete(id);
+    prunedLegacySave = true;
+  }
+}
+if (prunedLegacySave) persistSavedStories();
 
 const heroLayout = document.querySelector("#hero-layout");
 const storyFeed = document.querySelector("#story-feed");
@@ -583,7 +615,10 @@ function allStories() {
 function currentStories() {
   let items;
   if (state.section === "saved") {
-    items = allStories().filter((story) => state.saved.has(story.id));
+    const currentById = new Map(allStories().map((story) => [story.id, story]));
+    items = [...state.saved]
+      .map((id) => currentById.get(id) || state.savedSnapshots.get(id))
+      .filter(Boolean);
   } else if (state.section === "openings") {
     items = [...stories.vienna, ...stories.austria].filter((story) => story.topic === "Openings");
   } else if (state.section === "review") {
@@ -614,11 +649,15 @@ function storyMeta(story, light = false) {
 }
 
 function trackerEvidence(story) {
-  const roles = (story.sourceLinks || []).map((source) => source.role || "independent_editorial");
+  const sourceLinks = story.sourceLinks || [];
+  const roles = sourceLinks.map((source) => source.role || "independent_editorial");
   if (roles.some((role) => /social|community/.test(role))) {
     return { label: "Social post", className: "social" };
   }
-  if (roles.length && roles.every((role) => /first_party|official_primary|official_first_party/.test(role))) {
+  if (sourceLinks.length && sourceLinks.every((source) => source.sourceType === "official" || source.role === "official_primary")) {
+    return { label: "Official record", className: "first-party" };
+  }
+  if (roles.length && roles.every((role) => /first_party|official_first_party/.test(role))) {
     return { label: "First-party announcement", className: "first-party" };
   }
   if (roles.length && roles.every((role) => role === "press_release")) {
@@ -633,37 +672,6 @@ function trackerEvidence(story) {
 function saveButton(story, className) {
   const saved = state.saved.has(story.id);
   return `<button class="${className} ${saved ? "saved" : ""}" data-save="${story.id}" type="button" aria-label="${saved ? "Remove from saved stories" : "Save story"}">${bookmarkIcon}</button>`;
-}
-
-function heroCard(story) {
-  return `
-    <article class="hero-card" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
-      <img src="${story.image || defaultStoryImage}" alt="" fetchpriority="high" />
-      ${saveButton(story, "hero-save")}
-      <div class="hero-copy">
-        <div class="story-kicker"><span></span>${story.location} · ${story.topic}</div>
-        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
-        <h2>${story.title}</h2>
-        <p>${story.summary || story.deck}</p>
-        ${storyMeta(story, true)}
-      </div>
-    </article>
-  `;
-}
-
-function compactCard(story) {
-  return `
-    <article class="compact-card" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
-      <img src="${story.image || defaultStoryImage}" alt="" loading="lazy" decoding="async" />
-      ${saveButton(story, "compact-save")}
-      <div class="compact-card-content">
-        <div class="story-kicker"><span></span>${story.location} · ${story.topic}</div>
-        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
-        <h3>${story.title}</h3>
-        ${storyMeta(story, true)}
-      </div>
-    </article>
-  `;
 }
 
 function selectDailyBriefing(items, limit = 5) {
@@ -946,7 +954,7 @@ function renderTracker() {
 
   document.querySelector("#tracker-week-label").textContent = weekLabel;
   document.querySelector("#tracker-overview").innerHTML = `
-    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerWeekOffset ? "Last week" : "This week"} at a glance</h2><p>Publisher reporting, first-party announcements and approved social posts published during ${weekLabel}. Every status remains tied to its source evidence.</p></div>
+    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerWeekOffset ? "Last week" : "This week"} in reporting</h2><p>Opening and closure reports published during ${weekLabel}. Dates show when the source reported the development, not necessarily the venue's effective opening or closing date.</p></div>
     <div class="tracker-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
 
   document.querySelectorAll("[data-tracker-week]").forEach((button) => {
@@ -986,7 +994,7 @@ function renderSocialWatch() {
   const note = document.querySelector("#social-watch-note");
   if (!grid || !status || !note) return;
   const channels = payload?.channels || [];
-  status.textContent = `${channels.length} reviewed channels · 0 posts scraped · 0 AI requests`;
+  status.textContent = `${channels.length} catalogued channels · access unverified · 0 posts retrieved`;
   grid.innerHTML = channels.length ? channels.map((channel) => {
     const link = channel.links?.[0];
     return `
@@ -996,8 +1004,8 @@ function renderSocialWatch() {
         <p>${safeText(humanizeSignalType(channel.signal_type))}</p>
         <strong>Open channel ↗</strong>
       </a>`;
-  }).join("") : `<div class="empty-state">No reviewed social channels are currently available.</div>`;
-  note.textContent = "These are discovery and first-party channels, not verified news. An approved public post may appear as a clearly labelled Social post; material claims still require corroboration before MISE promotes them into a confirmed briefing.";
+  }).join("") : `<div class="empty-state">No catalogued social channels are currently available.</div>`;
+  note.textContent = "This is a source directory, not an ingested social feed. Channel access and individual posts require manual or approved-API review before anything can appear as a labelled Social post.";
 }
 
 function renderPageShell() {
@@ -1138,7 +1146,7 @@ function render() {
     <div class="briefing-queue">${secondary.map((story, index) => briefingQueueCard(story, index + 2)).join("")}</div>
   `;
   const briefingSources = new Set(briefingItems.flatMap((story) => story.sourceNames || [])).size;
-  document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} essential developments · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} publishers · source-ranked`;
+  document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} essential developments · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} sources · source-ranked`;
 
   const briefingIds = new Set(briefingItems.map((story) => story.id));
   const feedItems = filteredItems.filter((story) => !briefingIds.has(story.id));
@@ -1198,7 +1206,7 @@ function bindCards() {
 }
 
 function findStory(id) {
-  return allStories().find((story) => story.id === id);
+  return allStories().find((story) => story.id === id) || state.savedSnapshots.get(id);
 }
 
 function toggleSaved(id) {
@@ -1207,9 +1215,11 @@ function toggleSaved(id) {
 
   if (state.saved.has(id)) {
     state.saved.delete(id);
+    state.savedSnapshots.delete(id);
     showToast("Removed from saved stories");
   } else {
     state.saved.add(id);
+    state.savedSnapshots.set(id, story);
     showToast("Saved for later");
   }
   persistSavedStories();
@@ -1219,7 +1229,7 @@ function toggleSaved(id) {
 function storyFacts(story) {
   const facts = [
     `${story.location} · ${story.topic}`,
-    `${story.sources} ${story.sources === 1 ? "publisher source" : "publisher sources"}`,
+    `${story.sources} ${story.sources === 1 ? "source" : "sources"}`,
     story.independentSources > 1 ? `${story.independentSources} independently classified sources` : "Single-source claim",
     story.openingStatus || null,
     story.imageCandidate && story.imageUsage !== "permitted" ? "Publisher image awaiting rights review" : null
@@ -1259,8 +1269,6 @@ function openStory(id) {
         <div class="ai-label"><span>${story.isCluster ? "✦" : "↗"}</span>${story.isCluster
           ? story.coveragePattern === "likely_syndicated"
             ? `Multi-outlet coverage · ${story.sources} outlets · likely shared release`
-            : story.coveragePattern === "multi_outlet_unverified"
-              ? `Multi-outlet coverage · ${story.sources} outlets · independence unverified`
             : `Evidence brief · ${story.independentSources} independent of ${story.sources} sources`
           : story.isTranslated
             ? "English source translation · original reporting linked"
@@ -1280,11 +1288,11 @@ function openStory(id) {
       <p class="disclosure">${story.isCluster
         ? story.coveragePattern === "likely_syndicated"
           ? "These outlets appear to be covering the same announcement and may rely on shared press material. MISE shows both links but does not treat repetition as independent confirmation. No article body was copied."
-          : story.coveragePattern === "multi_outlet_unverified"
-            ? "Multiple outlets cover this story, but MISE has not verified that their reporting is independently sourced. The links are grouped for comparison, not presented as confirmed corroboration."
           : "This automated, unreviewed evidence brief uses short publisher feed excerpts. Each bullet remains traceable to the linked coverage; no article body was copied and no generative AI was used in this clustering pass."
           : story.isTranslated
-          ? "MISE translated and summarized the publisher's public feed title and excerpt into English. The summary is limited to supplied evidence; the original-language headline and publisher link remain visible, and no article body was copied."
+          ? story.summaryProvenance === "ai"
+            ? "MISE used AI to translate and summarize the publisher's public feed title and excerpt into English. The summary is limited to supplied evidence; the original-language headline and publisher link remain visible, and no article body was copied."
+            : "MISE's curated English version is based on the publisher's public feed title and excerpt. The original-language headline and publisher link remain visible, and no article body was copied."
           : "This preview uses the publisher's feed title, metadata and short excerpt. MISE has not generated a summary or copied the article body. Follow the source link for the complete reporting."}</p>
     `
     : `
@@ -1325,8 +1333,8 @@ function openStory(id) {
       <div class="drawer-meta">${storyMeta(story)}</div>
 
       <div class="trust-strip">
-        <span>${story.isTranslated ? "AI summary" : "Source excerpt"}</span>
-        <span>${story.isTranslated || story.reviewStatus === "automated_unreviewed" ? "Editorial review pending" : "Metadata review pending"}</span>
+        <span>${story.summaryProvenance === "ai" ? "AI summary" : story.summaryProvenance === "manual" ? "Editorial translation" : "Source excerpt"}</span>
+        <span>${story.summaryProvenance === "manual" ? "Editorially curated" : story.isTranslated || story.reviewStatus === "automated_unreviewed" ? "Editorial review pending" : "Metadata review pending"}</span>
         <span>Rank ${relevanceScore(story)}</span>
       </div>
 
@@ -1400,9 +1408,9 @@ function closeSearch() {
 function renderSearchResults(query) {
   const term = query.trim().toLowerCase();
   const results = allStories().filter((story) => {
-    const haystack = `${story.title} ${story.deck} ${story.topic} ${story.location}`.toLowerCase();
+    const haystack = `${story.title} ${story.summary || story.deck} ${story.topic} ${story.location} ${(story.sourceNames || []).join(" ")}`.toLowerCase();
     return !term || haystack.includes(term);
-  }).slice(0, 7);
+  }).slice(0, 20);
 
   searchResults.innerHTML = results.length
     ? results.map((story) => `
@@ -1496,17 +1504,6 @@ document.querySelectorAll("[data-sort]").forEach((chip) => {
     state.visibleCount = 18;
     document.querySelectorAll("[data-sort]").forEach((item) => item.classList.toggle("active", item === chip));
     render();
-  });
-});
-
-document.querySelectorAll(".topic-link").forEach((link) => {
-  link.addEventListener("click", () => {
-    if (["saved", "openings", "review"].includes(state.section)) state.section = "vienna";
-    state.topic = link.dataset.topic;
-    state.visibleCount = 18;
-    document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.topic === state.topic));
-    render();
-    document.querySelector(".feed-section").scrollIntoView({ behavior: "smooth" });
   });
 });
 

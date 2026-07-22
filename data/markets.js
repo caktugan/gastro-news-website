@@ -1,5 +1,5 @@
 window.MISE_MARKETS = {
-  "generated_at": "2026-07-22T19:11:45+00:00",
+  "generated_at": "2026-07-22T19:48:48+00:00",
   "status": "current",
   "ai_requests": 0,
   "methodology": "Official reference series only. Values are directional wholesale or macro benchmarks, not supplier quotes.",

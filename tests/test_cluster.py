@@ -104,6 +104,30 @@ class ClusterMetadataTests(unittest.TestCase):
 
         self.assertEqual(len(build_clusters(articles, {"rolling-pin": 100})), 2)
 
+    def test_one_similar_pair_does_not_mark_three_source_cluster_as_syndicated(self):
+        base = {
+            "edition": "global",
+            "language": "en",
+            "topic": "Business",
+            "title": "Acme Dining Group announces expansion",
+            "published_at": "2026-07-22T08:00:00Z",
+            "source_type": "trade_press",
+            "access": "open",
+            "corroboration_role": "independent_editorial",
+            "country": "US",
+            "image_url": None,
+        }
+        articles = [
+            {**base, "id": "one", "source_id": "one", "source_name": "One", "summary": "Acme Dining Group will open ten restaurants across Austria next year.", "url": "https://one.example/story"},
+            {**base, "id": "two", "source_id": "two", "source_name": "Two", "summary": "Acme Dining Group will open ten restaurants across Austria next year.", "url": "https://two.example/story"},
+            {**base, "id": "three", "source_id": "three", "source_name": "Three", "summary": "Executives linked the expansion to franchise demand and outlined staffing risks.", "url": "https://three.example/story"},
+        ]
+
+        result = build_clusters(articles, {"one": 10, "two": 20, "three": 30})
+
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["coverage_pattern"], "independently_reported")
+
     def test_independent_metric_and_browser_payload_contract(self):
         articles = []
         for suffix, source in (("one", "publisher-one"), ("two", "publisher-two")):
@@ -145,6 +169,7 @@ class ClusterMetadataTests(unittest.TestCase):
             self.assertNotIn('"articles"', browser_bundle)
             self.assertNotIn('"article_id"', browser_bundle)
             self.assertIn('"coverage_pattern":"independently_reported"', browser_bundle)
+            self.assertIn('"source_type":"trade_press"', browser_bundle)
 
 
 if __name__ == "__main__":
