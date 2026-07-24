@@ -725,13 +725,23 @@ function selectDailyBriefing(items, limit = 5) {
   return selected;
 }
 
+function storyGlyph(story) {
+  const match = String(story.title || "").match(/[0-9A-Za-zÀ-ÖØ-öø-ÿ]/);
+  return (match ? match[0] : "M").toUpperCase();
+}
+
+function storyByline(story) {
+  const source = (story.sourceNames || [])[0] || "MISE desk";
+  return `<div class="feed-byline">${source} · ${story.time}</div>`;
+}
+
 function briefingLeadCard(story) {
   return `
     <article class="briefing-lead" data-story="${story.id}" tabindex="0" aria-label="Read lead briefing: ${story.title}">
       <img ${storyImageAttributes(story)} alt="" fetchpriority="high" />
       ${saveButton(story, "hero-save")}
       <div class="briefing-lead-copy">
-        <div class="briefing-label"><span>Top story</span><i>${story.location} · ${story.topic}</i></div>
+        <div class="briefing-label">${story.topic} · ${story.location}</div>
         ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
         <h2>${story.title}</h2>
         <p>${story.summary || story.deck}</p>
@@ -743,32 +753,31 @@ function briefingLeadCard(story) {
 function briefingQueueCard(story, index) {
   return `
     <article class="briefing-queue-story" data-story="${story.id}" tabindex="0" aria-label="Read briefing item ${index}: ${story.title}">
-      <span class="briefing-rank">0${index}</span>
       <div class="briefing-queue-copy">
-        <span>${story.location} · ${story.topic}${story.openingStatus ? ` · ${story.openingStatus}` : ""}</span>
+        <span>${story.topic} · ${story.location}${story.openingStatus ? ` · ${story.openingStatus}` : ""}</span>
         <h3>${story.title}</h3>
         <p>${story.summary || story.deck}</p>
-        ${storyMeta(story)}
+        ${storyByline(story)}
       </div>
       <img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" />
       ${saveButton(story, "briefing-save")}
     </article>`;
 }
 
-function feedCard(story, index) {
+function feedCard(story) {
   const visual = story.image
     ? `<div class="feed-image"><img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" /></div>`
-    : `<div class="feed-image-placeholder" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div>`;
+    : `<div class="feed-image-placeholder" data-topic="${safeText(story.topic)}" aria-hidden="true">${storyGlyph(story)}</div>`;
 
   return `
     <article class="feed-story" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
       ${visual}
       <div class="feed-copy">
-        <span class="feed-topic" data-topic="${story.topic}">${story.location} · ${story.topic}</span>
+        <span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>
         ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
         <h3>${story.title}</h3>
         <p>${story.summary || story.deck}</p>
-        ${storyMeta(story)}
+        ${storyByline(story)}
       </div>
       ${saveButton(story, "feed-save")}
     </article>
@@ -782,6 +791,31 @@ function greetingForNow() {
   return "Good evening.";
 }
 
+function marketSparkline(history, direction) {
+  const values = (history || []).map((item) => Number(item.value)).filter(Number.isFinite);
+  if (values.length < 2) return "";
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const span = high - low || 1;
+  const step = 100 / (values.length - 1);
+  const points = values
+    .map((value, index) => `${(index * step).toFixed(2)},${(24 - ((value - low) / span) * 22).toFixed(2)}`)
+    .join(" ");
+  const stroke = direction === "up" ? "#7db98a" : direction === "down" ? "#e0765f" : "#9a978a";
+  return `
+    <svg viewBox="0 0 100 26" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points="0,26 ${points} 100,26" fill="${stroke}" fill-opacity="0.13"></polygon>
+      <polyline points="${points}" stroke="${stroke}"></polyline>
+    </svg>`;
+}
+
+function marketScopeGroup(scope) {
+  const label = String(scope || "");
+  if (label.startsWith("Austria")) return "Austria";
+  if (label.startsWith("European Union")) return "European Union";
+  return "Global";
+}
+
 function renderMarkets() {
   if (!marketPanel || !marketStrip) return;
   const payload = window.MISE_MARKETS;
@@ -789,31 +823,42 @@ function renderMarkets() {
   marketPanel.hidden = !items.length;
   if (!items.length) return;
 
-  marketStrip.innerHTML = items.map((item) => {
-    const change = Number(item.change_pct);
-    const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
-    const changeLabel = Number.isFinite(change)
-      ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
-      : "No comparison";
-    const observation = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
-      .format(new Date(`${item.period}T12:00:00`));
-    const value = new Intl.NumberFormat("en-GB", {
-      minimumFractionDigits: item.display_decimals || 0,
-      maximumFractionDigits: item.display_decimals || 0
-    }).format(Number(item.value));
-    return `
-      <button class="market-card" data-market="${safeText(item.id)}" type="button" aria-label="View market detail for ${safeText(item.label)}">
-        <div class="market-card-top"><span>${safeText(item.scope)}</span><i>${safeText(item.frequency)}</i></div>
-        <h3>${safeText(item.label)}</h3>
-        <div class="market-value"><strong>${value}</strong><span>${safeText(item.unit)}</span></div>
-        <div class="market-change ${direction}"><strong>${changeLabel}</strong><span>${safeText(item.change_basis)}</span></div>
-        <div class="market-source"><span>${observation}</span>${item.stale ? "<strong>Stale</strong>" : "<strong>View →</strong>"}</div>
-      </button>`;
-  }).join("");
+  const groups = new Map([["Austria", []], ["European Union", []], ["Global", []]]);
+  items.forEach((item) => groups.get(marketScopeGroup(item.scope)).push(item));
 
-  const generated = payload.generated_at ? relativeTime(payload.generated_at) : "recently";
-  document.querySelector("#market-status").textContent = `${payload.status === "current" ? "Official data" : "Partial refresh"} · refreshed ${generated} · 0 AI requests`;
-  document.querySelector("#market-methodology").textContent = payload.methodology || "Reference series are directional benchmarks, not supplier quotes.";
+  marketStrip.innerHTML = [...groups.entries()]
+    .filter(([, groupItems]) => groupItems.length)
+    .map(([groupLabel, groupItems]) => `
+      <div class="market-group">
+        <h4 class="market-group-heading">${safeText(groupLabel)}</h4>
+        ${groupItems.map((item) => {
+          const change = Number(item.change_pct);
+          const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+          const changeLabel = Number.isFinite(change)
+            ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
+            : "No comparison";
+          const value = new Intl.NumberFormat("en-GB", {
+            minimumFractionDigits: item.display_decimals || 0,
+            maximumFractionDigits: item.display_decimals || 0
+          }).format(Number(item.value));
+          return `
+            <button class="market-row" data-market="${safeText(item.id)}" type="button" aria-label="View market detail for ${safeText(item.label)}">
+              <span class="market-row-name">${safeText(item.label)}</span>
+              <span class="market-row-value">${value}<span>${safeText(item.unit)}</span></span>
+              <span class="market-row-trend">
+                ${marketSparkline(item.history, direction)}
+                <span class="market-row-change ${direction}">${changeLabel}${item.stale ? " · stale" : ""}</span>
+              </span>
+            </button>`;
+        }).join("")}
+      </div>`)
+    .join("");
+
+  document.querySelector("#market-status").textContent = "Wholesale & commodity watch · no AI";
+  const updated = payload.generated_at
+    ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" }).format(new Date(payload.generated_at))
+    : "recently";
+  document.querySelector("#market-methodology").textContent = `${items.length} official reference series · Updated ${updated}`;
   document.querySelectorAll("[data-market]").forEach((button) => {
     button.addEventListener("click", () => {
       state.marketId = button.dataset.market;
@@ -850,7 +895,7 @@ function marketDetailChart(history) {
         <polyline points="${line}"></polyline>
         ${coordinates.map((point) => `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="3"><title>${safeText(point.date)}: ${point.value}</title></circle>`).join("")}
       </svg>
-      <div class="market-chart-axis"><span>${safeText(first.date)}</span><span>Low ${low.toLocaleString("en-GB")}</span><span>High ${high.toLocaleString("en-GB")}</span><span>${safeText(last.date)}</span></div>
+      <div class="market-chart-axis"><span>${safeText(first.date)}</span><span>${safeText(points[Math.floor(points.length / 2)].date)}</span><span>${safeText(last.date)}</span></div>
     </div>`;
 }
 
@@ -870,19 +915,22 @@ function renderMarketDetail() {
   }).format(Number(item.value));
   const period = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
     .format(new Date(`${item.period}T12:00:00`));
+  const historyValues = (item.history || []).map((entry) => Number(entry.value)).filter(Number.isFinite);
+  const seriesHigh = historyValues.length ? Math.max(...historyValues).toLocaleString("en-GB") : "—";
+  const seriesLow = historyValues.length ? Math.min(...historyValues).toLocaleString("en-GB") : "—";
   container.innerHTML = `
     <header class="market-detail-header">
-      <div><p class="eyebrow">HOSPITALITY MARKETS · ${safeText(item.scope)}</p><h2>${safeText(item.label)}</h2><p>${safeText(item.description)}</p></div>
+      <div><p class="eyebrow">COMMODITY BOARD · ${safeText(item.scope)}</p><h2>${safeText(item.label)}</h2><p>${safeText(item.description)}</p></div>
       <div class="market-detail-quote"><strong>${value}</strong><span>${safeText(item.unit)}</span><em class="${direction}">${changeLabel} ${safeText(item.change_basis)}</em></div>
     </header>
     ${marketDetailChart(item.history)}
     <div class="market-detail-facts">
+      <div><span>Series high</span><strong>${seriesHigh} ${safeText(item.unit)}</strong></div>
+      <div><span>Series low</span><strong>${seriesLow} ${safeText(item.unit)}</strong></div>
+      <div><span>Frequency</span><strong>${safeText(item.frequency)}${item.stale ? " · stale cached value" : ""}</strong></div>
       <div><span>Latest observation</span><strong>${period}</strong></div>
-      <div><span>Frequency</span><strong>${safeText(item.frequency)}</strong></div>
-      <div><span>Data condition</span><strong>${item.stale ? "Stale cached value" : "Current official series"}</strong></div>
-      <div><span>Source</span><strong>${safeText(item.source)}</strong></div>
     </div>
-    <div class="market-detail-footer"><p>${safeText(payload.methodology || "Directional reference benchmark, not a supplier quote.")}</p><a href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer">Open official source ↗</a></div>`;
+    <div class="market-detail-footer"><p>${safeText(payload.methodology || "Directional reference benchmark, not a supplier quote.")} Source: ${safeText(item.source)}.</p><a href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer">Open official source ↗</a></div>`;
 }
 
 function renderTrendRadar() {
@@ -1295,11 +1343,27 @@ function storyFacts(story) {
 }
 
 function whyItMatters(story) {
+  // Live stories branch on corroboration rather than generic prose (handoff §5d).
+  if (story.isLive) {
+    return (story.independentSources || 0) > 1
+      ? `Reported independently by ${story.independentSources} outlets, so the core facts are corroborated. Still confirm dates and figures with the operator before acting.`
+      : "Single-source at the time of filing. Treat the detail as provisional and verify directly before you price, staff or plan against it.";
+  }
   if (story.openingStatus === "Closed") return "Closures affect neighbourhood hospitality, employment and the local competitive landscape. The status remains tied to the publisher evidence shown below.";
   if (story.topic === "Openings") return "New venues are an early signal of how Vienna and Austria’s dining landscape is changing—by neighbourhood, format and price point.";
   if (/vienna|wien/i.test(story.location)) return "This story has direct local relevance for Vienna’s hospitality community and is prioritised in the Austria edition.";
   if (story.topic === "Business") return "The development may affect operating costs, staffing, investment or competitive conditions across hospitality businesses.";
   return "MISE ranks this story using freshness, geographic relevance, source quality and corroboration signals.";
+}
+
+function provenanceKicker(story) {
+  if (story.summaryProvenance === "manual") {
+    return "Headline and standfirst written by a MISE editor from the original German reporting.";
+  }
+  if (story.summaryProvenance === "ai") {
+    return "Headline, standfirst and summary machine-translated from the original German source and not yet editor-reviewed.";
+  }
+  return "Drawn from source metadata only — no MISE summary has been written for this item yet.";
 }
 
 function openStory(id) {
@@ -1315,7 +1379,7 @@ function openStory(id) {
       <a class="source-row" href="${source.url}" target="_blank" rel="noopener noreferrer">
         <span class="source-icon">${source.initial}</span>
         <p>${source.name}<small>${source.title}</small></p>
-        <span>↗</span>
+        <span>Read at source ↗</span>
       </a>
     `).join("")
     : "";
@@ -1333,6 +1397,7 @@ function openStory(id) {
         ${story.isCluster && story.brief.length
           ? `<ul>${story.brief.map((item) => `<li>${item}</li>`).join("")}</ul>`
           : `<p>${story.deck}</p>`}
+        <p class="provenance-kicker">${provenanceKicker(story)}</p>
       </section>
 
       <section class="drawer-section">
@@ -1359,11 +1424,6 @@ function openStory(id) {
       </section>
 
       <section class="drawer-section">
-        <h3>Why it matters</h3>
-        <p>${story.why}</p>
-      </section>
-
-      <section class="drawer-section">
         <h3>Coverage</h3>
         <div class="source-list">
           ${story.sourceNames.map((name, index) => `
@@ -1379,10 +1439,12 @@ function openStory(id) {
       <p class="disclosure">This is a sample story created to demonstrate the editorial product and interface. It is not live reporting. In production, every claim would be linked to retrieved evidence and every source row would open the original publication.</p>
     `;
 
+  const drawerHero = story.image
+    ? `<div class="drawer-hero"><img ${storyImageAttributes(story)} alt="" decoding="async" /></div>`
+    : `<div class="drawer-hero feed-image-placeholder" data-topic="${safeText(story.topic)}" aria-hidden="true">${storyGlyph(story)}</div>`;
+
   drawerContent.innerHTML = `
-    <div class="drawer-hero">
-      <img ${storyImageAttributes(story)} alt="" decoding="async" />
-    </div>
+    ${drawerHero}
     <div class="drawer-body">
       <span class="feed-topic" data-topic="${story.topic}">${placeLabel} · ${story.topic}</span>
       <h2 id="drawer-title">${story.title}</h2>
@@ -1400,9 +1462,9 @@ function openStory(id) {
         <ul>${storyFacts(story).map((fact) => `<li>${fact}</li>`).join("")}</ul>
       </section>
 
-      <section class="drawer-section">
-        <h3>Why it matters</h3>
-        <p>${whyItMatters(story)}</p>
+      <section class="drawer-section operator-note">
+        <h3>Why it matters for operators</h3>
+        <p>${story.isLive ? whyItMatters(story) : story.why || whyItMatters(story)}</p>
       </section>
 
       ${storyDetails}

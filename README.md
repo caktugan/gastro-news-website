@@ -76,7 +76,7 @@ python .\scripts\cluster.py
 
 ## Refresh operator-cost benchmarks
 
-The News page includes a vertical hospitality-market tape and individual detail pages for nine official series: Austria bread wheat, raw milk, barn eggs, whole broiler chicken and class E pigmeat; an EU butter reference; Milan crude sunflower oil; Italian bulk extra-virgin olive oil; and EUR/USD. Refresh it with:
+The News page includes the Commodity Board — a vertical market rail grouped by region — and individual detail pages for nine official series: Austria bread wheat, raw milk, barn eggs, whole broiler chicken and class E pigmeat; an EU butter reference; Milan crude sunflower oil; Italian bulk extra-virgin olive oil; and EUR/USD. Refresh it with:
 
 ```powershell
 python .\scripts\update_markets.py

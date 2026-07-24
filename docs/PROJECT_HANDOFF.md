@@ -50,10 +50,10 @@ The product is not intended to be a consumer restaurant directory or a generic f
 - Routine opening/closure stories are filtered out of the News feed.
 - Publisher-feed image candidates are shown when available, with optimized local category artwork as a fallback.
 
-### Hospitality Tape
+### Commodity Board
 
 - The former Gastro Pulse module was removed.
-- A vertical market module called **The Hospitality Tape** appears beside the News feed on desktop and becomes a horizontally scrollable strip on mobile.
+- A vertical market module called **The Commodity Board** (renamed from "The Hospitality Tape" during the Night Desk redesign) appears beside the News feed on desktop, with benchmarks grouped by region (Austria, European Union, Global) as compact rows with sparklines.
 - Clicking a benchmark opens its own detail view with current value, change, observation date, chart history, methodology, and official source.
 - Current series: Austria bread wheat, raw milk, barn eggs, whole broiler chicken, class E pigmeat; EU butter; Milan crude sunflower oil; Italian bulk extra-virgin olive oil; and EUR/USD.
 - These are directional wholesale or macro references, not guaranteed supplier prices.
