@@ -750,17 +750,15 @@ function briefingLeadCard(story) {
     </article>`;
 }
 
-function briefingQueueCard(story, index) {
+function briefingSecondaryCard(story) {
   return `
-    <article class="briefing-queue-story" data-story="${story.id}" tabindex="0" aria-label="Read briefing item ${index}: ${story.title}">
-      <div class="briefing-queue-copy">
-        <span>${story.topic} · ${story.location}${story.openingStatus ? ` · ${story.openingStatus}` : ""}</span>
-        <h3>${story.title}</h3>
-        <p>${story.summary || story.deck}</p>
-        ${storyByline(story)}
-      </div>
+    <article class="briefing-secondary" data-story="${story.id}" tabindex="0" aria-label="Read briefing: ${story.title}">
       <img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" />
       ${saveButton(story, "briefing-save")}
+      <div class="briefing-secondary-copy">
+        <span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>
+        <h3>${story.title}</h3>
+      </div>
     </article>`;
 }
 
@@ -940,11 +938,14 @@ function renderTrendRadar() {
   trendRadar.hidden = !signals.length;
   if (!signals.length) return;
 
-  trendRadarGrid.innerHTML = signals.map((signal, index) => {
+  trendRadarGrid.innerHTML = signals.map((signal) => {
     const delta = Number(signal.coverage_delta_pp);
     const direction = delta >= 3 ? "rising" : delta <= -3 ? "cooling" : "steady";
-    const deltaLabel = Number.isFinite(delta) ? `${delta > 0 ? "+" : ""}${delta.toFixed(1)} pp` : "Current";
-    const localShare = signal.current_count ? Math.round((signal.austria_count / signal.current_count) * 100) : 0;
+    const arrow = direction === "rising" ? "▲" : direction === "cooling" ? "▼" : "●";
+    const statusLabel = direction === "rising" ? "Rising" : direction === "cooling" ? "Cooling" : "Steady";
+    const deltaLabel = Number.isFinite(delta) ? `${delta > 0 ? "+" : delta < 0 ? "−" : ""}${Math.abs(delta).toFixed(1)}pp` : "—";
+    const share = Number(signal.current_share_pct);
+    const shareLabel = Number.isFinite(share) ? `${share.toFixed(1)}%` : `${signal.current_count}`;
     const evidence = (signal.evidence || [])
       .filter((item) => /^https:\/\//.test(item.url || ""))
       .map((item) => {
@@ -958,21 +959,12 @@ function renderTrendRadar() {
           </a>`;
       }).join("");
     return `
-      <details class="trend-signal ${index === 0 ? "lead-trend" : ""}">
-        <summary>
-          <div class="trend-signal-top"><span class="trend-index">0${index + 1}</span><span class="trend-status ${direction}">${safeText(signal.status)}</span></div>
+      <details class="trend-signal">
+        <summary title="${safeText(signal.description)}">
+          <span class="trend-status ${direction}">${arrow} ${statusLabel}</span>
           <h3>${safeText(signal.label)}</h3>
-          <p>${safeText(signal.description)}</p>
-          <div class="trend-signal-metrics">
-            <span><strong>${signal.current_count}</strong> stories</span>
-            <span><strong>${signal.source_count}</strong> publishers</span>
-            <span class="trend-delta ${direction}"><strong>${deltaLabel}</strong> coverage share</span>
-          </div>
-          <div class="trend-market-mix" aria-label="${localShare}% Austria coverage and ${100 - localShare}% global coverage">
-            <i style="width:${localShare}%"></i>
-          </div>
-          <div class="trend-market-labels"><span>Austria ${signal.austria_count}</span><span>Global ${signal.global_count}</span></div>
-          <span class="trend-open-label">Evidence from ${Math.min(5, signal.evidence?.length || 0)} stories <b>+</b></span>
+          <div class="trend-signal-figures"><b>${shareLabel}</b><span class="${direction}">${deltaLabel}</span></div>
+          <p class="trend-signal-pub">${signal.source_count} publishers</p>
         </summary>
         <div class="trend-evidence-list">${evidence || "<p>No linkable evidence is available.</p>"}</div>
       </details>`;
@@ -1253,12 +1245,12 @@ function render() {
   }
 
   heroLayout.style.gridTemplateColumns = "";
-  const briefingItems = selectDailyBriefing(filteredItems);
+  const briefingItems = selectDailyBriefing(filteredItems, 3);
   const lead = briefingItems[0];
   const secondary = briefingItems.slice(1);
   heroLayout.innerHTML = `
     ${briefingLeadCard(lead)}
-    <div class="briefing-queue">${secondary.map((story, index) => briefingQueueCard(story, index + 2)).join("")}</div>
+    <div class="briefing-secondary-stack">${secondary.map(briefingSecondaryCard).join("")}</div>
   `;
   const briefingSources = new Set(briefingItems.flatMap((story) => story.sourceNames || [])).size;
   document.querySelector("#daily-briefing-status").textContent = `${briefingItems.length} top stories · ${briefingSources || briefingItems.reduce((total, story) => total + story.sources, 0)} sources · ranked for industry relevance`;
@@ -1331,17 +1323,6 @@ function toggleSaved(id) {
   render();
 }
 
-function storyFacts(story) {
-  const facts = [
-    `${story.location} · ${story.topic}`,
-    `${story.sources} ${story.sources === 1 ? "source" : "sources"}`,
-    story.independentSources > 1 ? `${story.independentSources} independently classified sources` : "Single-source claim",
-    story.openingStatus || null,
-    story.imageCandidate && story.imageUsage !== "permitted" ? "Publisher-feed thumbnail · production rights review required" : null
-  ];
-  return facts.filter(Boolean);
-}
-
 function whyItMatters(story) {
   // Live stories branch on corroboration rather than generic prose (handoff §5d).
   if (story.isLive) {
@@ -1401,7 +1382,7 @@ function openStory(id) {
       </section>
 
       <section class="drawer-section">
-        <h3>${story.isCluster ? "Coverage" : "Original reporting"}</h3>
+        <h3>Sources</h3>
         <div class="source-list">
           ${liveCoverage}
         </div>
@@ -1424,7 +1405,7 @@ function openStory(id) {
       </section>
 
       <section class="drawer-section">
-        <h3>Coverage</h3>
+        <h3>Sources</h3>
         <div class="source-list">
           ${story.sourceNames.map((name, index) => `
             <div class="source-row">
@@ -1450,17 +1431,6 @@ function openStory(id) {
       <h2 id="drawer-title">${story.title}</h2>
       <p class="drawer-deck">${story.summary || story.deck}</p>
       <div class="drawer-meta">${storyMeta(story)}</div>
-
-      <div class="trust-strip">
-        <span>${story.summaryProvenance === "ai" ? "AI summary" : story.summaryProvenance === "manual" ? "Editorial translation" : "Source excerpt"}</span>
-        <span>${story.summaryProvenance === "manual" ? "Editorially curated" : story.isTranslated || story.reviewStatus === "automated_unreviewed" ? "Editorial review pending" : "Metadata review pending"}</span>
-        <span>Rank ${relevanceScore(story)}</span>
-      </div>
-
-      <section class="drawer-section fact-section">
-        <h3>Key facts</h3>
-        <ul>${storyFacts(story).map((fact) => `<li>${fact}</li>`).join("")}</ul>
-      </section>
 
       <section class="drawer-section operator-note">
         <h3>Why it matters for operators</h3>
