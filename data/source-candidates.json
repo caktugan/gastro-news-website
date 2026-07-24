@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-22",
+  "updated_at": "2026-07-24",
   "candidates": [
     {"id":"gaultmillau-at","name":"Gault&Millau Austria","homepage_url":"https://www.gaultmillau.at/news","edition":"austria","country":"AT","language":"de","source_type":"guide","access":"mixed"},
     {"id":"falstaff-at","name":"Falstaff Austria","homepage_url":"https://www.falstaff.com/at/news","edition":"austria","country":"AT","language":"de","source_type":"guide","access":"mixed"},
@@ -168,6 +168,62 @@
     {"id":"sial-paris","name":"SIAL Paris","homepage_url":"https://www.sialparis.com/","edition":"global","country":"FR","language":"mixed","source_type":"trade_fair","access":"open"},
     {"id":"bar-convent-berlin","name":"Bar Convent Berlin","homepage_url":"https://www.barconvent.com/","edition":"global","country":"DE","language":"mixed","source_type":"trade_fair","access":"open"},
     {"id":"host-milano","name":"Host Milano","homepage_url":"https://host.fieramilano.it/","edition":"global","country":"IT","language":"mixed","source_type":"trade_fair","access":"open"},
-    {"id":"intergastra","name":"INTERGASTRA","homepage_url":"https://www.messe-stuttgart.de/intergastra/","edition":"global","country":"DE","language":"de","source_type":"trade_fair","access":"open"}
+    {"id":"intergastra","name":"INTERGASTRA","homepage_url":"https://www.messe-stuttgart.de/intergastra/","edition":"global","country":"DE","language":"de","source_type":"trade_fair","access":"open"},
+
+    {"id":"lebensmittelzeitung","name":"Lebensmittel Zeitung","homepage_url":"https://www.lebensmittelzeitung.net/","edition":"global","country":"DE","language":"de","source_type":"trade_press","access":"paid_or_mixed"},
+    {"id":"artichox","name":"artichox Fachmagazin Gastro & Hotel","homepage_url":"https://www.artichox.com/index.php/fachmagazin-gastro-hotel","edition":"global","country":"CH","language":"de","source_type":"aggregator_press","access":"open"},
+
+    {"id":"rollingpin-news","name":"Rolling Pin News","homepage_url":"https://rollingpin.com/news","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-people","name":"Rolling Pin People","homepage_url":"https://rollingpin.com/people","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-konzepte-openings","name":"Rolling Pin Konzepte & Openings","homepage_url":"https://rollingpin.com/konzepte-openings","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-industry-news","name":"Rolling Pin Industry News","homepage_url":"https://rollingpin.com/industry-news","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-careers","name":"Rolling Pin Careers","homepage_url":"https://rollingpin.com/careers","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-supplier-news","name":"Rolling Pin Top Supplier News","homepage_url":"https://rollingpin.com/top-supplier-news","edition":"austria","country":"AT","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"rollingpin-ausgaben","name":"Rolling Pin Ausgaben Archive","homepage_url":"https://rollingpin.com/ausgaben","edition":"austria","country":"AT","language":"de","source_type":"magazine_archive","access":"paid_or_mixed"},
+    {"id":"rollingpin-erscheinungstermine","name":"Rolling Pin Erscheinungstermine","homepage_url":"https://rollingpin.com/magazin/erscheinungstermine","edition":"austria","country":"AT","language":"de","source_type":"editorial_calendar","access":"open"},
+
+    {"id":"vienna-at","name":"Vienna.at","homepage_url":"https://www.vienna.at/","edition":"vienna","country":"AT","language":"de","source_type":"regional_press","access":"open"},
+    {"id":"vorarlberger-nachrichten","name":"Vorarlberger Nachrichten","homepage_url":"https://www.vn.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"paid_or_mixed"},
+    {"id":"kleine-zeitung","name":"Kleine Zeitung","homepage_url":"https://www.kleinezeitung.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"paid_or_mixed"},
+    {"id":"ooe-nachrichten","name":"OÖNachrichten","homepage_url":"https://www.nachrichten.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"paid_or_mixed"},
+    {"id":"salzburger-nachrichten","name":"Salzburger Nachrichten","homepage_url":"https://www.sn.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"paid_or_mixed"},
+    {"id":"salzburg24","name":"SALZBURG24","homepage_url":"https://www.salzburg24.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"open"},
+    {"id":"tiroler-tageszeitung","name":"Tiroler Tageszeitung","homepage_url":"https://www.tt.com/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"paid_or_mixed"},
+    {"id":"noen","name":"NÖN Niederösterreichische Nachrichten","homepage_url":"https://www.noen.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"mixed"},
+    {"id":"bvz","name":"BVZ Burgenländische Volkszeitung","homepage_url":"https://www.bvz.at/","edition":"austria","country":"AT","language":"de","source_type":"regional_press","access":"mixed"},
+
+    {"id":"derlebensmittelhandel-at","name":"Der Lebensmittelhandel","homepage_url":"https://www.derlebensmittelhandel.at/","edition":"austria","country":"AT","language":"de","source_type":"industry_data","access":"open"},
+    {"id":"handelszeitung-at","name":"Handelszeitung Österreich","homepage_url":"https://www.handelszeitung.at/","edition":"austria","country":"AT","language":"de","source_type":"business_press","access":"mixed"},
+    {"id":"apa-ots","name":"APA-OTS Originaltext-Service","homepage_url":"https://www.ots.at/","edition":"austria","country":"AT","language":"de","source_type":"press_release_portal","access":"open"},
+    {"id":"verkehr-at","name":"Verkehr","homepage_url":"https://www.verkehr.co.at/","edition":"austria","country":"AT","language":"de","source_type":"logistics_press","access":"mixed"},
+    {"id":"logistik-express","name":"Logistik Express","homepage_url":"https://www.logistik-express.com/","edition":"austria","country":"AT","language":"de","source_type":"logistics_press","access":"open"},
+
+    {"id":"wien-wie-es-isst","name":"FALTER Wien, wie es isst Database","homepage_url":"https://www.wien-wie-es-isst.at/","edition":"vienna","country":"AT","language":"de","source_type":"local_guide_press","access":"paid_or_mixed"},
+
+    {"id":"produktwarnung-at","name":"produktwarnung.at","homepage_url":"https://www.produktwarnung.at/","edition":"austria","country":"AT","language":"de","source_type":"recall_alerts","access":"open"},
+    {"id":"rasff-window","name":"EU RASFF Window","homepage_url":"https://webgate.ec.europa.eu/rasff-window/","edition":"global","country":"EU","language":"en","source_type":"official","access":"open"},
+    {"id":"eur-lex","name":"EUR-Lex","homepage_url":"https://eur-lex.europa.eu/","edition":"global","country":"EU","language":"en","source_type":"legal_registry","access":"open"},
+    {"id":"ec-dg-sante","name":"European Commission DG SANTE","homepage_url":"https://health.ec.europa.eu/","edition":"global","country":"EU","language":"en","source_type":"official","access":"open"},
+    {"id":"bmf-findok","name":"BMF FinDok","homepage_url":"https://findok.bmf.gv.at/","edition":"austria","country":"AT","language":"de","source_type":"legal_registry","access":"open"},
+    {"id":"fairnessbuero","name":"Fairnessbüro","homepage_url":"https://www.fairnessbuero.gv.at/","edition":"austria","country":"AT","language":"de","source_type":"official","access":"open"},
+    {"id":"bwb-at","name":"Bundeswettbewerbsbehörde","homepage_url":"https://www.bwb.gv.at/","edition":"austria","country":"AT","language":"de","source_type":"official","access":"open"},
+
+    {"id":"eu-agrifood-data","name":"EU Agri-Food Data Portal","homepage_url":"https://agridata.ec.europa.eu/","edition":"global","country":"EU","language":"en","source_type":"official_data","access":"open"},
+    {"id":"eu-milk-market-observatory","name":"EU Milk Market Observatory","homepage_url":"https://agriculture.ec.europa.eu/data-and-analysis/markets/overviews/market-observatories/milk_en","edition":"global","country":"EU","language":"en","source_type":"official_data","access":"open"},
+    {"id":"ami-informiert","name":"AMI Agrarmarkt Informations-Gesellschaft","homepage_url":"https://www.ami-informiert.de/","edition":"global","country":"DE","language":"de","source_type":"market_data","access":"paid_or_mixed"},
+    {"id":"produktenboerse-wien","name":"Produktenbörse Wien","homepage_url":"https://www.boersewien.at/","edition":"austria","country":"AT","language":"de","source_type":"commodity_exchange","access":"open"},
+    {"id":"e-control-at","name":"E-Control","homepage_url":"https://www.e-control.at/","edition":"austria","country":"AT","language":"de","source_type":"official_data","access":"open"},
+    {"id":"wifo-at","name":"WIFO Austrian Institute of Economic Research","homepage_url":"https://www.wifo.ac.at/","edition":"austria","country":"AT","language":"de","source_type":"research_institute","access":"open"},
+    {"id":"ihs-at","name":"IHS Institute for Advanced Studies","homepage_url":"https://www.ihs.ac.at/","edition":"austria","country":"AT","language":"de","source_type":"research_institute","access":"open"},
+    {"id":"gs1-austria","name":"GS1 Austria","homepage_url":"https://www.gs1.at/","edition":"austria","country":"AT","language":"de","source_type":"industry_body","access":"open"},
+
+    {"id":"chefsculinar-at","name":"Chefs Culinar Austria","homepage_url":"https://www.chefsculinar.at/","edition":"austria","country":"AT","language":"de","source_type":"supplier_media","access":"open"},
+    {"id":"spar-at","name":"SPAR Österreich","homepage_url":"https://www.spar.at/","edition":"austria","country":"AT","language":"de","source_type":"retail_first_party","access":"open"},
+    {"id":"rewe-group-at","name":"REWE Group Österreich","homepage_url":"https://www.rewe-group.at/","edition":"austria","country":"AT","language":"de","source_type":"retail_first_party","access":"open"},
+    {"id":"handelsverband-at","name":"Handelsverband Österreich","homepage_url":"https://www.handelsverband.at/","edition":"austria","country":"AT","language":"de","source_type":"industry_body","access":"open"},
+
+    {"id":"lebensmittelpraxis-de","name":"Lebensmittel Praxis","homepage_url":"https://lebensmittelpraxis.de/","edition":"global","country":"DE","language":"de","source_type":"trade_press","access":"open"},
+    {"id":"fruchthandel-de","name":"Fruchthandel Magazin","homepage_url":"https://www.fruchthandel.de/","edition":"global","country":"DE","language":"de","source_type":"trade_press","access":"mixed"},
+    {"id":"fleischwirtschaft-de","name":"Fleischwirtschaft","homepage_url":"https://www.fleischwirtschaft.de/","edition":"global","country":"DE","language":"de","source_type":"trade_press","access":"mixed"}
   ]
 }

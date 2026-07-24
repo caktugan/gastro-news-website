@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "candidate_count": 159,
-  "homepage_success_count": 130,
-  "feed_candidate_count": 68,
-  "social_candidate_count": 108,
+  "candidate_count": 206,
+  "homepage_success_count": 172,
+  "feed_candidate_count": 91,
+  "social_candidate_count": 135,
   "results": [
     {
       "id": "gaultmillau-at",
@@ -27,7 +27,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1500,
+      "duration_ms": 1218,
       "recommendation": "rss_review"
     },
     {
@@ -45,7 +45,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 1032,
+      "duration_ms": 765,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -79,7 +79,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2266,
+      "duration_ms": 2265,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -107,7 +107,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2188,
+      "duration_ms": 1984,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -160,7 +160,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4891,
+      "duration_ms": 4234,
       "recommendation": "rss_review"
     },
     {
@@ -212,7 +212,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 15359,
+      "duration_ms": 18172,
       "recommendation": "rss_review"
     },
     {
@@ -255,7 +255,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2609,
+      "duration_ms": 1734,
       "recommendation": "licensed_access_review"
     },
     {
@@ -290,7 +290,7 @@
       ],
       "social_urls": {
         "facebook": [
-          "http://facebook.com/Gastrodasfachmagazin",
+          "https://facebook.com/Gastrodasfachmagazin",
           "https://www.facebook.com/Gastrodasfachmagazin"
         ],
         "instagram": [
@@ -307,7 +307,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 5375,
+      "duration_ms": 2719,
       "recommendation": "rss_review"
     },
     {
@@ -320,13 +320,20 @@
       "source_type": "regional_press",
       "access": "open",
       "homepage_status": "ok",
-      "feeds": [],
+      "feeds": [
+        {
+          "url": "https://www.vol.at/rss/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
       "social_urls": {},
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1437,
-      "recommendation": "manual_or_publisher_review"
+      "duration_ms": 1125,
+      "recommendation": "rss_review"
     },
     {
       "id": "wellbusiness",
@@ -360,7 +367,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1437,
+      "duration_ms": 750,
       "recommendation": "rss_review"
     },
     {
@@ -398,7 +405,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2391,
+      "duration_ms": 2094,
       "recommendation": "rss_review"
     },
     {
@@ -426,7 +433,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1265,
+      "duration_ms": 985,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -457,7 +464,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3969,
+      "duration_ms": 3047,
       "recommendation": "rss_review"
     },
     {
@@ -485,7 +492,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2266,
+      "duration_ms": 1734,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -497,31 +504,13 @@
       "language": "de",
       "source_type": "association",
       "access": "open",
-      "homepage_status": "ok",
+      "homepage_status": "error",
       "feeds": [],
-      "social_urls": {
-        "facebook": [
-          "https://www.facebook.com/Hotelvereinigung",
-          "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.oehv.at%2Fueber-uns%2Fpresse%2F"
-        ],
-        "instagram": [
-          "https://www.instagram.com/oehv.hotelvereinigung/"
-        ],
-        "linkedin": [
-          "https://www.linkedin.com/company/oesterreichische-hotelvereinigung",
-          "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.oehv.at%2Fueber-uns%2Fpresse%2F&title=ÖHV - Presse"
-        ],
-        "youtube": [
-          "https://www.youtube.com/@hotelvereinigung"
-        ],
-        "x": [
-          "https://twitter.com/share?text=ÖHV - Presse&url=https%3A%2F%2Fwww.oehv.at%2Fueber-uns%2Fpresse%2F&hashtags=ÖHV"
-        ]
-      },
-      "errors": [],
-      "homepage_http_status": 200,
-      "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2156,
+      "social_urls": {},
+      "errors": [
+        "homepage: HTTP Error 307: Temporary Redirect"
+      ],
+      "duration_ms": 985,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -552,7 +541,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2203,
+      "duration_ms": 984,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -570,7 +559,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1750,
+      "duration_ms": 1234,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -588,7 +577,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 1016,
+      "duration_ms": 859,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -619,7 +608,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1454,
+      "duration_ms": 1547,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -637,7 +626,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 782,
+      "duration_ms": 844,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -668,7 +657,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1282,
+      "duration_ms": 906,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -699,7 +688,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4469,
+      "duration_ms": 4250,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -727,7 +716,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=UTF-8",
-      "duration_ms": 2094,
+      "duration_ms": 1719,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -752,7 +741,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1765,
+      "duration_ms": 1906,
       "recommendation": "rss_review"
     },
     {
@@ -793,7 +782,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3063,
+      "duration_ms": 15109,
       "recommendation": "rss_review"
     },
     {
@@ -809,7 +798,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/wien.xml",
-          "entries": 18,
+          "entries": 20,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -828,7 +817,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1000,
+      "duration_ms": 782,
       "recommendation": "rss_review"
     },
     {
@@ -846,7 +835,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1766,
+      "duration_ms": 1422,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -884,7 +873,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1937,
+      "duration_ms": 1422,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -947,7 +936,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=UTF-8",
-      "duration_ms": 1812,
+      "duration_ms": 1672,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -984,7 +973,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2718,
+      "duration_ms": 2391,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1015,7 +1004,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 3609,
+      "duration_ms": 3500,
       "recommendation": "rss_review"
     },
     {
@@ -1046,7 +1035,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 14640,
+      "duration_ms": 14922,
       "recommendation": "licensed_access_review"
     },
     {
@@ -1077,7 +1066,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1922,
+      "duration_ms": 1953,
       "recommendation": "rss_review"
     },
     {
@@ -1115,7 +1104,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 8172,
+      "duration_ms": 7922,
       "recommendation": "rss_review"
     },
     {
@@ -1144,7 +1133,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1953,
+      "duration_ms": 2078,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1185,7 +1174,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4546,
+      "duration_ms": 5344,
       "recommendation": "rss_review"
     },
     {
@@ -1210,7 +1199,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1672,
+      "duration_ms": 1688,
       "recommendation": "rss_review"
     },
     {
@@ -1241,7 +1230,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2625,
+      "duration_ms": 2516,
       "recommendation": "rss_review"
     },
     {
@@ -1285,7 +1274,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 6000,
+      "duration_ms": 5734,
       "recommendation": "rss_review"
     },
     {
@@ -1316,7 +1305,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2578,
+      "duration_ms": 2640,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1360,7 +1349,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2453,
+      "duration_ms": 3125,
       "recommendation": "rss_review"
     },
     {
@@ -1404,7 +1393,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2109,
+      "duration_ms": 1922,
       "recommendation": "rss_review"
     },
     {
@@ -1442,7 +1431,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2875,
+      "duration_ms": 2546,
       "recommendation": "rss_review"
     },
     {
@@ -1470,7 +1459,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1407,
+      "duration_ms": 1453,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1514,7 +1503,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 77250,
+      "duration_ms": 140406,
       "recommendation": "rss_review"
     },
     {
@@ -1532,7 +1521,7 @@
       "errors": [
         "homepage: <urlopen error timed out>"
       ],
-      "duration_ms": 160297,
+      "duration_ms": 300281,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1557,7 +1546,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2609,
+      "duration_ms": 1703,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1604,7 +1593,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 5156,
+      "duration_ms": 5250,
       "recommendation": "rss_review"
     },
     {
@@ -1626,7 +1615,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 562,
+      "duration_ms": 485,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1691,7 +1680,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3407,
+      "duration_ms": 2968,
       "recommendation": "rss_review"
     },
     {
@@ -1709,7 +1698,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 578,
+      "duration_ms": 734,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1727,7 +1716,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2000,
+      "duration_ms": 1094,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1755,7 +1744,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2109,
+      "duration_ms": 2063,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1786,7 +1775,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1265,
+      "duration_ms": 1140,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -1802,7 +1791,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/noe.xml",
-          "entries": 17,
+          "entries": 16,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -1818,7 +1807,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 734,
+      "duration_ms": 782,
       "recommendation": "rss_review"
     },
     {
@@ -1834,7 +1823,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/burgenland.xml",
-          "entries": 19,
+          "entries": 18,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -1853,7 +1842,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 797,
+      "duration_ms": 812,
       "recommendation": "rss_review"
     },
     {
@@ -1885,7 +1874,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 813,
+      "duration_ms": 1063,
       "recommendation": "rss_review"
     },
     {
@@ -1917,7 +1906,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1000,
+      "duration_ms": 1078,
       "recommendation": "rss_review"
     },
     {
@@ -1933,7 +1922,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/steiermark.xml",
-          "entries": 17,
+          "entries": 16,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -1949,7 +1938,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1125,
+      "duration_ms": 938,
       "recommendation": "rss_review"
     },
     {
@@ -1965,7 +1954,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/kaernten.xml",
-          "entries": 18,
+          "entries": 19,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -1974,7 +1963,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 906,
+      "duration_ms": 922,
       "recommendation": "rss_review"
     },
     {
@@ -1990,7 +1979,7 @@
       "feeds": [
         {
           "url": "https://rss.orf.at/tirol.xml",
-          "entries": 16,
+          "entries": 15,
           "http_status": 200,
           "content_type": "application/xml; charset=utf-8"
         }
@@ -2006,7 +1995,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 938,
+      "duration_ms": 813,
       "recommendation": "rss_review"
     },
     {
@@ -2044,7 +2033,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1032,
+      "duration_ms": 844,
       "recommendation": "rss_review"
     },
     {
@@ -2088,7 +2077,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 7812,
+      "duration_ms": 7125,
       "recommendation": "rss_review"
     },
     {
@@ -2123,7 +2112,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 2500,
+      "duration_ms": 2156,
       "recommendation": "rss_review"
     },
     {
@@ -2164,7 +2153,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 3421,
+      "duration_ms": 10656,
       "recommendation": "rss_review"
     },
     {
@@ -2198,7 +2187,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2016,
+      "duration_ms": 7281,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2236,7 +2225,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=UTF-8",
-      "duration_ms": 2360,
+      "duration_ms": 2922,
       "recommendation": "rss_review"
     },
     {
@@ -2254,7 +2243,7 @@
       "errors": [
         "homepage: <urlopen error _ssl.c:985: The handshake operation timed out>"
       ],
-      "duration_ms": 40375,
+      "duration_ms": 75579,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2282,7 +2271,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1312,
+      "duration_ms": 2500,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2310,7 +2299,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2015,
+      "duration_ms": 2484,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2328,7 +2317,7 @@
       "errors": [],
       "homepage_http_status": 202,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 531,
+      "duration_ms": 516,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2346,7 +2335,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 875,
+      "duration_ms": 828,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2364,7 +2353,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 2766,
+      "duration_ms": 2625,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2405,7 +2394,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4844,
+      "duration_ms": 4703,
       "recommendation": "rss_review"
     },
     {
@@ -2423,7 +2412,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 2219,
+      "duration_ms": 2094,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2470,7 +2459,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 7031,
+      "duration_ms": 6453,
       "recommendation": "rss_review"
     },
     {
@@ -2508,7 +2497,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3922,
+      "duration_ms": 3828,
       "recommendation": "rss_review"
     },
     {
@@ -2555,7 +2544,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1047,
+      "duration_ms": 984,
       "recommendation": "rss_review"
     },
     {
@@ -2591,7 +2580,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1922,
+      "duration_ms": 4094,
       "recommendation": "rss_review"
     },
     {
@@ -2613,7 +2602,7 @@
         },
         {
           "url": "https://www.theguardian.com/rss/",
-          "entries": 136,
+          "entries": 139,
           "http_status": 200,
           "content_type": "text/xml; charset=UTF-8"
         }
@@ -2639,7 +2628,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1672,
+      "duration_ms": 2016,
       "recommendation": "rss_review"
     },
     {
@@ -2671,7 +2660,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 5797,
+      "duration_ms": 4016,
       "recommendation": "licensed_access_review"
     },
     {
@@ -2693,7 +2682,7 @@
         },
         {
           "url": "https://www.ft.com/rss/",
-          "entries": 9,
+          "entries": 10,
           "http_status": 200,
           "content_type": "text/xml; charset=utf-8"
         }
@@ -2706,7 +2695,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2313,
+      "duration_ms": 2750,
       "recommendation": "licensed_access_review"
     },
     {
@@ -2780,7 +2769,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 8969,
+      "duration_ms": 8953,
       "recommendation": "rss_review"
     },
     {
@@ -2854,7 +2843,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1437,
+      "duration_ms": 1781,
       "recommendation": "licensed_access_review"
     },
     {
@@ -2898,7 +2887,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4062,
+      "duration_ms": 4547,
       "recommendation": "rss_review"
     },
     {
@@ -2916,7 +2905,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 672,
+      "duration_ms": 578,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -2993,7 +2982,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2282,
+      "duration_ms": 2078,
       "recommendation": "rss_review"
     },
     {
@@ -3046,7 +3035,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3312,
+      "duration_ms": 2750,
       "recommendation": "rss_review"
     },
     {
@@ -3090,7 +3079,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2844,
+      "duration_ms": 2125,
       "recommendation": "rss_review"
     },
     {
@@ -3121,7 +3110,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 3062,
+      "duration_ms": 2922,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3155,7 +3144,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4485,
+      "duration_ms": 4094,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3224,7 +3213,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2047,
+      "duration_ms": 2062,
       "recommendation": "rss_review"
     },
     {
@@ -3246,7 +3235,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1593,
+      "duration_ms": 1515,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3285,7 +3274,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1656,
+      "duration_ms": 1484,
       "recommendation": "rss_review"
     },
     {
@@ -3326,7 +3315,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2453,
+      "duration_ms": 2235,
       "recommendation": "rss_review"
     },
     {
@@ -3364,7 +3353,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 3953,
+      "duration_ms": 1281,
       "recommendation": "licensed_access_review"
     },
     {
@@ -3405,7 +3394,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 3125,
+      "duration_ms": 3594,
       "recommendation": "rss_review"
     },
     {
@@ -3423,7 +3412,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 906,
+      "duration_ms": 938,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3464,7 +3453,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2704,
+      "duration_ms": 38375,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3496,7 +3485,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1531,
+      "duration_ms": 2172,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3521,7 +3510,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2609,
+      "duration_ms": 2547,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3539,7 +3528,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 469,
+      "duration_ms": 468,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3555,7 +3544,7 @@
       "feeds": [
         {
           "url": "https://www.diepresse.com/rss/",
-          "entries": 72,
+          "entries": 75,
           "http_status": 200,
           "content_type": "application/xml"
         }
@@ -3564,7 +3553,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 1391,
+      "duration_ms": 1219,
       "recommendation": "licensed_access_review"
     },
     {
@@ -3582,7 +3571,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 1781,
+      "duration_ms": 2469,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3600,7 +3589,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 1969,
+      "duration_ms": 2188,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3631,7 +3620,7 @@
         "youtube": [
           "https://www.youtube.com/@wienerzeitung",
           "https://www.youtube.com/shorts/0MVsex9oipU",
-          "https://www.youtube.com/shorts/3ejpCw6YuQI",
+          "https://www.youtube.com/shorts/1GVYpOWln8Q",
           "https://www.youtube.com/shorts/5uWld0Q8flY"
         ],
         "linkedin": [
@@ -3641,7 +3630,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 9297,
+      "duration_ms": 1328,
       "recommendation": "rss_review"
     },
     {
@@ -3691,7 +3680,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 9563,
+      "duration_ms": 11484,
       "recommendation": "licensed_access_review"
     },
     {
@@ -3722,7 +3711,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 735,
+      "duration_ms": 750,
       "recommendation": "licensed_access_review"
     },
     {
@@ -3753,7 +3742,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 2438,
+      "duration_ms": 5375,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3784,7 +3773,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1000,
+      "duration_ms": 797,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3815,7 +3804,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=UTF-8",
-      "duration_ms": 4672,
+      "duration_ms": 3562,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3833,7 +3822,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 468,
+      "duration_ms": 375,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3851,7 +3840,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 2156,
+      "duration_ms": 1875,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3879,7 +3868,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 875,
+      "duration_ms": 781,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3897,7 +3886,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 1250,
+      "duration_ms": 1344,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -3932,7 +3921,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 4875,
+      "duration_ms": 4063,
       "recommendation": "rss_review"
     },
     {
@@ -3960,7 +3949,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 2094,
+      "duration_ms": 1953,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4007,7 +3996,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2782,
+      "duration_ms": 2640,
       "recommendation": "rss_review"
     },
     {
@@ -4040,7 +4029,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 656,
+      "duration_ms": 516,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4068,7 +4057,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=UTF-8",
-      "duration_ms": 1344,
+      "duration_ms": 1328,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4102,7 +4091,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 1360,
+      "duration_ms": 1203,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4120,7 +4109,7 @@
       "errors": [
         "homepage: HTTP Error 401: Unauthorized"
       ],
-      "duration_ms": 1657,
+      "duration_ms": 1063,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4161,7 +4150,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 4469,
+      "duration_ms": 4265,
       "recommendation": "rss_review"
     },
     {
@@ -4179,7 +4168,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 547,
+      "duration_ms": 422,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4207,7 +4196,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3688,
+      "duration_ms": 3609,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4238,7 +4227,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1969,
+      "duration_ms": 1875,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4269,7 +4258,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 25500,
+      "duration_ms": 1719,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4287,7 +4276,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 891,
+      "duration_ms": 844,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4312,7 +4301,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 875,
+      "duration_ms": 734,
       "recommendation": "rss_review"
     },
     {
@@ -4343,7 +4332,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1531,
+      "duration_ms": 1343,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4372,7 +4361,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2109,
+      "duration_ms": 2250,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4390,7 +4379,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 953,
+      "duration_ms": 766,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4408,7 +4397,7 @@
       "errors": [
         "homepage: HTTP Error 429: Too Many Requests"
       ],
-      "duration_ms": 625,
+      "duration_ms": 438,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4423,17 +4412,18 @@
       "homepage_status": "ok",
       "feeds": [],
       "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/18022028/",
+          "https://www.linkedin.com/company/compass-gruppe/posts/?feedView=all"
+        ],
         "youtube": [
           "https://www.youtube.com/channel/UCQ4-KEVdo2XQNxIZRxifWGw"
-        ],
-        "linkedin": [
-          "https://www.linkedin.com/company/18022028/"
         ]
       },
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 1265,
+      "duration_ms": 906,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4451,7 +4441,7 @@
       "errors": [
         "homepage: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate (_ssl.c:1002)>"
       ],
-      "duration_ms": 547,
+      "duration_ms": 390,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4469,7 +4459,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1875,
+      "duration_ms": 1688,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4514,7 +4504,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 2609,
+      "duration_ms": 2563,
       "recommendation": "rss_review"
     },
     {
@@ -4542,7 +4532,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1422,
+      "duration_ms": 1250,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4564,7 +4554,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2031,
+      "duration_ms": 2078,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4592,7 +4582,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 7031,
+      "duration_ms": 7047,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4610,7 +4600,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 860,
+      "duration_ms": 875,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4651,7 +4641,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 3250,
+      "duration_ms": 3469,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4686,7 +4676,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 2593,
+      "duration_ms": 2172,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4720,7 +4710,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 4781,
+      "duration_ms": 3172,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4738,7 +4728,7 @@
       "errors": [
         "homepage: HTTP Error 429: Too Many Requests"
       ],
-      "duration_ms": 1156,
+      "duration_ms": 1203,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4756,7 +4746,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 4406,
+      "duration_ms": 4078,
       "recommendation": "licensed_access_review"
     },
     {
@@ -4787,7 +4777,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1203,
+      "duration_ms": 1125,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4818,7 +4808,7 @@
       "errors": [
         "homepage: HTTP Error 404: Not Found"
       ],
-      "duration_ms": 16734,
+      "duration_ms": 9750,
       "recommendation": "rss_review"
     },
     {
@@ -4836,7 +4826,7 @@
       "errors": [
         "homepage: <urlopen error [Errno 11001] getaddrinfo failed>"
       ],
-      "duration_ms": 109,
+      "duration_ms": 125,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4864,7 +4854,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1360,
+      "duration_ms": 906,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4900,7 +4890,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 1953,
+      "duration_ms": 1672,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4931,7 +4921,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=UTF-8",
-      "duration_ms": 797,
+      "duration_ms": 593,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4949,7 +4939,7 @@
       "errors": [
         "homepage: HTTP Error 403: Forbidden"
       ],
-      "duration_ms": 516,
+      "duration_ms": 391,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4967,7 +4957,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html;charset=utf-8",
-      "duration_ms": 1656,
+      "duration_ms": 1750,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -4985,7 +4975,7 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html",
-      "duration_ms": 813,
+      "duration_ms": 688,
       "recommendation": "manual_or_publisher_review"
     },
     {
@@ -5003,8 +4993,1445 @@
       "errors": [],
       "homepage_http_status": 200,
       "homepage_content_type": "text/html; charset=utf-8",
-      "duration_ms": 7453,
+      "duration_ms": 7938,
       "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "lebensmittelzeitung",
+      "name": "Lebensmittel Zeitung",
+      "homepage_url": "https://www.lebensmittelzeitung.net/",
+      "edition": "global",
+      "country": "DE",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/handel/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/industrie/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/karriere/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/personalien/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/politik/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/news/feed/tech-logistik/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.lebensmittelzeitung.net/products/feed/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/lebensmittel-zeitung/"
+        ],
+        "facebook": [
+          "https://www.facebook.com/Lebensmittel.Zeitung"
+        ],
+        "instagram": [
+          "https://www.instagram.com/lznetnews/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1437,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "artichox",
+      "name": "artichox Fachmagazin Gastro & Hotel",
+      "homepage_url": "https://www.artichox.com/index.php/fachmagazin-gastro-hotel",
+      "edition": "global",
+      "country": "CH",
+      "language": "de",
+      "source_type": "aggregator_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/joomlart"
+        ],
+        "x": [
+          "https://twitter.com/joomlart"
+        ],
+        "youtube": [
+          "https://www.youtube.com/user/JoomlArt"
+        ],
+        "instagram": [
+          "http://instagram.com/joomlart"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 3328,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "rollingpin-news",
+      "name": "Rolling Pin News",
+      "homepage_url": "https://rollingpin.com/news",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 3328,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-people",
+      "name": "Rolling Pin People",
+      "homepage_url": "https://rollingpin.com/people",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 17516,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-konzepte-openings",
+      "name": "Rolling Pin Konzepte & Openings",
+      "homepage_url": "https://rollingpin.com/konzepte-openings",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 16766,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-industry-news",
+      "name": "Rolling Pin Industry News",
+      "homepage_url": "https://rollingpin.com/industry-news",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 3032,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-careers",
+      "name": "Rolling Pin Careers",
+      "homepage_url": "https://rollingpin.com/careers",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 3093,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-supplier-news",
+      "name": "Rolling Pin Top Supplier News",
+      "homepage_url": "https://rollingpin.com/top-supplier-news",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 3078,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "rollingpin-ausgaben",
+      "name": "Rolling Pin Ausgaben Archive",
+      "homepage_url": "https://rollingpin.com/ausgaben",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "magazine_archive",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 3032,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "rollingpin-erscheinungstermine",
+      "name": "Rolling Pin Erscheinungstermine",
+      "homepage_url": "https://rollingpin.com/magazin/erscheinungstermine",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "editorial_calendar",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://rollingpin.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        },
+        {
+          "url": "https://rollingpin.com/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/rollingpin.co",
+          "https://www.facebook.com/rollingpin.co/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/rollingpin.co",
+          "https://www.instagram.com/rollingpin.co/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/@ROLLINGPINTV",
+          "https://www.youtube.com/user/ROLLINGPINTV"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@rollingpin.co"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 2750,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "vienna-at",
+      "name": "Vienna.at",
+      "homepage_url": "https://www.vienna.at/",
+      "edition": "vienna",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.vienna.at/rss/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "text/xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 843,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "vorarlberger-nachrichten",
+      "name": "Vorarlberger Nachrichten",
+      "homepage_url": "https://www.vn.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 5171,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "kleine-zeitung",
+      "name": "Kleine Zeitung",
+      "homepage_url": "https://www.kleinezeitung.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "error",
+      "feeds": [
+        {
+          "url": "https://www.kleinezeitung.at/rss/",
+          "entries": 100,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {},
+      "errors": [
+        "homepage: HTTP Error 500: Internal Server Error"
+      ],
+      "duration_ms": 1922,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "ooe-nachrichten",
+      "name": "OÖNachrichten",
+      "homepage_url": "https://www.nachrichten.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.nachrichten.at/storage/rss/rss/nachrichten.xml",
+          "entries": 50,
+          "http_status": 200,
+          "content_type": "application/xml"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/nachrichten.at/"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/o%C3%B6nachrichten/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/nachrichten.at/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 1250,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "salzburger-nachrichten",
+      "name": "Salzburger Nachrichten",
+      "homepage_url": "https://www.sn.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 844,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "salzburg24",
+      "name": "SALZBURG24",
+      "homepage_url": "https://www.salzburg24.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "http://www.facebook.com/salzburg24/"
+        ],
+        "instagram": [
+          "https://instagram.com/salzburg24/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1125,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "tiroler-tageszeitung",
+      "name": "Tiroler Tageszeitung",
+      "homepage_url": "https://www.tt.com/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.tt.com/rss/news.xml",
+          "entries": 69,
+          "http_status": 200,
+          "content_type": "application/xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 1391,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "noen",
+      "name": "NÖN Niederösterreichische Nachrichten",
+      "homepage_url": "https://www.noen.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.noen.at/collection/376781027/xml/rss",
+          "entries": 20,
+          "http_status": 200,
+          "content_type": "application/xml"
+        },
+        {
+          "url": "https://www.noen.at/xml/rss",
+          "entries": 100,
+          "http_status": 200,
+          "content_type": "application/xml"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 1094,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "bvz",
+      "name": "BVZ Burgenländische Volkszeitung",
+      "homepage_url": "https://www.bvz.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "regional_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.bvz.at/collection/376781052/xml/rss",
+          "entries": 16,
+          "http_status": 200,
+          "content_type": "application/xml"
+        },
+        {
+          "url": "https://www.bvz.at/xml/rss",
+          "entries": 100,
+          "http_status": 200,
+          "content_type": "application/xml"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 3172,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "derlebensmittelhandel-at",
+      "name": "Der Lebensmittelhandel",
+      "homepage_url": "https://www.derlebensmittelhandel.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "industry_data",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/lebensmittelhandel/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1985,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "handelszeitung-at",
+      "name": "Handelszeitung Österreich",
+      "homepage_url": "https://www.handelszeitung.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "business_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/%C3%96sterreichischer-Wirtschaftsverlag-406586552730819/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/user/wirtschaftsverlag"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/derwirtschaftsverlag/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 7875,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "apa-ots",
+      "name": "APA-OTS Originaltext-Service",
+      "homepage_url": "https://www.ots.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "press_release_portal",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 1000,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "verkehr-at",
+      "name": "Verkehr",
+      "homepage_url": "https://www.verkehr.co.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "logistics_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.verkehr.co.at/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "text/xml;charset=UTF-8"
+        },
+        {
+          "url": "https://www.verkehr.co.at/rss/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "text/xml;charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/Verkehr.Wochenzeitung/"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/verkehr"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 3578,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "logistik-express",
+      "name": "Logistik Express",
+      "homepage_url": "https://www.logistik-express.com/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "logistics_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.logistik-express.com/feed/",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=UTF-8"
+        }
+      ],
+      "social_urls": {
+        "youtube": [
+          "https://www.youtube.com/@MarkusJaklitsch"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/in/markusjaklitsch/"
+        ],
+        "facebook": [
+          "https://www.facebook.com/JAKLITSCH1"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 3015,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "wien-wie-es-isst",
+      "name": "FALTER Wien, wie es isst Database",
+      "homepage_url": "https://www.wien-wie-es-isst.at/",
+      "edition": "vienna",
+      "country": "AT",
+      "language": "de",
+      "source_type": "local_guide_press",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.falter.at/rss",
+          "entries": 100,
+          "http_status": 200,
+          "content_type": "application/xml;charset=UTF-8"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 8281,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "produktwarnung-at",
+      "name": "produktwarnung.at",
+      "homepage_url": "https://www.produktwarnung.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "recall_alerts",
+      "access": "open",
+      "homepage_status": "error",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [
+        "homepage: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.produktwarnung.at'. (_ssl.c:1002)>"
+      ],
+      "duration_ms": 297,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "rasff-window",
+      "name": "EU RASFF Window",
+      "homepage_url": "https://webgate.ec.europa.eu/rasff-window/",
+      "edition": "global",
+      "country": "EU",
+      "language": "en",
+      "source_type": "official",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1078,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "eur-lex",
+      "name": "EUR-Lex",
+      "homepage_url": "https://eur-lex.europa.eu/",
+      "edition": "global",
+      "country": "EU",
+      "language": "en",
+      "source_type": "legal_registry",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1156,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "ec-dg-sante",
+      "name": "European Commission DG SANTE",
+      "homepage_url": "https://health.ec.europa.eu/",
+      "edition": "global",
+      "country": "EU",
+      "language": "en",
+      "source_type": "official",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 734,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "bmf-findok",
+      "name": "BMF FinDok",
+      "homepage_url": "https://findok.bmf.gv.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "legal_registry",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html",
+      "duration_ms": 968,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "fairnessbuero",
+      "name": "Fairnessbüro",
+      "homepage_url": "https://www.fairnessbuero.gv.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "official",
+      "access": "open",
+      "homepage_status": "error",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [
+        "homepage: <urlopen error [Errno 11001] getaddrinfo failed>"
+      ],
+      "duration_ms": 172,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "bwb-at",
+      "name": "Bundeswettbewerbsbehörde",
+      "homepage_url": "https://www.bwb.gv.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "official",
+      "access": "open",
+      "homepage_status": "error",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [
+        "homepage: HTTP Error 307: Temporary Redirect"
+      ],
+      "duration_ms": 875,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "eu-agrifood-data",
+      "name": "EU Agri-Food Data Portal",
+      "homepage_url": "https://agridata.ec.europa.eu/",
+      "edition": "global",
+      "country": "EU",
+      "language": "en",
+      "source_type": "official_data",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 1110,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "eu-milk-market-observatory",
+      "name": "EU Milk Market Observatory",
+      "homepage_url": "https://agriculture.ec.europa.eu/data-and-analysis/markets/overviews/market-observatories/milk_en",
+      "edition": "global",
+      "country": "EU",
+      "language": "en",
+      "source_type": "official_data",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "linkedin": [
+          "http://www.linkedin.com/company/european-commission",
+          "https://www.linkedin.com/showcase/eu-agriculture-and-food"
+        ],
+        "instagram": [
+          "https://www.instagram.com/euagrifood/?hl=en"
+        ],
+        "youtube": [
+          "https://www.youtube.com/user/Euagri",
+          "https://www.youtube.com/user/eutube"
+        ],
+        "x": [
+          "https://x.com/EUAgri"
+        ],
+        "facebook": [
+          "https://www.facebook.com/EUAgri/",
+          "https://www.facebook.com/EuropeanCommission"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 766,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "ami-informiert",
+      "name": "AMI Agrarmarkt Informations-Gesellschaft",
+      "homepage_url": "https://www.ami-informiert.de/",
+      "edition": "global",
+      "country": "DE",
+      "language": "de",
+      "source_type": "market_data",
+      "access": "paid_or_mixed",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/agrarmarkt-informations-gesellschaft-mbh/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 4312,
+      "recommendation": "licensed_access_review"
+    },
+    {
+      "id": "produktenboerse-wien",
+      "name": "Produktenbörse Wien",
+      "homepage_url": "https://www.boersewien.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "commodity_exchange",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 407,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "e-control-at",
+      "name": "E-Control",
+      "homepage_url": "https://www.e-control.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "official_data",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/energie.control"
+        ],
+        "youtube": [
+          "https://www.youtube.com/channel/UCqa27feChvGF2syQ5OcpIdA"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/e-control/"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=UTF-8",
+      "duration_ms": 938,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "wifo-at",
+      "name": "WIFO Austrian Institute of Economic Research",
+      "homepage_url": "https://www.wifo.ac.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "research_institute",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "x": [
+          "https://twitter.com/wifoat"
+        ],
+        "facebook": [
+          "https://www.facebook.com/WIFOat"
+        ],
+        "youtube": [
+          "https://www.youtube.com/channel/UCTINdM8jqJ0RwktO3_5tZvQ"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 2422,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "ihs-at",
+      "name": "IHS Institute for Advanced Studies",
+      "homepage_url": "https://www.ihs.ac.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "research_institute",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/2693655/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/channel/UCkhvDcGidRAtJy0Al_qFt4A"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 657,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "gs1-austria",
+      "name": "GS1 Austria",
+      "homepage_url": "https://www.gs1.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "industry_body",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.gs1.at/rss.xml",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/8643759/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/user/GS1AustriaGmbH"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 843,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "chefsculinar-at",
+      "name": "Chefs Culinar Austria",
+      "homepage_url": "https://www.chefsculinar.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "supplier_media",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "instagram": [
+          "https://www.instagram.com/chefsculinar.at/?hl=de"
+        ],
+        "facebook": [
+          "https://www.facebook.com/chefsculinaroesterreich?locale=de_DE"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=UTF-8",
+      "duration_ms": 2031,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "spar-at",
+      "name": "SPAR Österreich",
+      "homepage_url": "https://www.spar.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "retail_first_party",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/SPAROesterreich"
+        ],
+        "instagram": [
+          "https://www.instagram.com/spar_oesterreich/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/user/SPAROesterreich"
+        ],
+        "tiktok": [
+          "https://www.tiktok.com/@sparoesterreich"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 1015,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "rewe-group-at",
+      "name": "REWE Group Österreich",
+      "homepage_url": "https://www.rewe-group.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "retail_first_party",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/REWE.Int"
+        ],
+        "instagram": [
+          "https://www.instagram.com/reweinternationalag"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/rewe-international-ag"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 2000,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "handelsverband-at",
+      "name": "Handelsverband Österreich",
+      "homepage_url": "https://www.handelsverband.at/",
+      "edition": "austria",
+      "country": "AT",
+      "language": "de",
+      "source_type": "industry_body",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/HandelsverbandAT/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/handelsverbandoesterreich/"
+        ],
+        "x": [
+          "https://twitter.com/handelsverbandA"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/handelsverband-%C3%B6sterreich?trk=top_nav_home"
+        ],
+        "youtube": [
+          "https://www.youtube.com/channel/UCA7O4m-LJoZ0IAlviA8gbyA/videos",
+          "https://www.youtube.com/watch?v=GGMwu8lLD0k"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html;charset=utf-8",
+      "duration_ms": 1985,
+      "recommendation": "manual_or_publisher_review"
+    },
+    {
+      "id": "lebensmittelpraxis-de",
+      "name": "Lebensmittel Praxis",
+      "homepage_url": "https://lebensmittelpraxis.de/",
+      "edition": "global",
+      "country": "DE",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "open",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://lebensmittelpraxis.de/?format=feed&type=atom",
+          "entries": 13,
+          "http_status": 200,
+          "content_type": "application/atom+xml; charset=utf-8"
+        },
+        {
+          "url": "https://lebensmittelpraxis.de/?format=feed&type=rss",
+          "entries": 13,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {
+        "facebook": [
+          "https://www.facebook.com/news.lebensmittelpraxis/"
+        ],
+        "instagram": [
+          "https://www.instagram.com/lebensmittelpraxis/"
+        ],
+        "youtube": [
+          "https://www.youtube.com/watch?v=137LPxvUEBU",
+          "https://www.youtube.com/watch?v=6PBCb2Bi2AY",
+          "https://www.youtube.com/watch?v=LO5-N1_LgNk",
+          "https://www.youtube.com/watch?v=UmsE8vOaTis"
+        ],
+        "x": [
+          "https://x.com/lmpraxis"
+        ],
+        "linkedin": [
+          "https://www.linkedin.com/company/lebensmittelpraxis"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 1687,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "fruchthandel-de",
+      "name": "Fruchthandel Magazin",
+      "homepage_url": "https://www.fruchthandel.de/",
+      "edition": "global",
+      "country": "DE",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.fruchthandel.de/rss.xml",
+          "entries": 10,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {},
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=utf-8",
+      "duration_ms": 2703,
+      "recommendation": "rss_review"
+    },
+    {
+      "id": "fleischwirtschaft-de",
+      "name": "Fleischwirtschaft",
+      "homepage_url": "https://www.fleischwirtschaft.de/",
+      "edition": "global",
+      "country": "DE",
+      "language": "de",
+      "source_type": "trade_press",
+      "access": "mixed",
+      "homepage_status": "ok",
+      "feeds": [
+        {
+          "url": "https://www.fleischwirtschaft.de/news/feed/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        },
+        {
+          "url": "https://www.fleischwirtschaft.de/feed/",
+          "entries": 25,
+          "http_status": 200,
+          "content_type": "application/rss+xml; charset=utf-8"
+        }
+      ],
+      "social_urls": {
+        "linkedin": [
+          "https://www.linkedin.com/company/fleischwirtschaft/"
+        ],
+        "facebook": [
+          "https://www.facebook.com/afzallgemeinefleischerzeitung"
+        ]
+      },
+      "errors": [],
+      "homepage_http_status": 200,
+      "homepage_content_type": "text/html; charset=UTF-8",
+      "duration_ms": 1516,
+      "recommendation": "rss_review"
     }
   ]
 }
