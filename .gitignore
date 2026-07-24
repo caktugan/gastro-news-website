@@ -5,3 +5,7 @@ __pycache__/
 !.env.example
 data/.ai-usage.json
 dist/
+
+# Claude Design handoff bundle (reference prototypes, not production code)
+Austrian gastronomy news site/
+Austrian gastronomy news site.zip
