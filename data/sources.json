@@ -998,8 +998,8 @@
       "language": "de",
       "homepage_url": "https://www.food-service.de/",
       "feed_url": "https://www.food-service.de/nachrichten/feed/",
-      "ingestion_mode": "rss",
-      "status": "active",
+      "ingestion_mode": "publisher_review",
+      "status": "rate_limited_review",
       "source_type": "trade_press",
       "access": "paid_or_mixed",
       "corroboration_role": "independent_editorial",
@@ -1007,7 +1007,7 @@
       "default_topic": "Business",
       "filter_terms": [],
       "max_items": 20,
-      "rights_note": "Index only public feed metadata and excerpts. Never bypass registration or subscription controls."
+      "rights_note": "Index only public feed metadata and excerpts. Never bypass registration or subscription controls. The feed returned HTTP 403 to datacenter IPs during the 2026-07-25 scheduled runs; keep inactive until access from hosted runners or a publisher agreement is reviewed."
     },
     {
       "id": "qsr-magazine",
@@ -1560,8 +1560,8 @@
       "language": "de",
       "homepage_url": "https://www.noen.at/",
       "feed_url": "https://www.noen.at/xml/rss",
-      "ingestion_mode": "rss",
-      "status": "active",
+      "ingestion_mode": "publisher_review",
+      "status": "rate_limited_review",
       "source_type": "regional_press",
       "access": "mixed",
       "corroboration_role": "independent_editorial",
@@ -1569,7 +1569,7 @@
       "default_topic": "Restaurants",
       "filter_terms": ["gastronomie", "restaurant", "wirt", "wirtshaus", "gasthaus", "lokal", "café", "kaffeehaus", "küche", "kulinar", "lebensmittel", "hotel", "heuriger", "beisl"],
       "max_items": 34,
-      "rights_note": "Broad regional feed filtered to gastronomy; store metadata and excerpt only and do not bypass restricted articles."
+      "rights_note": "Broad regional feed filtered to gastronomy; store metadata and excerpt only and do not bypass restricted articles. The feed returned HTTP 403 to datacenter IPs during the 2026-07-25 scheduled runs; keep inactive until access from hosted runners is reviewed."
     },
     {
       "id": "bvz",
@@ -1579,8 +1579,8 @@
       "language": "de",
       "homepage_url": "https://www.bvz.at/",
       "feed_url": "https://www.bvz.at/xml/rss",
-      "ingestion_mode": "rss",
-      "status": "active",
+      "ingestion_mode": "publisher_review",
+      "status": "rate_limited_review",
       "source_type": "regional_press",
       "access": "mixed",
       "corroboration_role": "independent_editorial",
@@ -1588,7 +1588,7 @@
       "default_topic": "Restaurants",
       "filter_terms": ["gastronomie", "restaurant", "wirt", "wirtshaus", "gasthaus", "lokal", "café", "kaffeehaus", "küche", "kulinar", "lebensmittel", "hotel", "heuriger", "buschenschank"],
       "max_items": 34,
-      "rights_note": "Broad regional feed filtered to gastronomy; store metadata and excerpt only and do not bypass restricted articles."
+      "rights_note": "Broad regional feed filtered to gastronomy; store metadata and excerpt only and do not bypass restricted articles. The feed returned HTTP 403 to datacenter IPs during the 2026-07-25 scheduled runs; keep inactive until access from hosted runners is reviewed."
     },
     {
       "id": "lebensmittelpraxis-de",
