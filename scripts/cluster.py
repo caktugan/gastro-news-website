@@ -366,7 +366,7 @@ def build_clusters(
                 "title": lead["title"],
                 "summary": lead.get("summary", ""),
                 "image_url": lead.get("image_url"),
-                "image_usage": lead.get("image_usage", "review_required"),
+                "image_usage": lead.get("image_usage") or ("review_required" if lead.get("image_url") else "none"),
                 "published_at": max((article.get("published_at") or "" for article in group_articles), default=None),
                 "source_count": distinct_source_count,
                 "independent_source_count": independent_source_count,

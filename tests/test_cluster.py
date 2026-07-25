@@ -28,6 +28,7 @@ class ClusterMetadataTests(unittest.TestCase):
         cluster = build_clusters(articles, {"publisher": 100})[0]
 
         self.assertEqual(cluster["image_url"], "https://example.com/story.jpg")
+        # No image_usage on the article means it predates the provenance field.
         self.assertEqual(cluster["image_usage"], "review_required")
         self.assertEqual(cluster["review_status"], "source_metadata_only")
         self.assertEqual(cluster["sources"][0]["image_url"], "https://example.com/story.jpg")
@@ -70,6 +71,34 @@ class ClusterMetadataTests(unittest.TestCase):
         self.assertEqual(len(clusters), 1)
         self.assertEqual(clusters[0]["source_count"], 2)
         self.assertEqual(clusters[0]["coverage_pattern"], "independently_reported")
+
+    def test_feed_provided_image_provenance_survives_clustering(self):
+        base = {
+            "edition": "austria",
+            "language": "de",
+            "topic": "Restaurants",
+            "published_at": "2026-07-22T08:00:00Z",
+            "source_id": "publisher",
+            "source_name": "Publisher",
+            "source_type": "local_press",
+            "access": "open",
+            "corroboration_role": "independent_editorial",
+            "country": "AT",
+            "url": "https://example.com/story",
+        }
+        with_image = build_clusters(
+            [{**base, "id": "a", "title": "Lokal eroeffnet", "summary": "",
+              "image_url": "https://cdn.example/a.jpg", "image_usage": "feed_provided"}],
+            {"publisher": 100},
+        )[0]
+        without_image = build_clusters(
+            [{**base, "id": "b", "title": "Kein Bild dabei", "summary": "",
+              "image_url": None, "image_usage": "none"}],
+            {"publisher": 100},
+        )[0]
+
+        self.assertEqual(with_image["image_usage"], "feed_provided")
+        self.assertEqual(without_image["image_usage"], "none")
 
     def test_brand_named_only_in_the_excerpt_still_clusters(self):
         """German binds a brand to the noun before it, so the same company is

@@ -289,6 +289,10 @@ const localStoryImages = {
 
 const defaultStoryImage = "./assets/vienna-kitchen.webp";
 
+// An image the publisher itself put in its public feed needs no further rights
+// check; anything else stays in the editorial queue.
+const CLEARED_IMAGE_USAGE = new Set(["feed_provided", "permitted"]);
+
 function storyImageForCluster(cluster, topic) {
   const candidate = cluster.image_url || cluster.sources?.find((source) => source.image_url)?.image_url;
   return /^https:\/\//.test(candidate || "")
@@ -459,6 +463,7 @@ function liveAustriaStories() {
         image: storyImageForCluster(cluster, topic),
         imageCandidate: cluster.image_url || null,
         imageUsage: cluster.image_usage || "review_required",
+      imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
         sources: cluster.source_count || sources.length,
         initials: sourceNames.map(sourceInitials),
         sourceNames,
@@ -516,6 +521,7 @@ function liveGlobalStories() {
       image: storyImageForCluster(cluster, topic),
       imageCandidate: cluster.image_url || null,
       imageUsage: cluster.image_usage || "review_required",
+      imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
       sources: cluster.source_count || sources.length,
       initials,
       sourceNames,
@@ -650,7 +656,7 @@ function currentStories() {
     items = allStories().filter((story) => story.isLive && (
       ["automated_unreviewed", "source_metadata_only"].includes(story.reviewStatus)
       || story.coveragePattern === "likely_syndicated"
-      || (story.imageCandidate && story.imageUsage !== "permitted")
+      || (story.imageCandidate && !story.imageFromFeed)
     ));
   } else {
     items = stories[state.section] || [];
@@ -1322,7 +1328,7 @@ function render() {
   contextPanel.hidden = !isReview;
   if (isReview) {
     const syndicated = items.filter((story) => story.coveragePattern === "likely_syndicated").length;
-    const imageCandidates = items.filter((story) => story.imageCandidate && story.imageUsage !== "permitted").length;
+    const imageCandidates = items.filter((story) => story.imageCandidate && !story.imageFromFeed).length;
     contextPanel.innerHTML = `
       <div><p class="eyebrow">EDITORIAL CONTROL</p><h2>Review before trust.</h2><p>Automated translations, single-source claims and image candidates remain visibly reviewable before production publication.</p></div>
       <div class="context-stats"><span><strong>${items.length}</strong>Unreviewed</span><span><strong>${syndicated}</strong>Shared-release risk</span><span><strong>${imageCandidates}</strong>Image rights checks</span></div>`;

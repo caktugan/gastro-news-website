@@ -226,7 +226,11 @@ def fetch_feed(source: dict, timeout: int) -> tuple[list[dict], dict]:
                 "summary": summary,
                 "url": url,
                 "published_at": published_at,
-                "image_url": extract_image_url(entry, raw_description),
+                "image_url": (image_url := extract_image_url(entry, raw_description)),
+                # Provenance, not a licence: the publisher put this thumbnail in
+                # its own public feed alongside the headline it wants syndicated.
+                # A future image obtained any other way must not claim this value.
+                "image_usage": "feed_provided" if image_url else "none",
                 "topic": infer_topic(title, summary, source["default_topic"]),
             }
         )

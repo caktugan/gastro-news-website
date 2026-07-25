@@ -1,10 +1,30 @@
 import unittest
+import xml.etree.ElementTree as ET
 
-from scripts.ingest import deduplicate
+from scripts.ingest import deduplicate, extract_image_url
 
 
 def article(source_id: str, url: str, title: str) -> dict:
     return {"source_id": source_id, "url": url, "title": title}
+
+
+class FeedImageTests(unittest.TestCase):
+    def test_image_is_read_from_media_content_and_from_inline_markup(self):
+        entry = ET.fromstring(
+            '<item xmlns:media="http://search.yahoo.com/mrss/">'
+            '<media:content url="https://cdn.example/story.jpg" type="image/jpeg" />'
+            "</item>"
+        )
+        self.assertEqual(extract_image_url(entry, ""), "https://cdn.example/story.jpg")
+
+        bare = ET.fromstring("<item />")
+        self.assertEqual(
+            extract_image_url(bare, '<p><img src="https://cdn.example/inline.jpg"></p>'),
+            "https://cdn.example/inline.jpg",
+        )
+
+    def test_entry_without_any_image_returns_none(self):
+        self.assertIsNone(extract_image_url(ET.fromstring("<item />"), "<p>Kein Bild.</p>"))
 
 
 class IngestionDeduplicationTests(unittest.TestCase):
