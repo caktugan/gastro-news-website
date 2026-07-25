@@ -977,16 +977,6 @@ function renderTrendRadar() {
   document.querySelector("#trend-radar-note").textContent = payload.methodology || "Signals describe publisher attention and link to their evidence.";
 }
 
-function formatEventRange(startDate, endDate) {
-  const start = new Date(`${startDate}T12:00:00`);
-  const end = new Date(`${endDate || startDate}T12:00:00`);
-  const day = new Intl.DateTimeFormat("en-GB", { day: "numeric" });
-  const month = new Intl.DateTimeFormat("en-GB", { month: "short" });
-  if (startDate === endDate || !endDate) return `${day.format(start)} ${month.format(start)}`;
-  if (start.getMonth() === end.getMonth()) return `${day.format(start)}–${day.format(end)} ${month.format(end)}`;
-  return `${day.format(start)} ${month.format(start)}–${day.format(end)} ${month.format(end)}`;
-}
-
 // Category colours come from the Night Desk palette. The set is derived from the
 // event types the pipeline actually publishes rather than a fixed list, so the
 // legend can never advertise a category with no events behind it.
