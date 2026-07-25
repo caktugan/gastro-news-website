@@ -1551,7 +1551,7 @@ function whyItMatters(story) {
   return "MISE ranks this story using freshness, geographic relevance, source quality and corroboration signals.";
 }
 
-const LANGUAGE_NAMES = { de: "German", en: "English", fr: "French" };
+const LANGUAGE_NAMES = { de: "German", en: "English" };
 
 function provenanceKicker(story) {
   if (story.summaryProvenance === "source_original") {

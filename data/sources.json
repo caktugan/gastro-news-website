@@ -803,25 +803,6 @@
       "rights_note": "Use public RSS metadata and excerpt only; do not bypass registration or subscription controls."
     },
     {
-      "id": "gaultmillau-international",
-      "name": "Gault&Millau International",
-      "edition": "global",
-      "country": "FR",
-      "language": "fr",
-      "homepage_url": "https://www.gaultmillau.org/",
-      "feed_url": "https://www.gaultmillau.org/feed/",
-      "ingestion_mode": "rss",
-      "status": "active",
-      "source_type": "guide",
-      "access": "open",
-      "corroboration_role": "editorial_guide",
-      "priority": 88,
-      "default_topic": "People",
-      "filter_terms": [],
-      "max_items": 15,
-      "rights_note": "Use public feed metadata and excerpt only; link to the original guide news."
-    },
-    {
       "id": "the-spoon",
       "name": "The Spoon",
       "edition": "global",
