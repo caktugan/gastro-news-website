@@ -174,8 +174,8 @@ Statistical and regulatory reference sources — WIFO, IHS, E-Control, the EU Ag
 - Discover-inspired, image-led story grid with automatic loading as the reader scrolls
 - Relevance-ranked and latest-story views
 - Topic filters
-- Dedicated monthly Austria opening tracker with evidence-linked reports grouped by publication month and explicit date semantics
-- Verified gastronomy calendar for trade fairs, festivals, tastings, and industry gatherings
+- Dedicated monthly Austria opening tracker with a stat band, theme-momentum bars from the trend radar, benchmark movers from the Commodity Board, and evidence-linked reports grouped by publication month with explicit date semantics
+- Verified gastronomy calendar rendered as a Monday-first month grid with live previous/next navigation, category chips and legend derived from the published event types, a sticky "Coming up" agenda rail, and a slide-in event panel; it opens on the current month and says the desk is still filing when a month has no dated items
 - Keyless operator-cost watch with official sources, dated observations, units, trend history, and honest stale states
 - Subtle, expandable industry trend bar with publisher breadth, Austria/global mix, normalized coverage direction, and source evidence
 - Editorial review metadata for a future private control surface; it is not exposed in the public reader

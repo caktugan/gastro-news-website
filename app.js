@@ -585,6 +585,7 @@ const state = {
   topic: "All",
   sort: "top",
   eventFilter: "all",
+  calendarMonthOffset: 0,
   trackerMonthOffset: 0,
   trackerFilter: "all",
   marketId: null,
@@ -619,7 +620,8 @@ const newsView = document.querySelector("#news-view");
 const calendarView = document.querySelector("#calendar-view");
 const trackerView = document.querySelector("#tracker-view");
 const marketView = document.querySelector("#market-view");
-const eventList = document.querySelector("#event-list");
+const eventOverlay = document.querySelector("#event-overlay");
+const eventDrawerContent = document.querySelector("#event-drawer-content");
 const trackerList = document.querySelector("#tracker-list");
 const marketPanel = document.querySelector("#market-panel");
 const marketStrip = document.querySelector("#market-strip");
@@ -627,6 +629,7 @@ const trendRadar = document.querySelector("#trend-radar");
 const trendRadarGrid = document.querySelector("#trend-radar-grid");
 let storyReturnFocus = null;
 let searchReturnFocus = null;
+let eventReturnFocus = null;
 
 const bookmarkIcon = `
   <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"></path></svg>
@@ -984,61 +987,171 @@ function formatEventRange(startDate, endDate) {
   return `${day.format(start)} ${month.format(start)}–${day.format(end)} ${month.format(end)}`;
 }
 
+// Category colours come from the Night Desk palette. The set is derived from the
+// event types the pipeline actually publishes rather than a fixed list, so the
+// legend can never advertise a category with no events behind it.
+const EVENT_CATEGORY_COLOURS = ["#8fb3c9", "#9dd0aa", "#e8c987", "#cbb27a", "#7db98a"];
+
+function eventCategories(events) {
+  const names = [...new Set(events.map((event) => event.type).filter(Boolean))].sort();
+  return new Map(names.map((name, index) => [name, EVENT_CATEGORY_COLOURS[index % EVENT_CATEGORY_COLOURS.length]]));
+}
+
+function eventsForMonth(events, year, month) {
+  const monthStart = new Date(year, month, 1);
+  const monthEnd = new Date(year, month + 1, 0, 23, 59, 59);
+  return events.filter((event) => {
+    const start = new Date(`${event.startDate}T00:00:00`);
+    const end = new Date(`${event.endDate || event.startDate}T23:59:59`);
+    return start <= monthEnd && end >= monthStart;
+  });
+}
+
+function calendarMonthDate() {
+  const base = new Date();
+  base.setDate(1);
+  base.setHours(0, 0, 0, 0);
+  base.setMonth(base.getMonth() + state.calendarMonthOffset);
+  return base;
+}
+
+function openEvent(id) {
+  const payload = window.MISE_EVENTS || { events: [] };
+  const event = (payload.events || []).find((item) => item.id === id);
+  if (!event) return;
+  eventReturnFocus = document.activeElement;
+  const colours = eventCategories(payload.events || []);
+  const colour = colours.get(event.type) || "var(--accent)";
+  const range = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    .formatRange(new Date(`${event.startDate}T12:00:00`), new Date(`${(event.endDate || event.startDate)}T12:00:00`));
+  const verified = event.verificationStatus === "stale"
+    ? "Organiser page needs a recheck"
+    : `Official page checked ${event.lastVerified || "recently"}`;
+
+  eventDrawerContent.innerHTML = `
+    <div class="event-drawer-body">
+      <div class="event-drawer-kicker" style="color:${colour}"><span style="background:${colour}"></span>${safeText(event.type)}</div>
+      <p class="eyebrow">${safeText(range)}</p>
+      <h2 id="event-drawer-title">${safeText(event.title)}</h2>
+      <div class="event-fact-table">
+        <div><span>When</span><strong>${safeText(range)}</strong></div>
+        <div><span>Where</span><strong>${safeText(event.venue)}, ${safeText(event.city)}</strong></div>
+        <div><span>Audience</span><strong>${safeText(event.audience)}</strong></div>
+        <div><span>Verification</span><strong>${safeText(verified)}</strong></div>
+      </div>
+      <h3>On the desk</h3>
+      <p class="event-drawer-note">${safeText(event.summary)}</p>
+      <a class="event-drawer-link" href="${safeText(event.url)}" target="_blank" rel="noopener noreferrer">${safeText(event.source)} ↗</a>
+      <p class="disclosure">Dates are taken from the organiser's official page and rechecked on each refresh. Confirm with the organiser before planning or travelling.</p>
+    </div>`;
+
+  eventOverlay.classList.add("open");
+  eventOverlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  document.querySelector("#event-close").focus();
+}
+
+function closeEvent() {
+  eventOverlay.classList.remove("open");
+  eventOverlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  if (eventReturnFocus?.isConnected) eventReturnFocus.focus();
+  eventReturnFocus = null;
+}
+
 function renderCalendar() {
   const payload = window.MISE_EVENTS || { events: [] };
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const upcoming = (payload.events || [])
-    .filter((event) => new Date(`${event.endDate || event.startDate}T23:59:59`) >= today)
-    .filter((event) => state.eventFilter === "all" || event.region === state.eventFilter)
-    .sort((left, right) => left.startDate.localeCompare(right.startDate));
+  const allEvents = payload.events || [];
+  const colours = eventCategories(allEvents);
+  const cursor = calendarMonthDate();
+  const year = cursor.getFullYear();
+  const month = cursor.getMonth();
+  const monthLabel = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(cursor);
+  document.querySelector("#calendar-month-label").textContent = monthLabel;
 
-  document.querySelector("#event-count").textContent = upcoming.length;
-  document.querySelectorAll("[data-event-filter]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.eventFilter === state.eventFilter);
-  });
+  const visible = allEvents.filter((event) => state.eventFilter === "all" || event.type === state.eventFilter);
+  const monthEvents = eventsForMonth(visible, year, month);
 
-  if (!upcoming.length) {
-    eventList.innerHTML = `<div class="empty-state">No verified upcoming events match this region.</div>`;
-  } else {
-    const months = new Map();
-    upcoming.forEach((event) => {
-      const key = event.startDate.slice(0, 7);
-      if (!months.has(key)) months.set(key, []);
-      months.get(key).push(event);
-    });
-    eventList.innerHTML = [...months.entries()].map(([monthKey, events]) => {
-      const monthLabel = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" })
-        .format(new Date(`${monthKey}-15T12:00:00`));
-      return `
-        <section class="event-month">
-          <h3>${monthLabel}</h3>
-          <div class="event-month-list">
-            ${events.map((event) => `
-              <article class="event-card">
-                <time datetime="${event.startDate}"><strong>${formatEventRange(event.startDate, event.endDate)}</strong><span>${event.city}</span></time>
-                <div class="event-copy">
-                  <div class="event-tags"><span>${event.type}</span><span>${event.audience}</span><span class="event-verification ${event.verificationStatus === "stale" ? "stale" : ""}">${event.verificationStatus === "stale" ? "Recheck needed" : "Official page checked"}</span></div>
-                  <h4>${event.title}</h4>
-                  <p>${event.summary}</p>
-                  <small>${event.venue}</small>
-                </div>
-                <a href="${event.url}" target="_blank" rel="noopener noreferrer" aria-label="Open official page for ${event.title}">
-                  <span>${event.source}</span><strong>Official details ↗</strong>
-                </a>
-              </article>
-            `).join("")}
-          </div>
-        </section>`;
-    }).join("");
+  document.querySelector("#calendar-filters").innerHTML = `
+    <span class="calendar-filter-label">Filter</span>
+    <button class="calendar-chip ${state.eventFilter === "all" ? "active" : ""}" data-event-filter="all" type="button">All</button>
+    ${[...colours.entries()].map(([name, colour]) => `
+      <button class="calendar-chip ${state.eventFilter === name ? "active" : ""}" data-event-filter="${safeText(name)}" type="button">
+        <span style="background:${colour}"></span>${safeText(name)}
+      </button>`).join("")}`;
+
+  document.querySelector("#calendar-legend").innerHTML = [...colours.entries()].map(([name, colour]) => `
+    <div class="calendar-legend-row"><span style="background:${colour}"></span>${safeText(name)}</div>`).join("")
+    || `<p class="calendar-empty-note">No event categories are published yet.</p>`;
+
+  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  document.querySelector("#calendar-weekdays").innerHTML = weekdays
+    .map((day) => `<div>${day}</div>`).join("");
+
+  // Monday-based grid: six fixed weeks so the layout never jumps between months.
+  const firstOfMonth = new Date(year, month, 1);
+  const offset = (firstOfMonth.getDay() + 6) % 7;
+  const day = new Date(year, month, 1 - offset);
+  const cells = [];
+  for (let index = 0; index < 42; index += 1) {
+    const inMonth = day.getMonth() === month;
+    const isWeekend = day.getDay() === 0 || day.getDay() === 6;
+    const dayEvents = inMonth
+      ? monthEvents.filter((event) => {
+          const start = new Date(`${event.startDate}T00:00:00`);
+          const end = new Date(`${event.endDate || event.startDate}T23:59:59`);
+          return day >= start && day <= end;
+        })
+      : [];
+    cells.push(`
+      <div class="calendar-cell ${inMonth ? "" : "outside"} ${isWeekend ? "weekend" : ""}">
+        <span class="calendar-day">${day.getDate()}</span>
+        <div class="calendar-cell-events">
+          ${dayEvents.map((event) => `
+            <button class="calendar-event-chip" data-event="${safeText(event.id)}" type="button" title="${safeText(event.title)}">
+              <span style="background:${colours.get(event.type) || "var(--accent)"}"></span>${safeText(event.title)}
+            </button>`).join("")}
+        </div>
+      </div>`);
+    day.setDate(day.getDate() + 1);
   }
+  document.querySelector("#calendar-grid").innerHTML = cells.join("");
+
+  const agenda = [...monthEvents].sort((left, right) => left.startDate.localeCompare(right.startDate)).slice(0, 8);
+  document.querySelector("#calendar-agenda").innerHTML = agenda.length
+    ? agenda.map((event) => {
+        const start = new Date(`${event.startDate}T12:00:00`);
+        return `
+          <button class="calendar-agenda-row" data-event="${safeText(event.id)}" type="button">
+            <span class="calendar-agenda-date">
+              <i>${new Intl.DateTimeFormat("en-GB", { weekday: "short" }).format(start)}</i>
+              <b>${start.getDate()}</b>
+            </span>
+            <span class="calendar-agenda-copy">
+              <i style="color:${colours.get(event.type) || "var(--accent)"}"><span style="background:${colours.get(event.type) || "var(--accent)"}"></span>${safeText(event.type)}</i>
+              <strong>${safeText(event.title)}</strong>
+              <small>${safeText(event.venue)}, ${safeText(event.city)}</small>
+            </span>
+          </button>`;
+      }).join("")
+    : `<p class="calendar-empty-note">No dated items logged for ${monthLabel} yet. The desk is still filing this month.</p>`;
 
   const checkedAt = payload.checkedAt
     ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
       .format(new Date(`${payload.checkedAt}T12:00:00`))
     : "not recorded";
   const reviewCount = payload.reviewCandidateCount || 0;
-  document.querySelector("#event-data-note").textContent = `${payload.events?.length || 0} events checked against official organizer pages on ${checkedAt} · ${reviewCount} feed-discovered ${reviewCount === 1 ? "lead" : "leads"} awaiting organizer verification · 0 AI requests. Always confirm details before travelling.`;
+  document.querySelector("#event-data-note").textContent = `${allEvents.length} events checked against official organizer pages on ${checkedAt} · ${reviewCount} feed-discovered ${reviewCount === 1 ? "lead" : "leads"} awaiting organizer verification · 0 AI requests. Always confirm details before travelling.`;
+
+  document.querySelectorAll("[data-event]").forEach((button) => {
+    button.addEventListener("click", () => openEvent(button.dataset.event));
+  });
+  document.querySelectorAll("[data-event-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.eventFilter = button.dataset.eventFilter;
+      renderCalendar();
+    });
+  });
 }
 
 function startOfMonth(date = new Date()) {
@@ -1046,6 +1159,50 @@ function startOfMonth(date = new Date()) {
   result.setDate(1);
   result.setHours(0, 0, 0, 0);
   return result;
+}
+
+function trackerThemes() {
+  const signals = window.MISE_TRENDS?.signals || [];
+  if (!signals.length) return "";
+  const peak = Math.max(...signals.map((signal) => Number(signal.current_share_pct) || 0), 1);
+  return signals.map((signal) => {
+    const delta = Number(signal.coverage_delta_pp);
+    const direction = delta >= 3 ? "rising" : delta <= -3 ? "cooling" : "steady";
+    const deltaLabel = Number.isFinite(delta)
+      ? `${delta > 0 ? "+" : delta < 0 ? "−" : ""}${Math.abs(delta).toFixed(1)}pp`
+      : "—";
+    const share = Number(signal.current_share_pct) || 0;
+    return `
+      <div class="tracker-theme">
+        <div class="tracker-theme-top">
+          <span>${safeText(signal.label)}</span>
+          <span><b>${share.toFixed(1)}%</b><i class="${direction}">${deltaLabel}</i></span>
+        </div>
+        <div class="tracker-theme-bar"><i class="${direction}" style="width:${Math.max(2, Math.round((share / peak) * 100))}%"></i></div>
+      </div>`;
+  }).join("");
+}
+
+function trackerMovers() {
+  const benchmarks = window.MISE_MARKETS?.benchmarks || [];
+  if (!benchmarks.length) return "";
+  return [...benchmarks]
+    .sort((left, right) => Math.abs(Number(right.change_pct) || 0) - Math.abs(Number(left.change_pct) || 0))
+    .slice(0, 6)
+    .map((item) => {
+      const change = Number(item.change_pct);
+      const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+      const changeLabel = Number.isFinite(change) ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%` : "—";
+      const value = new Intl.NumberFormat("en-GB", {
+        minimumFractionDigits: item.display_decimals || 0,
+        maximumFractionDigits: item.display_decimals || 0
+      }).format(Number(item.value));
+      return `
+        <div class="tracker-mover">
+          <span>${safeText(item.label)} <i>${safeText(item.unit)}</i></span>
+          <span><b>${value}</b><i class="${direction}">${changeLabel}</i></span>
+        </div>`;
+    }).join("");
 }
 
 function renderTracker() {
@@ -1071,13 +1228,22 @@ function renderTracker() {
   const monthLabel = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(monthStart);
 
   document.querySelector("#tracker-month-label").textContent = monthLabel;
-  document.querySelector("#tracker-overview").innerHTML = `
-    <div><p class="eyebrow">OPENING INTELLIGENCE</p><h2>${state.trackerMonthOffset ? "Last month" : "This month"} in reporting</h2><p>Opening and closure reports published during ${monthLabel}. Dates show when the source reported the development, not necessarily the venue's effective opening or closing date.</p></div>
-    <div class="tracker-stats">${["Newly opened", "Opening soon", "Closed", "Unconfirmed"].map((status) => `<span><strong>${statuses[status] || 0}</strong>${status}</span>`).join("")}</div>`;
+  document.querySelector("#tracker-record-title").textContent = `Reported during ${monthLabel}`;
+  document.querySelector("#tracker-stat-band").innerHTML = ["Newly opened", "Opening soon", "Closed", "Unconfirmed"]
+    .map((status) => `
+      <div class="tracker-stat">
+        <p>${status}</p>
+        <strong>${statuses[status] || 0}</strong>
+        <small>${monthItems.length ? Math.round(((statuses[status] || 0) / monthItems.length) * 100) : 0}% of the month</small>
+      </div>`).join("");
 
-  document.querySelectorAll("[data-tracker-month]").forEach((button) => {
-    button.classList.toggle("active", Number(button.dataset.trackerMonth) === state.trackerMonthOffset);
-  });
+  document.querySelector("#tracker-themes").innerHTML = trackerThemes()
+    || `<p class="calendar-empty-note">No trend signals are published yet.</p>`;
+  document.querySelector("#tracker-movers").innerHTML = trackerMovers()
+    || `<p class="calendar-empty-note">No benchmark series are published yet.</p>`;
+  const basis = window.MISE_MARKETS?.benchmarks?.[0]?.change_basis;
+  if (basis) document.querySelector("#tracker-movers-basis").textContent = basis;
+
   document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
     button.classList.toggle("active", button.dataset.trackerFilter === state.trackerFilter);
   });
@@ -1552,18 +1718,29 @@ document.querySelectorAll("[data-page]").forEach((button) => {
   button.addEventListener("click", () => switchPage(button.dataset.page));
 });
 
-document.querySelectorAll("[data-event-filter]").forEach((button) => {
-  button.addEventListener("click", () => {
-    state.eventFilter = button.dataset.eventFilter;
-    renderCalendar();
-  });
+document.querySelector("#calendar-prev").addEventListener("click", () => {
+  state.calendarMonthOffset -= 1;
+  renderCalendar();
 });
 
-document.querySelectorAll("[data-tracker-month]").forEach((button) => {
-  button.addEventListener("click", () => {
-    state.trackerMonthOffset = Number(button.dataset.trackerMonth) || 0;
-    renderTracker();
-  });
+document.querySelector("#calendar-next").addEventListener("click", () => {
+  state.calendarMonthOffset += 1;
+  renderCalendar();
+});
+
+document.querySelector("#event-close").addEventListener("click", closeEvent);
+eventOverlay.querySelector(".overlay-backdrop").addEventListener("click", closeEvent);
+
+// trackerMonthOffset counts backwards from the current month, so "previous"
+// increases it.
+document.querySelector("#tracker-prev").addEventListener("click", () => {
+  state.trackerMonthOffset += 1;
+  renderTracker();
+});
+
+document.querySelector("#tracker-next").addEventListener("click", () => {
+  state.trackerMonthOffset -= 1;
+  renderTracker();
 });
 
 document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
@@ -1614,12 +1791,15 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Tab") {
     if (storyOverlay.classList.contains("open")) {
       trapModalFocus(event, storyOverlay.querySelector(".story-drawer"));
+    } else if (eventOverlay.classList.contains("open")) {
+      trapModalFocus(event, eventOverlay.querySelector(".story-drawer"));
     } else if (searchOverlay.classList.contains("open")) {
       trapModalFocus(event, searchOverlay.querySelector(".search-panel"));
     }
   }
   if (event.key === "Escape") {
     if (storyOverlay.classList.contains("open")) closeStory();
+    else if (eventOverlay.classList.contains("open")) closeEvent();
     else if (searchOverlay.classList.contains("open")) closeSearch();
   }
 });
