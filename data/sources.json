@@ -317,7 +317,7 @@
       "corroboration_role": "official_first_party",
       "priority": 94,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "café", "kaffeehaus", "küche", "kulinar", "lebensmittelsicherheit", "schanigarten"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "café", "kaffee", "küche", "kulinar", "lebensmittel", "schanigarten", "markt", "naschmarkt", "marktamt", "wein", "weinbau", "weingut", "weinpreis", "heuriger", "winzer", "tourismus", "hotel", "hotellerie"],
       "exclude_terms": ["disziplinarverfahren", "abteilungsleitung", "termine am"],
       "max_items": 20,
       "rights_note": "Official Vienna source. Store public feed metadata and excerpt only; first-party claims require independent corroboration."
