@@ -278,31 +278,28 @@ stories.austria = [
 ];
 stories.vienna = [];
 
-const localStoryImages = {
-  Openings: "./assets/vienna-kitchen.webp",
-  Restaurants: "./assets/vienna-kitchen.webp",
-  People: "./assets/vienna-kitchen.webp",
-  Business: "./assets/live-fire.webp",
-  "Food & Wine": "./assets/vienna-bakery.webp",
-  Sustainability: "./assets/wachau-vineyard.webp"
-};
-
-const defaultStoryImage = "./assets/vienna-kitchen.webp";
-
 // An image the publisher itself put in its public feed needs no further rights
 // check; anything else stays in the editorial queue.
 const CLEARED_IMAGE_USAGE = new Set(["feed_provided", "permitted"]);
 
-function storyImageForCluster(cluster, topic) {
+// A story either carries the publisher's own image or it carries none. Category
+// stock art used to stand in, which made unrelated stories look alike and
+// implied photography MISE does not have.
+function storyImageForCluster(cluster) {
   const candidate = cluster.image_url || cluster.sources?.find((source) => source.image_url)?.image_url;
-  return /^https:\/\//.test(candidate || "")
-    ? candidate
-    : localStoryImages[topic] || defaultStoryImage;
+  return /^https:\/\//.test(candidate || "") ? candidate : null;
 }
 
 function storyImageAttributes(story) {
-  const fallback = localStoryImages[story.topic] || defaultStoryImage;
-  return `src="${safeText(story.image || fallback)}" data-fallback-src="${safeText(fallback)}" referrerpolicy="no-referrer"`;
+  return `src="${safeText(story.image)}" referrerpolicy="no-referrer"`;
+}
+
+// Imageless cards fall back to the topic gradient and the story's first letter,
+// the same treatment the drawer uses, so the two read as one language.
+function storyVisual(story, className) {
+  return story.image
+    ? `<div class="${className}"><img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" /></div>`
+    : `<div class="${className} feed-image-placeholder" data-topic="${safeText(story.topic)}" aria-hidden="true">${storyGlyph(story)}</div>`;
 }
 
 function inferOpeningStatus(title, summary) {
@@ -460,7 +457,7 @@ function liveAustriaStories() {
         title: safeText(translation.title),
         deck: safeText(translation.deck),
         summary: safeText(translation.summary || translation.deck),
-        image: storyImageForCluster(cluster, topic),
+        image: storyImageForCluster(cluster),
         imageCandidate: cluster.image_url || null,
         imageUsage: cluster.image_usage || "review_required",
       imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
@@ -518,7 +515,7 @@ function liveGlobalStories() {
       title: safeText(cluster.title),
       deck: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
       summary: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
-      image: storyImageForCluster(cluster, topic),
+      image: storyImageForCluster(cluster),
       imageCandidate: cluster.image_url || null,
       imageUsage: cluster.image_usage || "review_required",
       imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
@@ -745,7 +742,7 @@ function storyByline(story) {
 function briefingLeadCard(story) {
   return `
     <article class="briefing-lead" data-story="${story.id}" tabindex="0" aria-label="Read lead briefing: ${story.title}">
-      <img ${storyImageAttributes(story)} alt="" fetchpriority="high" />
+      ${storyVisual(story, "briefing-visual")}
       ${saveButton(story, "hero-save")}
       <div class="briefing-lead-copy">
         <div class="briefing-label">${story.topic} · ${story.location}</div>
@@ -760,7 +757,7 @@ function briefingLeadCard(story) {
 function briefingSecondaryCard(story) {
   return `
     <article class="briefing-secondary" data-story="${story.id}" tabindex="0" aria-label="Read briefing: ${story.title}">
-      <img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" />
+      ${storyVisual(story, "briefing-visual")}
       ${saveButton(story, "briefing-save")}
       <div class="briefing-secondary-copy">
         <span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>
@@ -769,17 +766,64 @@ function briefingSecondaryCard(story) {
     </article>`;
 }
 
-function feedCard(story) {
-  const visual = story.image
-    ? `<div class="feed-image"><img ${storyImageAttributes(story)} alt="" loading="lazy" decoding="async" /></div>`
-    : `<div class="feed-image-placeholder" data-topic="${safeText(story.topic)}" aria-hidden="true">${storyGlyph(story)}</div>`;
+// The desk page: photo-led stories carry the visual weight and imageless items
+// run as briefs, the way a trade paper sets dense text items beside its picture
+// stories. Two rhythms alternate so the feature does not land on a fixed beat.
+const FEED_RHYTHMS = [
+  ["feature", "standard", "standard", "brief", "brief", "brief", "standard", "standard", "standard", "standard"],
+  ["standard", "standard", "brief", "brief", "brief", "feature", "standard", "standard", "standard", "standard"],
+];
+
+function composeFeed(items) {
+  const illustrated = items.filter((story) => story.image);
+  const briefs = items.filter((story) => !story.image);
+  const laid = [];
+  let cycle = 0;
+  let nextIllustrated = 0;
+  let nextBrief = 0;
+
+  while (nextIllustrated < illustrated.length || nextBrief < briefs.length) {
+    for (const role of FEED_RHYTHMS[cycle % FEED_RHYTHMS.length]) {
+      // Either queue may empty first, so each role falls back to the other
+      // rather than leaving a hole in the grid.
+      if (role === "brief") {
+        if (nextBrief < briefs.length) laid.push({ story: briefs[nextBrief++], role: "brief" });
+        else if (nextIllustrated < illustrated.length) laid.push({ story: illustrated[nextIllustrated++], role: "standard" });
+      } else if (nextIllustrated < illustrated.length) {
+        laid.push({ story: illustrated[nextIllustrated++], role });
+      } else if (nextBrief < briefs.length) {
+        laid.push({ story: briefs[nextBrief++], role: "brief" });
+      }
+    }
+    cycle += 1;
+  }
+  return laid;
+}
+
+function feedCard({ story, role }) {
+  const kicker = `<span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>`;
+  const status = story.openingStatus
+    ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>`
+    : "";
+
+  if (role === "brief") {
+    return `
+      <article class="feed-story feed-story--brief" data-story="${story.id}" data-topic="${safeText(story.topic)}" tabindex="0" aria-label="Read ${story.title}">
+        <div class="feed-copy">
+          ${kicker}
+          ${status}
+          <h3>${story.title}</h3>
+          ${storyByline(story)}
+        </div>
+      </article>`;
+  }
 
   return `
-    <article class="feed-story" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
-      ${visual}
+    <article class="feed-story feed-story--${role}" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+      ${storyVisual(story, "feed-image")}
       <div class="feed-copy">
-        <span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>
-        ${story.openingStatus ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>` : ""}
+        ${kicker}
+        ${status}
         <h3>${story.title}</h3>
         <p>${story.summary || story.deck}</p>
         ${storyByline(story)}
@@ -1376,7 +1420,7 @@ function render() {
   const visibleFeedItems = feedItems.slice(0, state.visibleCount);
 
   storyFeed.innerHTML = visibleFeedItems.length
-    ? visibleFeedItems.map(feedCard).join("")
+    ? composeFeed(visibleFeedItems).map(feedCard).join("")
     : `<div class="empty-state">No stories match this topic in the current briefing.</div>`;
   scrollSentinel.hidden = !feedItems.length || visibleFeedItems.length >= feedItems.length;
   const loadedCount = Math.min(filteredItems.length, visibleFeedItems.length + briefingItems.length);
@@ -1387,12 +1431,18 @@ function render() {
   bindCards();
 }
 
+// A publisher image that fails to load degrades to the imageless treatment
+// rather than to stock art, so a dead CDN link never invents a photograph.
 function bindImageFallbacks(root = document) {
-  root.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+  root.querySelectorAll(".feed-image img, .briefing-visual img, .drawer-hero img").forEach((image) => {
     image.addEventListener("error", () => {
-      if (image.src !== new URL(image.dataset.fallbackSrc, window.location.href).href) {
-        image.src = image.dataset.fallbackSrc;
-      }
+      const frame = image.parentElement;
+      if (!frame) return;
+      const card = frame.closest("[data-story]") || frame;
+      const topic = card.querySelector("[data-topic]")?.dataset.topic || "";
+      frame.classList.add("feed-image-placeholder");
+      frame.dataset.topic = topic;
+      frame.textContent = (card.querySelector("h3, h2, h4")?.textContent || "M").trim()[0].toUpperCase();
     }, { once: true });
   });
 }

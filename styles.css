@@ -473,9 +473,11 @@ kbd {
   gap: 34px;
 }
 
+/* Six tracks so a feature can take the full measure, a standard card a half,
+   and a brief a third. */
 .story-feed {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -498,6 +500,79 @@ kbd {
 .feed-story:hover {
   border-color: var(--line-2);
 }
+
+/* Tile weights. These follow the base rule because they override its
+   min-height, and both selectors carry the same specificity. */
+.feed-story--feature { grid-column: span 6; }
+.feed-story--standard { grid-column: span 3; }
+.feed-story--brief { grid-column: span 2; }
+
+/* Feature: image beside the text rather than above it. The row is sized by the
+   image, and the deck is clamped so a long excerpt cannot stretch the card. */
+.feed-story--feature {
+  min-height: 288px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+}
+
+.feed-story--feature .feed-image,
+.feed-story--feature .feed-image-placeholder {
+  height: 100%;
+  min-height: 288px;
+}
+
+.feed-story--feature .feed-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+}
+
+.feed-story--feature .feed-copy h3 {
+  font-size: 27px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.feed-story--feature .feed-copy > p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.feed-story--standard { min-height: 330px; }
+
+.feed-story--standard .feed-copy > p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Brief: no picture, so the topic rule and the headline carry it. Deliberately
+   shorter than a picture card rather than an empty version of one. */
+.feed-story--brief {
+  min-height: 0;
+  padding: 0;
+  border-left: 2px solid var(--line-2);
+}
+
+.feed-story--brief .feed-copy { padding: 17px 18px 18px; }
+
+.feed-story--brief .feed-copy h3 {
+  margin: 8px 0 10px;
+  font-size: 17px;
+  line-height: 1.14;
+}
+
+.feed-story--brief[data-topic="Business"] { border-left-color: var(--blue); }
+.feed-story--brief[data-topic="Restaurants"],
+.feed-story--brief[data-topic="Openings"] { border-left-color: var(--brass-light); }
+.feed-story--brief[data-topic="Food & Wine"],
+.feed-story--brief[data-topic="Sustainability"] { border-left-color: var(--green); }
+.feed-story--brief[data-topic="People"] { border-left-color: var(--brass-dim); }
 
 .feed-image,
 .feed-image-placeholder {
@@ -538,29 +613,8 @@ kbd {
   color: rgba(157, 208, 170, 0.45);
 }
 
-.feed-story:nth-child(7n+1) {
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: minmax(250px, 1.15fr) minmax(280px, 1fr);
-  padding: 0;
-  min-height: 285px;
-}
-
-.feed-story:nth-child(7n+1) .feed-image,
-.feed-story:nth-child(7n+1) .feed-image-placeholder {
-  height: 100%;
-  min-height: 285px;
-}
-
 .feed-copy {
   padding: 18px 20px 0;
-}
-
-.feed-story:nth-child(7n+1) .feed-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 28px;
 }
 
 .feed-topic {
@@ -604,12 +658,6 @@ kbd {
   font-size: 20px;
   font-weight: 500;
   line-height: 1.08;
-}
-
-.feed-story:nth-child(7n+1) .feed-copy h3 {
-  font-size: 27px;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
 }
 
 .feed-copy > p {
@@ -1100,6 +1148,8 @@ body.modal-open {
 
 @media (max-width: 1120px) {
   .content-columns { grid-template-columns: minmax(0, 1fr) 235px; gap: 24px; }
+  /* The rail squeezes the feed, so briefs take a half instead of a third. */
+  .feed-story--brief { grid-column: span 3; }
 }
 
 @media (max-width: 900px) {
@@ -1121,15 +1171,15 @@ body.modal-open {
   .prototype-label { display: none; }
   .section-heading { align-items: flex-start; flex-direction: column; gap: 18px; }
   .filter-row { max-width: 100%; overflow-x: auto; padding-bottom: 3px; }
-  .story-feed { grid-template-columns: 1fr; }
-  .feed-story:nth-child(7n+1) {
-    grid-column: span 1;
-    display: block;
-    min-height: 330px;
-  }
-  .feed-story:nth-child(7n+1) .feed-image,
-  .feed-story:nth-child(7n+1) .feed-image-placeholder { height: 190px; min-height: 0; }
-  .feed-story:nth-child(7n+1) .feed-copy { display: block; padding: 18px 20px 0; }
+  .story-feed { grid-template-columns: minmax(0, 1fr); }
+  .feed-story--feature,
+  .feed-story--standard,
+  .feed-story--brief { grid-column: span 1; }
+  .feed-story--feature { display: block; min-height: 0; }
+  .feed-story--feature .feed-image,
+  .feed-story--feature .feed-image-placeholder { height: 190px; min-height: 0; }
+  .feed-story--feature .feed-copy { display: block; padding: 18px 20px 20px; }
+  .feed-story--feature .feed-copy h3 { font-size: 22px; }
 }
 
 /* News desk: vertical commodity board rail and expandable signals */
@@ -1345,7 +1395,8 @@ body.modal-open {
   .main-content { padding-right: 15px; padding-left: 15px; }
   .topbar h1 { font-size: 36px; }
   .feed-section { margin-top: 45px; }
-  .feed-story { min-height: 330px; }
+  .feed-story--standard { min-height: 330px; }
+  .feed-story--brief { min-height: 0; }
   .feed-image,
   .feed-image-placeholder { width: 100%; height: 150px; }
   .feed-copy > p { display: block; }
@@ -2495,17 +2546,6 @@ body.modal-open {
   background: linear-gradient(180deg, rgba(10, 9, 5, 0.05) 30%, rgba(10, 9, 5, 0.92) 100%);
 }
 
-.briefing-lead > img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  object-fit: cover;
-  transition: transform 700ms cubic-bezier(.2,.7,.2,1);
-}
-
-.briefing-lead:hover > img { transform: scale(1.02); }
-
 .briefing-lead-copy {
   position: absolute;
   z-index: 2;
@@ -2575,16 +2615,24 @@ body.modal-open {
   text-align: left;
 }
 
-.briefing-secondary > img {
+.briefing-visual {
   position: absolute;
   inset: 0;
+}
+
+.briefing-visual img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 700ms cubic-bezier(.2,.7,.2,1);
 }
 
-.briefing-secondary:hover > img { transform: scale(1.02); }
+.briefing-lead:hover .briefing-visual img,
+.briefing-secondary:hover .briefing-visual img { transform: scale(1.02); }
+
+/* An imageless hero card leans on the topic gradient at display scale. */
+.briefing-visual.feed-image-placeholder { font-size: 120px; }
+.briefing-secondary .briefing-visual.feed-image-placeholder { font-size: 76px; }
 
 .briefing-secondary::after {
   content: "";
