@@ -52,6 +52,7 @@ jobs:
       - name: Refresh news, markets, trends, events, and English briefs
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: python scripts/update.py --max-api-requests 15
 
       - name: Run tests

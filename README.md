@@ -31,7 +31,15 @@ $env:GEMINI_API_KEY = "your-new-key"
 python .\scripts\update.py
 ```
 
-Do not put an API key in this repository or paste it into a chat. The default model is `gemini-3.1-flash-lite`, selected for low-cost, high-volume work and structured-output support. Mistral remains an automatic fallback when `GEMINI_API_KEY` is absent and `MISTRAL_API_KEY` is available. Select a provider explicitly with `--provider gemini` or `--provider mistral`; override its model with `--model`, `MISE_GEMINI_MODEL`, or `MISE_MISTRAL_MODEL`. Only publisher feed titles, short excerpts, dates, attribution, and source-role metadata are sent; article bodies and publisher images are not retrieved or submitted.
+Do not put an API key in this repository or paste it into a chat. The default model is `gemini-3.1-flash-lite`, selected for low-cost, high-volume work and structured-output support. Only publisher feed titles, short excerpts, dates, attribution, and source-role metadata are sent; article bodies and publisher images are not retrieved or submitted.
+
+### Provider failover
+
+With `--provider auto` (the default) and both `GEMINI_API_KEY` and `MISTRAL_API_KEY` configured, Gemini runs first and Mistral stands by. If Gemini exhausts its daily budget or fails mid-run, the remaining batches continue on Mistral in the same run rather than being left pending. Because the usage ledger counts each provider separately, the fallback starts from its own full daily allowance, so a run can translate roughly twice the single-provider limit and survives an outage at one vendor unattended.
+
+An explicit `--provider gemini` or `--provider mistral` is taken literally and never fails over, which keeps it usable as a manual override. Override a model with `--model`, `MISE_GEMINI_MODEL`, or `MISE_MISTRAL_MODEL`.
+
+The enrichment report records `primary_provider`, the `providers_used` list, and a `failover_notes` entry naming the error that caused each handover, so a silent switch is always visible after the fact. The data-health panel shows the providers that did the work, for example `73 English briefs · gemini → mistral · 0 pending`.
 
 ### Free-tier AI budget
 
@@ -93,7 +101,7 @@ The deployment-ready workflow at `.github/workflows/refresh-and-deploy.yml` refr
 After this folder is published to a GitHub repository:
 
 1. In **Settings → Pages**, choose **GitHub Actions** as the publishing source.
-2. In **Settings → Secrets and variables → Actions**, create a repository secret named `GEMINI_API_KEY`. Do not put the value in a workflow file.
+2. In **Settings → Secrets and variables → Actions**, create a repository secret named `GEMINI_API_KEY`, and optionally `MISTRAL_API_KEY` to enable the failover described above. Do not put either value in a workflow file.
 3. Run **Refresh and deploy MISE** manually once from the Actions tab. Scheduled runs then use Europe/Vienna time.
 
 To inspect the exact public bundle locally without refreshing any data:

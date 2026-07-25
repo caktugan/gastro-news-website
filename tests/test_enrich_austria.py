@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import contextlib
 import copy
 import json
 import os
 import sys
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -27,6 +28,142 @@ def cluster(identifier: str, title: str) -> dict:
         "independent_source_count": 1,
         "sources": [{"source_id": "source", "title": title, "summary": "", "url": "https://example.com"}],
     }
+
+
+def translated(identifier: str) -> dict:
+    return {
+        "id": identifier,
+        "publish": True,
+        "title": "English title",
+        "deck": "Supported deck.",
+        "summary": "A longer evidence-based summary containing only supported information.",
+        "location": "Austria",
+        "relevance_score": 80,
+        "exclusion_reason": None,
+    }
+
+
+@contextlib.contextmanager
+def enrichment_run(directory: str, provider: str, gemini_key: str, mistral_key: str):
+    """Run main() against throwaway files with both provider keys configurable."""
+    base = Path(directory)
+    recent = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    clusters = []
+    for index in range(2):
+        item = cluster(f"{index:016x}", f"Wien restaurant story {index}")
+        item["published_at"] = recent
+        clusters.append(item)
+    (base / "clusters.json").write_text(json.dumps({"clusters": clusters}), encoding="utf-8")
+    (base / "sources.json").write_text(json.dumps({"sources": [{"id": "source", "priority": 50}]}), encoding="utf-8")
+
+    argv = [
+        "enrich_austria.py",
+        "--clusters", str(base / "clusters.json"),
+        "--sources", str(base / "sources.json"),
+        "--manual", str(base / "missing-manual.js"),
+        "--cache", str(base / "cache.json"),
+        "--output", str(base / "auto.js"),
+        "--report", str(base / "report.json"),
+        "--usage-ledger", str(base / "usage.json"),
+        "--batch-size", "1",
+        "--max-api-requests", "10",
+        "--provider", provider,
+    ]
+    previous_argv = sys.argv
+    previous_env = {name: os.environ.get(name) for name in ("GEMINI_API_KEY", "MISTRAL_API_KEY")}
+    sys.argv = argv
+    os.environ["GEMINI_API_KEY"] = gemini_key
+    os.environ["MISTRAL_API_KEY"] = mistral_key
+    try:
+        yield base
+    finally:
+        sys.argv = previous_argv
+        for name, value in previous_env.items():
+            if value is None:
+                os.environ.pop(name, None)
+            else:
+                os.environ[name] = value
+
+
+class ProviderFailoverTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.real_gemini = enrich_austria.call_gemini
+        self.real_mistral = enrich_austria.call_mistral
+        self.calls: list[str] = []
+
+    def tearDown(self) -> None:
+        enrich_austria.call_gemini = self.real_gemini
+        enrich_austria.call_mistral = self.real_mistral
+
+    def _stub(self, name: str, fail_after: int | None = None, error: Exception | None = None):
+        def call(api_key, model, batch, timeout, retries, reserve):
+            self.calls.append(name)
+            attempts = sum(1 for entry in self.calls if entry == name)
+            if fail_after is not None and attempts > fail_after:
+                raise error or RuntimeError(f"{name} unavailable")
+            return [translated(item["id"]) for item in batch]
+        return call
+
+    def test_auto_hands_the_remaining_batches_to_the_fallback(self) -> None:
+        budget = enrich_austria.DailyBudgetExceeded("gemini daily budget reached (10/10 UTC)")
+        enrich_austria.call_gemini = self._stub("gemini", fail_after=1, error=budget)
+        enrich_austria.call_mistral = self._stub("mistral")
+
+        with tempfile.TemporaryDirectory() as directory:
+            with enrichment_run(directory, "auto", "gemini-key", "mistral-key") as base:
+                exit_code = enrich_austria.main()
+            report = json.loads((base / "report.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(report["status"], "complete")
+        self.assertEqual(report["processed_count"], 2)
+        self.assertEqual(report["remaining_pending_count"], 0)
+        self.assertEqual(report["providers_used"], ["gemini", "mistral"])
+        self.assertEqual(report["provider"], "gemini → mistral")
+        self.assertEqual(report["primary_provider"], "gemini")
+        self.assertEqual(len(report["failover_notes"]), 1)
+        self.assertIn("gemini handed over to mistral", report["failover_notes"][0])
+
+    def test_fallback_covers_a_transport_failure_not_just_the_budget(self) -> None:
+        enrich_austria.call_gemini = self._stub("gemini", fail_after=0, error=RuntimeError("HTTP 503"))
+        enrich_austria.call_mistral = self._stub("mistral")
+
+        with tempfile.TemporaryDirectory() as directory:
+            with enrichment_run(directory, "auto", "gemini-key", "mistral-key") as base:
+                enrich_austria.main()
+            report = json.loads((base / "report.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(report["status"], "complete")
+        self.assertEqual(report["providers_used"], ["mistral"])
+        self.assertEqual(report["processed_count"], 2)
+
+    def test_explicit_provider_is_taken_literally_and_never_fails_over(self) -> None:
+        enrich_austria.call_gemini = self._stub("gemini", fail_after=0, error=RuntimeError("HTTP 503"))
+        enrich_austria.call_mistral = self._stub("mistral")
+
+        with tempfile.TemporaryDirectory() as directory:
+            with enrichment_run(directory, "gemini", "gemini-key", "mistral-key") as base:
+                exit_code = enrich_austria.main()
+            report = json.loads((base / "report.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(report["status"], "partial_failure")
+        self.assertEqual(report["providers_used"], [])
+        self.assertNotIn("mistral", self.calls)
+
+    def test_missing_fallback_key_leaves_single_provider_behaviour(self) -> None:
+        budget = enrich_austria.DailyBudgetExceeded("gemini daily budget reached (10/10 UTC)")
+        enrich_austria.call_gemini = self._stub("gemini", fail_after=0, error=budget)
+        enrich_austria.call_mistral = self._stub("mistral")
+
+        with tempfile.TemporaryDirectory() as directory:
+            with enrichment_run(directory, "auto", "gemini-key", "") as base:
+                enrich_austria.main()
+            report = json.loads((base / "report.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(report["status"], "daily_budget_reached")
+        self.assertNotIn("mistral", self.calls)
+        self.assertEqual(list(report["daily_request_budget"]["by_provider"]), ["gemini"])
 
 
 class EnrichmentTests(unittest.TestCase):

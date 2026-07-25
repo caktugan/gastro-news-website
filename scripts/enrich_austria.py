@@ -559,38 +559,56 @@ def main() -> int:
         }, ensure_ascii=False, indent=2))
         return 0
 
-    gemini_key = "" if args.no_api else os.environ.get("GEMINI_API_KEY", "").strip()
-    mistral_key = "" if args.no_api else os.environ.get("MISTRAL_API_KEY", "").strip()
-    provider = args.provider
-    if provider == "auto":
-        provider = "gemini" if gemini_key or not mistral_key else "mistral"
-    api_key = gemini_key if provider == "gemini" else mistral_key
-    default_model = (
-        os.environ.get("MISE_GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
-        if provider == "gemini"
-        else os.environ.get("MISE_MISTRAL_MODEL", DEFAULT_MISTRAL_MODEL)
-    )
-    model = args.model or default_model
+    keys = {
+        "gemini": "" if args.no_api else os.environ.get("GEMINI_API_KEY", "").strip(),
+        "mistral": "" if args.no_api else os.environ.get("MISTRAL_API_KEY", "").strip(),
+    }
+    primary = args.provider
+    if primary == "auto":
+        primary = "gemini" if keys["gemini"] or not keys["mistral"] else "mistral"
+    # "auto" lets a configured second provider stand by: when the primary exhausts
+    # its daily budget or fails mid-run, the remaining batches continue on the
+    # fallback, which carries its own separate budget. An explicit --provider is
+    # taken literally and never fails over.
+    chain = [primary] if args.provider != "auto" else [primary, "mistral" if primary == "gemini" else "gemini"]
+    chain = [name for name in chain if keys[name]]
+
+    def model_for(name: str) -> str:
+        return args.model or (
+            os.environ.get("MISE_GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
+            if name == "gemini"
+            else os.environ.get("MISE_MISTRAL_MODEL", DEFAULT_MISTRAL_MODEL)
+        )
+
+    provider = primary
+    model = model_for(primary)
     status = "complete"
     errors: list[str] = []
+    providers_used: list[str] = []
+    failover_notes: list[str] = []
     processed = 0
     budget_message = None
-    if pending and not api_key:
-        status = f"skipped_no_{provider}_key"
+    if pending and not chain:
+        status = f"skipped_no_{primary}_key"
     elif pending:
-        for offset in range(0, len(pending), max(1, args.batch_size)):
-            batch = pending[offset : offset + max(1, args.batch_size)]
+        step = max(1, args.batch_size)
+        offset = 0
+        rank = 0
+        while offset < len(pending):
+            batch = pending[offset : offset + step]
+            provider = chain[rank]
+            model = model_for(provider)
             try:
-                reserve = lambda: reserve_api_request(
+                reserve = lambda name=provider, items=batch: reserve_api_request(
                     args.usage_ledger,
-                    provider,
-                    len(batch),
+                    name,
+                    len(items),
                     request_limit,
                 )
                 results = (
-                    call_gemini(api_key, model, batch, args.timeout, args.retries, reserve)
+                    call_gemini(keys[provider], model, batch, args.timeout, args.retries, reserve)
                     if provider == "gemini"
-                    else call_mistral(api_key, model, batch, args.timeout, args.retries, reserve)
+                    else call_mistral(keys[provider], model, batch, args.timeout, args.retries, reserve)
                 )
                 validated = validate_batch(results, batch)
                 generated_at = utc_now()
@@ -605,24 +623,35 @@ def main() -> int:
                         "prompt_version": PROMPT_VERSION,
                     }
                 processed += len(batch)
+                if provider not in providers_used:
+                    providers_used.append(provider)
                 cache.update({"schema_version": 1, "updated_at": generated_at, "model": model, "provider": provider})
                 write_json(args.cache, cache)
-            except DailyBudgetExceeded as error:
-                status = "daily_budget_reached"
-                budget_message = str(error)
-                break
-            except (RuntimeError, ValueError, json.JSONDecodeError) as error:
-                status = "partial_failure"
-                errors.append(str(error))
+                offset += step
+            except (DailyBudgetExceeded, RuntimeError, ValueError, json.JSONDecodeError) as error:
+                if rank + 1 < len(chain):
+                    failover_notes.append(f"{provider} handed over to {chain[rank + 1]}: {error}")
+                    rank += 1
+                    continue
+                if isinstance(error, DailyBudgetExceeded):
+                    status = "daily_budget_reached"
+                    budget_message = str(error)
+                else:
+                    status = "partial_failure"
+                    errors.append(str(error))
                 break
 
     published_auto = write_browser_data(args.output, cache, selected, manual_ids)
-    final_usage = usage_totals(load_usage_ledger(args.usage_ledger), usage_day(), provider)
+    ledger = load_usage_ledger(args.usage_ledger)
+    final_usage = usage_totals(ledger, usage_day(), provider)
     report = {
         "schema_version": 1,
         "generated_at": utc_now(),
         "status": status,
-        "provider": provider,
+        "provider": " → ".join(providers_used) or provider,
+        "primary_provider": primary,
+        "providers_used": providers_used,
+        "failover_notes": failover_notes,
         "model": model,
         "prompt_version": PROMPT_VERSION,
         "selected_cluster_count": len(selected),
@@ -637,6 +666,16 @@ def main() -> int:
             "used": int(final_usage.get("request_count", 0)),
             "remaining": max(0, request_limit - int(final_usage.get("request_count", 0))),
             "attempted_item_count": int(final_usage.get("item_count", 0)),
+            "by_provider": {
+                name: {
+                    "used": int(usage_totals(ledger, usage_day(), name).get("request_count", 0)),
+                    "remaining": max(
+                        0,
+                        request_limit - int(usage_totals(ledger, usage_day(), name).get("request_count", 0)),
+                    ),
+                }
+                for name in chain
+            },
         },
         "budget_message": budget_message,
         "errors": errors,
