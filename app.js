@@ -331,14 +331,6 @@ function relevanceScore(story) {
   return Math.round(freshness + local + corroboration + business + operatorImpact - pressPenalty);
 }
 
-function isNewsworthyOpening(story) {
-  if (story.topic !== "Openings") return true;
-  const evidence = `${story.title || ""} ${story.summary || story.deck || ""}`;
-  return (story.independentSources || 0) > 1
-    || (story.sources || 0) > 1
-    || /beloved|iconic|landmark|institution|michelin|starred|chain|group|flagship|first in|arrives|expansion|insolven|bankrupt|hundred|decade|jobs|employees|acquisition|takeover/i.test(evidence);
-}
-
 function safeText(value) {
   return String(value || "")
     .replaceAll("&", "&amp;")
@@ -681,9 +673,6 @@ function currentStories() {
     ));
   } else {
     items = stories[state.section] || [];
-  }
-  if (["austria", "global"].includes(state.section)) {
-    items = items.filter(isNewsworthyOpening);
   }
   return [...items].sort((left, right) => state.sort === "latest"
     ? new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0)
