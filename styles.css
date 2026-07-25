@@ -2392,6 +2392,8 @@ body.modal-open {
   gap: 24px;
 }
 
+.daily-briefing-heading .eyebrow { color: var(--accent); }
+
 .daily-briefing-heading h2 {
   margin: 3px 0 0;
   font-family: var(--serif);
@@ -2568,7 +2570,6 @@ body.modal-open {
   padding: 20px;
 }
 
-.briefing-secondary-copy .feed-topic { color: #fff; opacity: 0.92; }
 .briefing-secondary-copy .feed-topic::before { display: none; }
 
 .briefing-secondary h3 {

@@ -1178,7 +1178,7 @@ function render() {
   });
 
   const headings = {
-    austria: "Industry news for Austrian hospitality",
+    austria: "What Austria is talking about",
     global: "What the world is talking about",
     saved: "Your saved briefings",
     openings: "Austria opening signals",
@@ -1627,7 +1627,8 @@ document.addEventListener("keydown", (event) => {
 const formattedDate = new Intl.DateTimeFormat("en-GB", {
   weekday: "long",
   day: "2-digit",
-  month: "long"
+  month: "long",
+  year: "numeric"
 }).format(new Date()).toUpperCase();
 document.querySelector("#today-label").textContent = formattedDate.replace(",", " ·");
 
