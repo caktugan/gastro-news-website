@@ -53,7 +53,10 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-        run: python scripts/update.py --max-api-requests 25
+        # The German edition serves publisher text as filed, so nothing reads
+        # the translations. --no-api keeps the stage running against its cache
+        # without spending budget; drop the flag to resume an English edition.
+        run: python scripts/update.py --no-api --max-api-requests 25
 
       - name: Run tests
         run: python -m unittest discover -s tests -v
