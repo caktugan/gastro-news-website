@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-22T20:30:23+00:00",
-  "activeSourceCount": 6,
-  "verifiedSourceCount": 6,
+  "generatedAt": "2026-07-25T15:00:42+00:00",
+  "activeSourceCount": 11,
+  "verifiedSourceCount": 11,
   "errorSourceCount": 0,
-  "publishedEventCount": 6,
+  "publishedEventCount": 11,
   "sources": [
     {
       "sourceId": "vienna-coffee-festival",
@@ -34,6 +34,31 @@
       "sourceId": "biofach",
       "status": "verified",
       "eventId": "biofach-2027"
+    },
+    {
+      "sourceId": "wiener-kaiser-wiesn",
+      "status": "verified",
+      "eventId": "wiener-kaiser-wiesn-2026"
+    },
+    {
+      "sourceId": "wiener-kaffeesiederball",
+      "status": "verified",
+      "eventId": "wiener-kaffeesiederball-2027"
+    },
+    {
+      "sourceId": "prowein",
+      "status": "verified",
+      "eventId": "prowein-2027"
+    },
+    {
+      "sourceId": "internorga",
+      "status": "verified",
+      "eventId": "internorga-2027"
+    },
+    {
+      "sourceId": "anuga",
+      "status": "verified",
+      "eventId": "anuga-2027"
     }
   ],
   "reviewCandidateCount": 3

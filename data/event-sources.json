@@ -114,6 +114,101 @@
         "summary": "The international organic-food industry meets for products, sourcing, policy, sustainability and market trends.",
         "source": "NürnbergMesse"
       }
+    },
+    {
+      "id": "wiener-kaiser-wiesn",
+      "active": true,
+      "url": "https://kaiserwiesn.at/en/",
+      "required_markers": ["Kaiser Wiesn", "September 24 to October 11"],
+      "event": {
+        "id": "wiener-kaiser-wiesn-2026",
+        "title": "Wiener Kaiser Wiesn",
+        "startDate": "2026-09-24",
+        "endDate": "2026-10-11",
+        "city": "Vienna",
+        "region": "vienna",
+        "venue": "Kaiserwiese, Prater",
+        "type": "Festival & tasting",
+        "audience": "Public",
+        "summary": "Austria's largest Oktoberfest-style festival runs for eighteen days across three tents on the Kaiserwiese, drawing catering, beverage and seasonal-staffing demand across Vienna.",
+        "source": "Wiener Kaiser Wiesn"
+      }
+    },
+    {
+      "id": "wiener-kaffeesiederball",
+      "active": true,
+      "url": "https://www.kaffeesiederball.at/",
+      "required_markers": ["Kaffeesiederball", "22. Januar 2027"],
+      "event": {
+        "id": "wiener-kaffeesiederball-2027",
+        "title": "Wiener Kaffeesiederball",
+        "startDate": "2027-01-22",
+        "endDate": "2027-01-22",
+        "city": "Vienna",
+        "region": "vienna",
+        "venue": "Hofburg Vienna",
+        "type": "Industry gala",
+        "audience": "Trade & public",
+        "summary": "The Viennese coffeehouse trade's annual ball at the Hofburg, hosted by the coffeehouse proprietors' guild and a fixture of the city's hospitality calendar.",
+        "source": "Klub der Wiener Kaffeehausbesitzer"
+      }
+    },
+    {
+      "id": "prowein",
+      "active": true,
+      "url": "https://www.prowein.com/",
+      "required_markers": ["ProWein", "07-09 March 2027"],
+      "event": {
+        "id": "prowein-2027",
+        "title": "ProWein 2027",
+        "startDate": "2027-03-07",
+        "endDate": "2027-03-09",
+        "city": "Düsseldorf",
+        "region": "international",
+        "venue": "Messe Düsseldorf",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "The international wine and spirits trade fair where Austrian producers meet importers, and where buyers set list and pricing decisions for the coming year.",
+        "source": "Messe Düsseldorf"
+      }
+    },
+    {
+      "id": "internorga",
+      "active": true,
+      "url": "https://www.internorga.com/en/",
+      "required_markers": ["INTERNORGA", "12 - 16 March 2027"],
+      "event": {
+        "id": "internorga-2027",
+        "title": "INTERNORGA 2027",
+        "startDate": "2027-03-12",
+        "endDate": "2027-03-16",
+        "city": "Hamburg",
+        "region": "international",
+        "venue": "Hamburg Messe und Congress",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "The German-language market's largest hospitality and foodservice platform, covering kitchen equipment, bakery, beverages and operating technology.",
+        "source": "Hamburg Messe und Congress"
+      }
+    },
+    {
+      "id": "anuga",
+      "active": true,
+      "url": "https://www.anuga.com/",
+      "required_markers": ["Anuga", "09.-13.10.2027"],
+      "event": {
+        "id": "anuga-2027",
+        "title": "Anuga 2027",
+        "startDate": "2027-10-09",
+        "endDate": "2027-10-13",
+        "city": "Cologne",
+        "region": "international",
+        "venue": "Koelnmesse",
+        "type": "Trade fair",
+        "audience": "Trade only",
+        "summary": "The biennial global food and beverage trade fair, covering sourcing, private label, foodservice and retail trends across ten specialised shows.",
+        "source": "Koelnmesse"
+      }
     }
   ]
 }

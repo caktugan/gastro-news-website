@@ -1,7 +1,7 @@
 window.MISE_EVENTS = {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-22T20:30:23+00:00",
-  "checkedAt": "2026-07-22",
+  "generatedAt": "2026-07-25T15:00:42+00:00",
+  "checkedAt": "2026-07-25",
   "aiRequests": 0,
   "methodology": "Events publish only after their configured date and identity markers are found on an official organizer page. Expired events are removed automatically; feed-discovered leads remain in review.",
   "events": [
@@ -20,7 +20,7 @@ window.MISE_EVENTS = {
       "url": "https://viennacoffeefestival.cc/",
       "sourceId": "vienna-coffee-festival",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
     },
     {
       "id": "fafga-2026",
@@ -37,7 +37,7 @@ window.MISE_EVENTS = {
       "url": "https://www.fafga.at/",
       "sourceId": "fafga",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
     },
     {
       "id": "wko-gastronomy-seminar-september-2026",
@@ -54,7 +54,24 @@ window.MISE_EVENTS = {
       "url": "https://www.wko.at/veranstaltungen/70466989-64fd-44cf-aa0c-9d6706ccf9ef",
       "sourceId": "wko-gastronomy-seminar",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
+    },
+    {
+      "id": "wiener-kaiser-wiesn-2026",
+      "title": "Wiener Kaiser Wiesn",
+      "startDate": "2026-09-24",
+      "endDate": "2026-10-11",
+      "city": "Vienna",
+      "region": "vienna",
+      "venue": "Kaiserwiese, Prater",
+      "type": "Festival & tasting",
+      "audience": "Public",
+      "summary": "Austria's largest Oktoberfest-style festival runs for eighteen days across three tents on the Kaiserwiese, drawing catering, beverage and seasonal-staffing demand across Vienna.",
+      "source": "Wiener Kaiser Wiesn",
+      "url": "https://kaiserwiesn.at/en/",
+      "sourceId": "wiener-kaiser-wiesn",
+      "verificationStatus": "verified",
+      "lastVerified": "2026-07-25"
     },
     {
       "id": "vienna-wine-hiking-day-2026",
@@ -71,7 +88,7 @@ window.MISE_EVENTS = {
       "url": "https://www.wien.info/en/dine-drink/wine/wine-trail-366076",
       "sourceId": "vienna-wine-hiking-day",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
     },
     {
       "id": "alles-fuer-den-gast-2026",
@@ -88,7 +105,24 @@ window.MISE_EVENTS = {
       "url": "https://www.gastmesse.at/en/",
       "sourceId": "alles-fuer-den-gast",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
+    },
+    {
+      "id": "wiener-kaffeesiederball-2027",
+      "title": "Wiener Kaffeesiederball",
+      "startDate": "2027-01-22",
+      "endDate": "2027-01-22",
+      "city": "Vienna",
+      "region": "vienna",
+      "venue": "Hofburg Vienna",
+      "type": "Industry gala",
+      "audience": "Trade & public",
+      "summary": "The Viennese coffeehouse trade's annual ball at the Hofburg, hosted by the coffeehouse proprietors' guild and a fixture of the city's hospitality calendar.",
+      "source": "Klub der Wiener Kaffeehausbesitzer",
+      "url": "https://www.kaffeesiederball.at/",
+      "sourceId": "wiener-kaffeesiederball",
+      "verificationStatus": "verified",
+      "lastVerified": "2026-07-25"
     },
     {
       "id": "biofach-2027",
@@ -105,7 +139,58 @@ window.MISE_EVENTS = {
       "url": "https://www.biofach.de/en",
       "sourceId": "biofach",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-22"
+      "lastVerified": "2026-07-25"
+    },
+    {
+      "id": "prowein-2027",
+      "title": "ProWein 2027",
+      "startDate": "2027-03-07",
+      "endDate": "2027-03-09",
+      "city": "Düsseldorf",
+      "region": "international",
+      "venue": "Messe Düsseldorf",
+      "type": "Trade fair",
+      "audience": "Trade only",
+      "summary": "The international wine and spirits trade fair where Austrian producers meet importers, and where buyers set list and pricing decisions for the coming year.",
+      "source": "Messe Düsseldorf",
+      "url": "https://www.prowein.com/",
+      "sourceId": "prowein",
+      "verificationStatus": "verified",
+      "lastVerified": "2026-07-25"
+    },
+    {
+      "id": "internorga-2027",
+      "title": "INTERNORGA 2027",
+      "startDate": "2027-03-12",
+      "endDate": "2027-03-16",
+      "city": "Hamburg",
+      "region": "international",
+      "venue": "Hamburg Messe und Congress",
+      "type": "Trade fair",
+      "audience": "Trade only",
+      "summary": "The German-language market's largest hospitality and foodservice platform, covering kitchen equipment, bakery, beverages and operating technology.",
+      "source": "Hamburg Messe und Congress",
+      "url": "https://www.internorga.com/en/",
+      "sourceId": "internorga",
+      "verificationStatus": "verified",
+      "lastVerified": "2026-07-25"
+    },
+    {
+      "id": "anuga-2027",
+      "title": "Anuga 2027",
+      "startDate": "2027-10-09",
+      "endDate": "2027-10-13",
+      "city": "Cologne",
+      "region": "international",
+      "venue": "Koelnmesse",
+      "type": "Trade fair",
+      "audience": "Trade only",
+      "summary": "The biennial global food and beverage trade fair, covering sourcing, private label, foodservice and retail trends across ten specialised shows.",
+      "source": "Koelnmesse",
+      "url": "https://www.anuga.com/",
+      "sourceId": "anuga",
+      "verificationStatus": "verified",
+      "lastVerified": "2026-07-25"
     }
   ],
   "reviewCandidateCount": 3
