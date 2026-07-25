@@ -2,10 +2,11 @@ name: Refresh and deploy MISE
 
 on:
   push:
-    branches: ["main"]
+    branches: ["master"]
   schedule:
+    # GitHub Actions crons run in UTC: 01:17/07:17/13:17/19:17 UTC
+    # = 03:17/09:17/15:17/21:17 Vienna summer time.
     - cron: "17 1,7,13,19 * * *"
-      timezone: "Europe/Vienna"
   workflow_dispatch:
 
 permissions:
