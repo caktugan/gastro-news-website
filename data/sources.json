@@ -80,23 +80,6 @@
       "rights_note": "Official feed. Store metadata and excerpt only; retain original attribution and link."
     },
     {
-      "id": "vienna-press",
-      "name": "City of Vienna Press Service",
-      "edition": "austria",
-      "country": "AT",
-      "language": "de",
-      "homepage_url": "https://presse.wien.gv.at/",
-      "feed_url": "https://presse.wien.gv.at/rss",
-      "ingestion_mode": "rss",
-      "status": "active",
-      "source_type": "official",
-      "priority": 70,
-      "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "markt", "kulinar", "lebensmittel", "wein", "kaffee", "tourismus", "hotel"],
-      "max_items": 15,
-      "rights_note": "Official municipal press feed. Store metadata and excerpt only; retain original attribution and link."
-    },
-    {
       "id": "ahgz",
       "name": "AHGZ",
       "edition": "global",
