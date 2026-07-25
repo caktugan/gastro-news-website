@@ -319,6 +319,38 @@ function inferOpeningStatus(title, summary) {
   return "Unconfirmed";
 }
 
+// What makes a story matter to someone running a restaurant: costs, prices,
+// staff, tax, regulation, ownership, suppliers. The feed is mostly German, so
+// the vocabulary has to be too. German prefers compounds here over bare stems,
+// because the bare stems are ambiguous in exactly the ways this feed trips on:
+// a Preis is as often a prize as a price, Gehalt is a wine's body before it is
+// a salary, Gewinner are competition winners, and gesetzt is not a law.
+const OPERATOR_IMPACT_PATTERN = new RegExp([
+  // English
+  "cost|price|inflation|wage|collective agreement|labour|labor|tax|insolven",
+  "bankrupt|revenue|profit|investment|supplier|wholesale|regulation|tourism",
+  "hotel|group|chain|franchise|company|market|export|import|energy|rent",
+  // German — costs and prices
+  "teuerung|preiserhöhung|preissteigerung|preisanstieg|preisdruck|preiskampf",
+  "lebensmittelpreis|energiepreis|strompreis|einkaufspreis|erzeugerpreis",
+  "kostendruck|betriebskosten|energiekosten|personalkosten|lohnkosten|mehrkosten",
+  // German — labour
+  "personalmangel|personalsuche|kaum personal|fachkräfte|arbeitskräfte",
+  "arbeitsmarkt|mitarbeitersuche|kollektivvertrag|mindestlohn|lohnerhöhung",
+  "gehaltserhöhung|arbeitszeit|beschäftigung|saisonarbeit|trinkgeld",
+  // German — tax and regulation
+  "mehrwertsteuer|umsatzsteuer|steuersatz|besteuerung|abgabe|verordnung",
+  "vorschrift|gesetzlich|regulierung|sperrstunde|registrierkasse|kassenprüfung",
+  "kassenpflicht|förderung|genehmigung",
+  // German — company and market
+  "umsatz|expansion|expandiert|übernahme|betriebsübergabe|geschäftsaufgabe",
+  "insolvenzverfahren|sanierungsverfahren|konkurs|zusperren|filiale|investier",
+  "investition|konjunktur|rezession|marktanteil",
+  // German — supply chain and premises
+  "lieferant|lieferkette|großhandel|grosshandel|großhändler|handelskette",
+  "pacht|mietkosten",
+].join("|"), "i");
+
 function relevanceScore(story) {
   const ageHours = Math.max(0, (Date.now() - new Date(story.publishedAt || 0).getTime()) / 36e5);
   const freshness = Math.max(0, 80 - ageHours / 3);
@@ -326,7 +358,7 @@ function relevanceScore(story) {
   const corroboration = Math.min(30, (story.independentSources || 0) * 12 + Math.max(0, story.sources - 1) * 4);
   const business = story.topic === "Business" ? 24 : 0;
   const industryEvidence = `${story.title || ""} ${story.summary || story.deck || ""}`;
-  const operatorImpact = /cost|price|inflation|wage|collective agreement|labour|labor|tax|insolven|bankrupt|revenue|profit|investment|supplier|wholesale|regulation|tourism|hotel|group|chain|franchise|company|market|export|import|energy|rent/i.test(industryEvidence) ? 22 : 0;
+  const operatorImpact = OPERATOR_IMPACT_PATTERN.test(industryEvidence) ? 22 : 0;
   const pressPenalty = story.coveragePattern === "likely_syndicated" ? 22 : 0;
   return Math.round(freshness + local + corroboration + business + operatorImpact - pressPenalty);
 }
