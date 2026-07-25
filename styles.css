@@ -669,9 +669,24 @@ kbd {
 }
 
 .feed-byline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   color: var(--faint);
   font-family: var(--sans);
   font-size: 10px;
+}
+
+/* Language tag: the feed runs several languages side by side. */
+.feed-byline i {
+  padding: 1px 5px;
+  color: var(--muted-2);
+  border: 1px solid var(--line-2);
+  border-radius: 3px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
 .feed-save {

@@ -428,19 +428,37 @@ function storyTopic(cluster) {
   return cluster.topic || "Restaurants";
 }
 
+// Austrian reporting is German and stays German. Nothing is translated for
+// display, so no story waits on a model to become visible and the words on the
+// tile are the publisher's own.
+const VIENNA_PATTERN = /\bwien\b|\bwiener\b|vienna|döbling|neubau|alsergrund|leopoldstadt|josefstadt|favoriten|hietzing|währing|ottakring|meidling|donaustadt|floridsdorf|landstraße|mariahilf/i;
+const REGION_PATTERNS = [
+  [/salzburg/i, "Salzburg"],
+  [/tirol|innsbruck/i, "Tirol"],
+  [/vorarlberg|bregenz|dornbirn/i, "Vorarlberg"],
+  [/steiermark|graz/i, "Steiermark"],
+  [/kärnten|klagenfurt|villach/i, "Kärnten"],
+  [/oberösterreich|linz|wels/i, "Oberösterreich"],
+  [/niederösterreich|krems|wachau|st\. pölten/i, "Niederösterreich"],
+  [/burgenland|eisenstadt/i, "Burgenland"],
+];
+
+function inferLocation(text) {
+  if (VIENNA_PATTERN.test(text)) return "Vienna";
+  for (const [pattern, name] of REGION_PATTERNS) {
+    if (pattern.test(text)) return name;
+  }
+  return "Austria";
+}
+
 function liveAustriaStories() {
   const payload = window.MISE_LIVE_NEWS;
-  const manualTranslations = window.MISE_AUSTRIA_ENGLISH || {};
-  const automatedTranslations = window.MISE_AUSTRIA_AUTO?.translations || {};
-  const translations = { ...automatedTranslations, ...manualTranslations };
   const clusters = payload?.clusters;
   if (!Array.isArray(clusters)) return [];
 
   return clusters
-    .filter((cluster) => cluster.edition === "austria" && translations[cluster.id])
+    .filter((cluster) => cluster.edition === "austria")
     .map((cluster) => {
-      const translation = translations[cluster.id];
-      const summaryProvenance = manualTranslations[cluster.id] ? "manual" : "ai";
       const sources = (cluster.sources || [])
         .filter((source) => /^https:\/\//.test(source.url || ""))
         .filter((source, index, all) => all.findIndex((candidate) => candidate.source_name === source.source_name) === index);
@@ -448,15 +466,17 @@ function liveAustriaStories() {
       if (!lead) return null;
       const topic = storyTopic(cluster);
       const sourceNames = sources.map((source) => safeText(source.source_name));
+      const excerpt = cluster.summary || `Meldung von ${lead.source_name}.`;
       return {
         id: `live-at-${cluster.id}`,
         edition: "Austria",
         topic,
-        location: translation.location || "Austria",
+        language: cluster.language || "de",
+        location: inferLocation(`${cluster.title || ""} ${cluster.summary || ""}`),
         time: relativeTime(cluster.published_at),
-        title: safeText(translation.title),
-        deck: safeText(translation.deck),
-        summary: safeText(translation.summary || translation.deck),
+        title: safeText(cluster.title),
+        deck: safeText(excerpt),
+        summary: safeText(excerpt),
         image: storyImageForCluster(cluster),
         imageCandidate: cluster.image_url || null,
         imageUsage: cluster.image_usage || "review_required",
@@ -473,16 +493,16 @@ function liveAustriaStories() {
           sourceType: source.source_type || "publisher"
         })),
         brief: [],
-        briefType: "source_translation",
+        briefType: "source_excerpt",
         clusterConfidence: cluster.cluster_confidence,
         independentSources: cluster.independent_source_count || 0,
         coveragePattern: cluster.coverage_pattern || "single_source",
         isCluster: (cluster.source_count || sources.length) > 1,
         isLive: true,
-        isTranslated: true,
-        summaryProvenance,
-        reviewStatus: cluster.review_status || "automated_unreviewed",
-        openingStatus: topic === "Openings" ? inferOpeningStatus(translation.title, translation.summary) : null,
+        isTranslated: false,
+        summaryProvenance: "source_original",
+        reviewStatus: cluster.review_status || "source_metadata_only",
+        openingStatus: topic === "Openings" ? inferOpeningStatus(cluster.title, cluster.summary) : null,
         publishedAt: cluster.published_at,
         url: lead.url
       };
@@ -496,7 +516,8 @@ function liveGlobalStories() {
   if (!Array.isArray(clusters)) return [];
 
   return clusters
-    .filter((cluster) => cluster.edition === "global" && cluster.language === "en")
+    // Every language the collector holds, each shown as published.
+    .filter((cluster) => cluster.edition === "global")
     .map((cluster) => {
       const sources = (cluster.sources || [])
         .filter((source) => /^https:\/\//.test(source.url || ""))
@@ -510,6 +531,7 @@ function liveGlobalStories() {
       id: `live-${cluster.id}`,
       edition: "Global",
       topic,
+      language: cluster.language || "en",
       location: lead.country === "US" ? "United States" : lead.country || "Global",
       time: relativeTime(cluster.published_at),
       title: safeText(cluster.title),
@@ -537,6 +559,8 @@ function liveGlobalStories() {
       coveragePattern: cluster.coverage_pattern || "single_source",
       isCluster: (cluster.source_count || sources.length) > 1,
       isLive: true,
+      isTranslated: false,
+      summaryProvenance: "source_original",
       reviewStatus: cluster.review_status || cluster.brief?.review_status || "source_metadata_only",
       openingStatus: topic === "Openings" ? inferOpeningStatus(cluster.title, cluster.summary) : null,
       publishedAt: cluster.published_at,
@@ -736,7 +760,10 @@ function storyGlyph(story) {
 
 function storyByline(story) {
   const source = (story.sourceNames || [])[0] || "MISE desk";
-  return `<div class="feed-byline">${source} · ${story.time}</div>`;
+  // The feed carries several languages side by side, so each item says which
+  // one it is rather than leaving the reader to work it out from the headline.
+  const language = story.language ? `<i>${safeText(story.language.toUpperCase())}</i>` : "";
+  return `<div class="feed-byline">${language}${source} · ${story.time}</div>`;
 }
 
 function briefingLeadCard(story) {
@@ -1503,7 +1530,13 @@ function whyItMatters(story) {
   return "MISE ranks this story using freshness, geographic relevance, source quality and corroboration signals.";
 }
 
+const LANGUAGE_NAMES = { de: "German", en: "English", fr: "French" };
+
 function provenanceKicker(story) {
+  if (story.summaryProvenance === "source_original") {
+    const language = LANGUAGE_NAMES[story.language] || "the original language";
+    return `Headline and standfirst exactly as the publisher filed them, in ${language}. MISE has not translated, rewritten or summarised this item.`;
+  }
   if (story.summaryProvenance === "manual") {
     return "Headline and standfirst written by a MISE editor from the original German reporting.";
   }
@@ -1538,9 +1571,7 @@ function openStory(id) {
           ? story.coveragePattern === "likely_syndicated"
             ? `Multi-outlet coverage · ${story.sources} outlets · likely shared release`
             : `Evidence brief · ${story.independentSources} independent of ${story.sources} sources`
-          : story.isTranslated
-            ? "English source translation · original reporting linked"
-            : "Publisher feed excerpt · no AI summary"}</div>
+          : `Publisher feed excerpt · ${LANGUAGE_NAMES[story.language] || "original language"} · no AI`}</div>
         ${story.isCluster && story.brief.length
           ? `<ul>${story.brief.map((item) => `<li>${item}</li>`).join("")}</ul>`
           : `<p>${story.deck}</p>`}
@@ -1557,12 +1588,8 @@ function openStory(id) {
       <p class="disclosure">${story.isCluster
         ? story.coveragePattern === "likely_syndicated"
           ? "These outlets appear to be covering the same announcement and may rely on shared press material. MISE shows both links but does not treat repetition as independent confirmation. No article body was copied."
-          : "This automated, unreviewed evidence brief uses short publisher feed excerpts. Each bullet remains traceable to the linked coverage; no article body was copied and no generative AI was used in this clustering pass."
-          : story.isTranslated
-          ? story.summaryProvenance === "ai"
-            ? "MISE used AI to translate and summarize the publisher's public feed title and excerpt into English. The summary is limited to supplied evidence; the original-language headline and publisher link remain visible, and no article body was copied."
-            : "MISE's curated English version is based on the publisher's public feed title and excerpt. The original-language headline and publisher link remain visible, and no article body was copied."
-          : "This preview uses the publisher's feed title, metadata and short excerpt. MISE has not generated a summary or copied the article body. Follow the source link for the complete reporting."}</p>
+          : "This evidence brief uses short publisher feed excerpts. Each bullet remains traceable to the linked coverage; no article body was copied and no generative AI was used in this clustering pass."
+        : "Every word above is the publisher's own feed title and excerpt, shown in the language it was filed in. MISE has not translated, summarised or copied the article body. Follow the source link for the full reporting."}</p>
     `
     : `
       <section class="ai-brief">
