@@ -34,6 +34,11 @@ DEFAULT_GEMINI_MODEL = "gemini-3.1-flash-lite"
 DEFAULT_MISTRAL_MODEL = "mistral-small-2603"
 DEFAULT_DAILY_REQUEST_LIMIT = 25
 PROMPT_VERSION = 2
+# Clusters older than this are never offered for translation, so this is also a
+# hard ceiling on how far back the Austria edition reaches. Several registry
+# feeds serve a hundred entries, so the collector holds more history than a
+# thirty-day window ever exposed.
+MAX_CLUSTER_AGE_DAYS = 90
 
 VIENNA_TERMS = {
     "wien", "wiener", "vienna", "döbling", "neubau", "alsergrund", "leopoldstadt",
@@ -110,7 +115,12 @@ def source_signature(cluster: dict) -> str:
     return hashlib.sha256(encoded).hexdigest()[:20]
 
 
-def select_clusters(clusters: list[dict], sources: list[dict], limit: int) -> list[dict]:
+def select_clusters(
+    clusters: list[dict],
+    sources: list[dict],
+    limit: int,
+    max_age_days: int = MAX_CLUSTER_AGE_DAYS,
+) -> list[dict]:
     priorities = {source["id"]: int(source.get("priority", 50)) for source in sources}
     now = datetime.now(timezone.utc)
     candidates = []
@@ -118,7 +128,7 @@ def select_clusters(clusters: list[dict], sources: list[dict], limit: int) -> li
         if cluster.get("edition") != "austria":
             continue
         age_days = (now - parse_datetime(cluster.get("published_at"))).total_seconds() / 86400
-        if age_days > 30:
+        if age_days > max_age_days:
             continue
         enriched = dict(cluster)
         enriched["ranking_score"] = rank_score(cluster, priorities, now)
