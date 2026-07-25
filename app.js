@@ -625,8 +625,6 @@ const eventDrawerContent = document.querySelector("#event-drawer-content");
 const trackerList = document.querySelector("#tracker-list");
 const marketPanel = document.querySelector("#market-panel");
 const marketStrip = document.querySelector("#market-strip");
-const trendRadar = document.querySelector("#trend-radar");
-const trendRadarGrid = document.querySelector("#trend-radar-grid");
 let storyReturnFocus = null;
 let searchReturnFocus = null;
 let eventReturnFocus = null;
@@ -932,49 +930,6 @@ function renderMarketDetail() {
       <div><span>Latest observation</span><strong>${period}</strong></div>
     </div>
     <div class="market-detail-footer"><p>${safeText(payload.methodology || "Directional reference benchmark, not a supplier quote.")} Source: ${safeText(item.source)}.</p><a href="${safeText(item.source_url)}" target="_blank" rel="noopener noreferrer">Open official source ↗</a></div>`;
-}
-
-function renderTrendRadar() {
-  if (!trendRadar || !trendRadarGrid) return;
-  const payload = window.MISE_TRENDS;
-  const signals = payload?.signals || [];
-  trendRadar.hidden = !signals.length;
-  if (!signals.length) return;
-
-  trendRadarGrid.innerHTML = signals.map((signal) => {
-    const delta = Number(signal.coverage_delta_pp);
-    const direction = delta >= 3 ? "rising" : delta <= -3 ? "cooling" : "steady";
-    const arrow = direction === "rising" ? "▲" : direction === "cooling" ? "▼" : "●";
-    const statusLabel = direction === "rising" ? "Rising" : direction === "cooling" ? "Cooling" : "Steady";
-    const deltaLabel = Number.isFinite(delta) ? `${delta > 0 ? "+" : delta < 0 ? "−" : ""}${Math.abs(delta).toFixed(1)}pp` : "—";
-    const share = Number(signal.current_share_pct);
-    const shareLabel = Number.isFinite(share) ? `${share.toFixed(1)}%` : `${signal.current_count}`;
-    const evidence = (signal.evidence || [])
-      .filter((item) => /^https:\/\//.test(item.url || ""))
-      .map((item) => {
-        const date = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" })
-          .format(new Date(item.published_at));
-        return `
-          <a class="trend-evidence-row" href="${safeText(item.url)}" target="_blank" rel="noopener noreferrer">
-            <span><strong>${safeText(item.source)}</strong><i>${safeText(item.edition === "austria" ? "Austria" : "Global")} · ${date}</i></span>
-            <p>${safeText(item.title)}</p>
-            <b>↗</b>
-          </a>`;
-      }).join("");
-    return `
-      <details class="trend-signal">
-        <summary title="${safeText(signal.description)}">
-          <span class="trend-status ${direction}">${arrow} ${statusLabel}</span>
-          <h3>${safeText(signal.label)}</h3>
-          <div class="trend-signal-figures"><b>${shareLabel}</b><span class="${direction}">${deltaLabel}</span></div>
-          <p class="trend-signal-pub">${signal.source_count} publishers</p>
-        </summary>
-        <div class="trend-evidence-list">${evidence || "<p>No linkable evidence is available.</p>"}</div>
-      </details>`;
-  }).join("");
-
-  document.querySelector("#trend-radar-status").textContent = `${payload.window_days || 14}-day coverage window · ${signals.length} signals · 0 AI requests`;
-  document.querySelector("#trend-radar-note").textContent = payload.methodology || "Signals describe publisher attention and link to their evidence.";
 }
 
 // Category colours come from the Night Desk palette. The set is derived from the
@@ -1324,7 +1279,6 @@ function render() {
     return;
   }
   renderMarkets();
-  renderTrendRadar();
   const items = currentStories();
   const isSaved = state.section === "saved";
   const isReview = state.section === "review";
