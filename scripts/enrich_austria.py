@@ -32,7 +32,7 @@ GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
 DEFAULT_GEMINI_MODEL = "gemini-3.1-flash-lite"
 DEFAULT_MISTRAL_MODEL = "mistral-small-2603"
-DEFAULT_DAILY_REQUEST_LIMIT = 15
+DEFAULT_DAILY_REQUEST_LIMIT = 25
 PROMPT_VERSION = 2
 
 VIENNA_TERMS = {

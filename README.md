@@ -43,7 +43,7 @@ The enrichment report records `primary_provider`, the `providers_used` list, and
 
 ### Free-tier AI budget
 
-The updater is deliberately safe for a free Gemini account. It batches eight stories per request, permanently reuses unchanged summaries, and allows at most **15 API attempts per provider per UTC day** by default. Every attempt, including a retry after a transient error, is reserved in the private local ledger `data/.ai-usage.json` before network access. Once the limit is reached, the updater stops AI enrichment without deleting cached or manually curated content; remaining stories stay pending for a later run.
+The updater is deliberately safe for a free account. It batches eight stories per request, permanently reuses unchanged summaries, and allows at most **25 API attempts per provider per UTC day** by default — 200 stories per provider, or 400 across both when a fallback is configured. Routine refreshes use a small fraction of that: the one-off initial backlog of 56 stories took 7 attempts. The headroom exists so a forced full re-enrichment after a prompt change (about 13 attempts today) cannot exhaust the day's budget. Every attempt, including a retry after a transient error, is reserved in the private local ledger `data/.ai-usage.json` before network access. Once the limit is reached, the updater stops AI enrichment without deleting cached or manually curated content; remaining stories stay pending for a later run.
 
 The final `data/austria-enrichment-report.json` records requests used and remaining, attempted items, processed items, and pending items. Preview the current workload and remaining budget without making a request:
 
