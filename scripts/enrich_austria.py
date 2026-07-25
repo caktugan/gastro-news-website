@@ -491,7 +491,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--report", type=Path, default=DEFAULT_REPORT)
     parser.add_argument("--usage-ledger", type=Path, default=DEFAULT_USAGE_LEDGER)
-    parser.add_argument("--limit", type=int, default=100)
+    parser.add_argument("--limit", type=int, default=250)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument(
         "--max-api-requests",

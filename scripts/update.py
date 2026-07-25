@@ -167,7 +167,9 @@ def main() -> int:
     parser.add_argument("--skip-markets", action="store_true", help="Do not refresh official market benchmarks.")
     parser.add_argument("--skip-events", action="store_true", help="Do not refresh official event pages or the calendar cache.")
     parser.add_argument("--no-api", action="store_true", help="Do not call Gemini or Mistral; use manual and cached translations.")
-    parser.add_argument("--limit", type=int, default=100, help="Maximum recent Austria clusters to consider.")
+    # Every Austria cluster is German, and an untranslated cluster never reaches
+    # the edition, so this ceiling is also the ceiling on the Austria feed.
+    parser.add_argument("--limit", type=int, default=250, help="Maximum recent Austria clusters to consider.")
     parser.add_argument(
         "--max-api-requests",
         type=int,
