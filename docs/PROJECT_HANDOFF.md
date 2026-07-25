@@ -27,13 +27,13 @@ The product is not intended to be a consumer restaurant directory or a generic f
 
 ## Core editorial decisions
 
-- The public product is English-first. German and Turkish are future localization options.
+- **The public product is native-language as of 2026-07-25.** Every story is published in the language it was filed in: Austrian reporting stays German, and Global carries English, German and French side by side. Tiles show a language tag. An English edition is a future option, not the current base — see the decision record at the end of this file.
 - Austria and Global are the only news editions. Vienna is prioritised inside Austria instead of being a separate, quieter edition.
-- AI is an editorial finishing layer, never the factual source. Feed evidence, official data, and attributable sources remain the basis of every item.
+- AI is an editorial finishing layer, never the factual source. Feed evidence, official data, and attributable sources remain the basis of every item. **Nothing on the public site is currently AI-generated**: the enrichment stage runs with `--no-api`.
 - Reporting, first-party announcements, and social posts must remain visibly distinct.
 - Summaries must not imply access to full article bodies. The ingestion pipeline uses feed titles, excerpts, dates, images, attribution, and source metadata; it does not bypass paywalls.
 - Source attribution and original links are mandatory.
-- Routine openings and closures belong mainly in the Tracker. They appear in News only when editorially significant, such as a major chain entering Austria or a notable institution closing.
+- Routine openings and closures were once filtered out of News and left to the Tracker. **That filter was removed on 2026-07-25**: its significance keywords were English-only and, against a German feed, it suppressed Austrian openings almost categorically. Ranking now decides prominence instead of a gate.
 - News ranking should favour operator usefulness: company performance, prices, inflation, labour, wages, regulation, taxation, insolvencies, investment, suppliers, and market changes.
 - Headlines should remain factual and neutral but use varied journalistic structures. Avoid repetitive templates, clickbait, unsupported colour, and invented conclusions.
 - Trend detection should be source-driven and deterministic. AI is not required to decide that a trend exists.
@@ -45,10 +45,10 @@ The product is not intended to be a consumer restaurant directory or a generic f
 - Top navigation contains News, Calendar, and Monthly Tracker, with Search on the right.
 - The former sidebar was removed.
 - News has Austria and Global edition controls.
-- The top briefing is simply a Top News segment: one lead story and supporting stories selected for relevance and topic diversity.
-- The main feed is a Discover-inspired image-led grid with automatic loading as the reader scrolls.
-- Routine opening/closure stories are filtered out of the News feed.
-- Publisher-feed image candidates are shown when available, with optimized local category artwork as a fallback.
+- The top briefing is a Top News segment: one lead card and two stacked secondaries, selected for relevance and topic diversity.
+- The main feed is a six-track grid composed from three tile weights — `feature` (full width, image beside text), `standard` (half width, image above text) and `brief` (third width, no image, roughly a third the height). Two rhythms alternate so the feature does not land on a fixed beat, and the illustrated and imageless streams are composed separately.
+- **Stock category artwork was removed on 2026-07-25.** A story either carries the publisher's own image or carries none; imageless stories become briefs, and imageless hero cards use the topic gradient with the story's initial. A publisher image that fails to load degrades to that same treatment rather than to stock.
+- The Trend Radar was removed from the News page on 2026-07-25. `data/trends.js` is still built and read by the Tracker.
 
 ### Commodity Board
 
@@ -60,10 +60,9 @@ The product is not intended to be a consumer restaurant directory or a generic f
 
 ### Trend Radar
 
-- Trend Radar is deliberately subtle: a compact expandable bar rather than a dominant dashboard.
+- Removed from the News page on 2026-07-25. The signals still power the Tracker's Theme momentum bars, and `scripts/build_trends.py` still runs on every refresh.
 - It uses curated German and English theme rules, distinct-publisher breadth, Austria relevance, and comparison windows.
 - Its direction describes changing publisher attention, not proven consumer demand or market growth.
-- The feature is being retained for now, but its information design may be reconsidered after further product review.
 
 ### Monthly Tracker
 
@@ -80,8 +79,9 @@ The product is not intended to be a consumer restaurant directory or a generic f
 
 ## AI and cost policy
 
-- Gemini is the default enrichment provider; Mistral remains an optional fallback.
-- Preserve the free-tier safeguards: batches of eight, cached results, and a default ceiling of 15 API attempts per provider per UTC day.
+- **The enrichment stage is currently switched off.** The workflow runs `scripts/update.py --no-api`, so the public site makes zero AI requests. The stage still rebuilds its browser output from cache, and dropping the flag resumes it.
+- Gemini is the default enrichment provider; Mistral is a real fallback since 2026-07-25 — when Gemini exhausts its budget or errors mid-run, the remaining batches continue on Mistral, which carries its own separate daily allowance. That failover has never fired in production.
+- Preserve the free-tier safeguards: batches of eight, cached results, and a default ceiling of 25 API attempts per provider per UTC day.
 - The private usage ledger reserves attempts before network access so failures and retries still count.
 - `--no-api` or `--max-api-requests 0` must continue to guarantee a zero-request run.
 - Never commit API keys, `.env` files, usage ledgers, or private caches.
@@ -123,12 +123,15 @@ The data path is:
 4. cached Austria translation/relevance enrichment where needed;
 5. source-driven trend, market, event, tracker, and social-directory builders;
 6. small public JavaScript data bundles;
-7. static English reader interface.
+7. static reader interface, serving each story in its original language.
+
+Step 4 currently runs with `--no-api`, so it consumes its cache and calls no model. The site is deployed by GitHub Actions (`.github/workflows/refresh-and-deploy.yml`), which refreshes and redeploys four times daily and on every push to `master`, at <https://caktugan.github.io/gastro-news-website/>.
 
 Important commands and worker behavior are documented in `README.md`. The full updater is failure-tolerant and preserves verified cached values if an independent endpoint fails.
 
 ## Current validation baseline
 
+- 50 Python tests pass as of 2026-07-25.
 - 40 Python tests passed after the July 2026 redesign.
 - JavaScript syntax validation passed.
 - The static public bundle built successfully.
@@ -146,7 +149,9 @@ After interface changes, verify the local preview at `http://127.0.0.1:4173/` on
 
 ## Known limitations and risks
 
-- Publisher-feed image availability does not establish republication rights. A production thumbnail-rights and licensing policy is still required.
+- **No editorial relevance gate remains.** The AI enrichment prompt used to set `publish=false` for recipes, adverts, non-Austrian items and text too thin to use, and it was withholding roughly a third of collected clusters. Switching the stage off removed that screen, and `isNewsworthyOpening` was removed separately. Only the per-source `filter_terms` at ingest still apply. If the feed drifts toward noise, the fix is a deterministic German-and-English relevance rule, ideally validated against what the AI screen used to reject.
+- **`relevanceScore()` is biased against German.** Its `operatorImpact` keyword list is English-only, so German stories hit that +22 bonus at 26% versus 45% for English, and French never does. The Austria locality bonus currently masks it. German and French vocabulary has not been added — an open decision.
+- Publisher-feed image availability does not establish republication rights. A production thumbnail-rights and licensing policy is still required. `image_usage` now records provenance (`feed_provided` / `none`) rather than an unfulfilled review, and the UI treats a publisher's own feed thumbnail as cleared.
 - Many publishers expose only thin excerpts, so summaries must remain proportionate to available evidence.
 - Existing cached headlines retain older structures; the improved headline prompt affects new or explicitly regenerated enrichment.
 - Social monitoring currently publishes a source directory rather than pretending that closed-platform posts have been ingested.
@@ -156,12 +161,22 @@ After interface changes, verify the local preview at `http://127.0.0.1:4173/` on
 
 ## Recommended next product review
 
-The next task should begin with the user reviewing the current build and listing visual or editorial changes. Likely high-value follow-ups are:
+1. Watch the Austria feed for noise now that both relevance gates are gone, and build a deterministic screen if it drifts.
+2. Decide whether to add German and French vocabulary to `relevanceScore()`'s `operatorImpact` list.
+3. Expand Austrian business, economy, supplier, and company source coverage.
+4. Improve event-source breadth beyond the current eleven verified events.
+5. Reduce the deployed payload: `data/live-news.js` is roughly 520 KB of a 1.1 MB bundle.
+6. Consider accessibility of the calendar month grid, which is currently 42 divs with no grid semantics.
 
-1. decide the final News-page visual hierarchy;
-2. expand Austrian business, economy, supplier, and company source coverage;
-3. review publisher thumbnail rights and permitted-image policy;
-4. improve event-source breadth and confirmed event-date coverage;
-5. assess Trend Radar usefulness before investing further in its presentation;
-6. prepare production hosting and scheduled refresh only after the reader experience is approved.
+## Decision record — 2026-07-25
+
+The whole day's work sits in `git log`; these are the decisions behind it.
+
+- **Night Desk restyle applied from `Austrian gastronomy news site/design_handoff_night_desk/`.** That bundle is design reference, not production code, and is gitignored. Where its README and its `.dc.html` prototypes disagreed, the prototypes generally won on layout and the README on tokens.
+- **The market module is "The Commodity Board"** — the user's choice over the README's "Hospitality Tape" and the prototype's "Cost Board".
+- **Native language over an English base.** The user's reasoning: the articles are already German and the audience reads German, so translating was both a cost and a ceiling. Austria went 113 → 188 stories and Global 210 → 269 the moment the gates came off. An English edition remains possible; the enrichment cache is kept warm for exactly that.
+- **Show everything the collector holds.** `--limit` 100 → 250, the translation age window 30 → 90 days, and `isNewsworthyOpening` deleted. All 457 clusters now reach the feed.
+- **Clustering was tightened, not loosened.** Names now match by whole-word containment, because German binds a brand to the noun before it ("ARION Jewelry" vs "Schmuckmarke ARION Jewelry"). Two earlier attempts were rejected by backtesting: rare-token matching produced 22 merges that were nearly all wrong, and exact phrase equality produced three false merges from incidental excerpt mentions. The shipped rule merges five clusters across the corpus, all correct.
+- **Stock artwork removed**, because with a third of stories imageless the same four photographs repeated down the page and implied photography MISE does not have.
+- **Three feeds are blocked to cloud runners** — foodservice, NÖN and BVZ return HTTP 403 to GitHub's IPs while working from a residential connection. They are `rate_limited_review`, not deleted.
 
