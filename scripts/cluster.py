@@ -32,6 +32,16 @@ STOPWORDS = {
     "food", "restaurant", "restaurants", "world", "cup", "global", "latest", "news", "2026",
 }
 
+# Company and venue names also appear in the feed excerpt when a publisher keeps
+# them out of the headline, so capitalized phrases are read from the summary as
+# well as the title. German capitalizes every noun, so an unfiltered sweep would
+# offer up phrases like "Wiener Traditionshaus" as if they were brands; a summary
+# phrase therefore only counts when it carries a token rare across the corpus,
+# which is what separates "ARION Jewelry" from "Der goldfarbene Anhänger".
+RARE_TOKEN_DOCUMENT_LIMIT = 4
+RARE_TOKEN_MIN_LENGTH = 5
+ANNOUNCEMENT_WINDOW_HOURS = 3
+
 CAPITALIZED_PHRASE = re.compile(
     r"\b[A-Z\u00c0-\u00d6\u00d8-\u00de][\w\u00c0-\u00ff'’-]+(?:\s+[A-Z\u00c0-\u00d6\u00d8-\u00de][\w\u00c0-\u00ff'’-]+)+"
 )
@@ -49,6 +59,17 @@ def normalized_phrase(value: str) -> str:
     return " ".join(normalized_words(value))
 
 
+def _usable_phrases(article: dict, candidates: set[str]) -> set[str]:
+    source_name = normalized_phrase(article.get("source_name", ""))
+    return {
+        phrase
+        for phrase in (normalized_phrase(candidate) for candidate in candidates)
+        if 2 <= len(phrase.split()) <= 6 and len(phrase) >= 7
+        and phrase != source_name
+        and phrase not in {"the post", "der beitrag", "read more", "mehr lesen"}
+    }
+
+
 def named_phrases(article: dict) -> set[str]:
     """Return conservative venue/company-name candidates from feed evidence."""
     title = article.get("title", "")
@@ -57,14 +78,16 @@ def named_phrases(article: dict) -> set[str]:
     candidates.update(CAPITALIZED_PHRASE.findall(title))
     if ":" in title:
         candidates.add(title.split(":", 1)[1])
-    normalized = {normalized_phrase(candidate) for candidate in candidates}
-    source_name = normalized_phrase(article.get("source_name", ""))
+    return _usable_phrases(article, candidates)
+
+
+def summary_named_phrases(article: dict, rare_tokens: set[str]) -> set[str]:
+    """Capitalized phrases from the excerpt, kept only when they carry a rare token."""
+    candidates = set(CAPITALIZED_PHRASE.findall(article.get("summary", "")))
     return {
         phrase
-        for phrase in normalized
-        if 2 <= len(phrase.split()) <= 6 and len(phrase) >= 7
-        and phrase != source_name
-        and phrase not in {"the post", "der beitrag", "read more", "mehr lesen"}
+        for phrase in _usable_phrases(article, candidates)
+        if set(phrase.split()) & rare_tokens
     }
 
 
@@ -86,7 +109,46 @@ def within_time_window(left: dict, right: dict, days: int = 4) -> bool:
     return abs((left_time - right_time).total_seconds()) <= days * 86400
 
 
-def cluster_score(left: dict, right: dict) -> float:
+def filed_within_hours(left: dict, right: dict, hours: int = ANNOUNCEMENT_WINDOW_HOURS) -> bool:
+    """Unlike within_time_window, a missing timestamp is not treated as proximity."""
+    left_time = article_timestamp(left)
+    right_time = article_timestamp(right)
+    if not left_time or not right_time:
+        return False
+    return abs((left_time - right_time).total_seconds()) <= hours * 3600
+
+
+def shared_entities(left_phrases: set[str], right_phrases: set[str]) -> set[str]:
+    """Match names by containment, not equality.
+
+    German binds a brand to the noun in front of it, so one excerpt yields
+    "Schmuckmarke ARION Jewelry" where another yields "ARION Jewelry". Those are
+    the same company, and exact set intersection never sees it. The shorter
+    phrase must still be a whole-word run inside the longer one.
+    """
+    matches = set()
+    for left in left_phrases:
+        for right in right_phrases:
+            short, long = sorted((left, right), key=lambda phrase: len(phrase.split()))
+            if short == long or f" {long} ".find(f" {short} ") >= 0:
+                matches.add(short)
+    return matches
+
+
+def rare_title_tokens(articles: list[dict], limit: int = RARE_TOKEN_DOCUMENT_LIMIT) -> set[str]:
+    """Title tokens carried by at most `limit` articles in the current corpus."""
+    counts: dict[str, int] = {}
+    for article in articles:
+        for word in set(normalized_words(article.get("title", ""))):
+            counts[word] = counts.get(word, 0) + 1
+    return {
+        word
+        for word, count in counts.items()
+        if count <= limit and len(word) >= RARE_TOKEN_MIN_LENGTH
+    }
+
+
+def cluster_score(left: dict, right: dict, rare_tokens: set[str] | None = None) -> float:
     if left.get("edition") != right.get("edition") or left.get("language") != right.get("language"):
         return 0.0
     if not within_time_window(left, right):
@@ -106,13 +168,27 @@ def cluster_score(left: dict, right: dict) -> float:
     # publisher omits the name from its headline and only includes it in the
     # feed excerpt. This catches paraphrased coverage without broadening the
     # generic title-similarity thresholds below.
-    shared_names = (
-        named_phrases(left) & named_phrases(right)
-        if left.get("source_id") != right.get("source_id")
-        else set()
-    )
-    if shared_names:
+    different_publishers = left.get("source_id") != right.get("source_id")
+    if different_publishers and named_phrases(left) & named_phrases(right):
         return 0.72
+
+    # The same name also identifies a story when one publisher keeps it out of
+    # the headline and only the excerpt carries it. That evidence is weaker,
+    # because an excerpt often names a venue in passing, so one shared name is
+    # only accepted with corroborating structure: a second independent name, a
+    # longer name, or a filing gap short enough that both outlets are clearly
+    # working from the same announcement.
+    if different_publishers and rare_tokens:
+        matches = shared_entities(
+            named_phrases(left) | summary_named_phrases(left, rare_tokens),
+            named_phrases(right) | summary_named_phrases(right, rare_tokens),
+        )
+        if matches and (
+            len(matches) >= 2
+            or any(len(phrase.split()) >= 3 for phrase in matches)
+            or filed_within_hours(left, right)
+        ):
+            return 0.70
 
     # Three shared distinctive words is the minimum. This avoids grouping
     # articles that merely share a company, city, award, or broad event theme.
@@ -208,9 +284,14 @@ def build_brief(group: list[dict]) -> dict:
     }
 
 
-def build_clusters(articles: list[dict], priorities: dict[str, int]) -> list[dict]:
+def build_clusters(
+    articles: list[dict],
+    priorities: dict[str, int],
+    entity_matching: bool = True,
+) -> list[dict]:
     parents = list(range(len(articles)))
     edge_scores: dict[tuple[int, int], float] = {}
+    rare_tokens = rare_title_tokens(articles) if entity_matching else None
 
     def find(index: int) -> int:
         while parents[index] != index:
@@ -226,7 +307,7 @@ def build_clusters(articles: list[dict], priorities: dict[str, int]) -> list[dic
 
     for left_index, left in enumerate(articles):
         for right_index in range(left_index + 1, len(articles)):
-            score = cluster_score(left, articles[right_index])
+            score = cluster_score(left, articles[right_index], rare_tokens)
             if score:
                 edge_scores[(left_index, right_index)] = score
                 union(left_index, right_index)

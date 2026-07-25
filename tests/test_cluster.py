@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.cluster import build_clusters, build_payload, write_payload
+from scripts.cluster import build_clusters, build_payload, shared_entities, write_payload
 
 
 class ClusterMetadataTests(unittest.TestCase):
@@ -70,6 +70,98 @@ class ClusterMetadataTests(unittest.TestCase):
         self.assertEqual(len(clusters), 1)
         self.assertEqual(clusters[0]["source_count"], 2)
         self.assertEqual(clusters[0]["coverage_pattern"], "independently_reported")
+
+    def test_brand_named_only_in_the_excerpt_still_clusters(self):
+        """German binds a brand to the noun before it, so the same company is
+        extracted as differently-bracketed phrases across publishers."""
+        base = {
+            "edition": "austria",
+            "language": "de",
+            "topic": "Restaurants",
+            "source_type": "trade_press",
+            "access": "open",
+            "corroboration_role": "independent_editorial",
+            "country": "AT",
+            "image_url": None,
+        }
+        articles = [
+            {
+                **base,
+                "id": "one",
+                "source_id": "rolling-pin",
+                "source_name": "Rolling Pin",
+                "published_at": "2026-07-23T12:31:02Z",
+                "title": "Figlmueller macht das Wiener Schnitzel zum Schmuckstueck",
+                "summary": "Das Wiener Traditionshaus Figlmueller und die Schmuckmarke ARION Jewelry "
+                           "bringen eine limitierte Schnitzelkette auf den Markt.",
+                "url": "https://example.com/one",
+            },
+            {
+                **base,
+                "id": "two",
+                "source_id": "gastro-at",
+                "source_name": "GASTRO.at",
+                "published_at": "2026-07-23T12:26:20Z",
+                "title": "ARION Jewelry und Figlmueller praesentieren exklusive Schnitzelkette",
+                "summary": "Die Wiener Schmuckmarke ARION Jewelry und Figlmueller haben sich "
+                           "zusammengetan.",
+                "url": "https://example.com/two",
+            },
+        ]
+
+        clusters = build_clusters(articles, {"rolling-pin": 80, "gastro-at": 70})
+
+        self.assertEqual(len(clusters), 1)
+        self.assertEqual(clusters[0]["source_count"], 2)
+
+    def test_incidental_excerpt_mention_does_not_cluster(self):
+        """One shared two-word name, days apart, is context rather than one story."""
+        base = {
+            "edition": "austria",
+            "language": "de",
+            "topic": "Restaurants",
+            "source_type": "trade_press",
+            "access": "open",
+            "corroboration_role": "independent_editorial",
+            "country": "AT",
+            "image_url": None,
+        }
+        articles = [
+            {
+                **base,
+                "id": "one",
+                "source_id": "ahgz",
+                "source_name": "AHGZ",
+                "published_at": "2026-07-20T08:00:00Z",
+                "title": "Salzburger Festspiele: Jedermann-Premiere in perfektem Rahmen",
+                "summary": "Die Premiere verlief in feierlichem Rahmen.",
+                "url": "https://example.com/one",
+            },
+            {
+                **base,
+                "id": "two",
+                "source_id": "kurier",
+                "source_name": "KURIER",
+                "published_at": "2026-07-22T17:24:00Z",
+                "title": "Schinkenfleckerl und Gin Tonic an der Salzach",
+                "summary": "Am Vorabend der Eroeffnung der Salzburger Festspiele bittet der "
+                           "Gastgeber ins Cafe Bazar.",
+                "url": "https://example.com/two",
+            },
+        ]
+
+        clusters = build_clusters(articles, {"ahgz": 80, "kurier": 70})
+
+        self.assertEqual(len(clusters), 2)
+
+    def test_shared_entities_matches_by_containment(self):
+        self.assertEqual(
+            shared_entities({"schmuckmarke arion jewelry"}, {"arion jewelry"}),
+            {"arion jewelry"},
+        )
+        self.assertEqual(shared_entities({"wiener schnitzel"}, {"arion jewelry"}), set())
+        # a shorter phrase must be a whole-word run, not a substring
+        self.assertEqual(shared_entities({"grand hotel sauerhof"}, {"hotel sauer"}), set())
 
     def test_publisher_boilerplate_does_not_chain_unrelated_articles(self):
         base = {
