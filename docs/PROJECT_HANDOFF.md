@@ -1,6 +1,6 @@
 # MISE project handoff and decision record
 
-Last updated: 22 July 2026
+Last updated: 26 July 2026
 
 This file is the durable context for continuing MISE in a new Codex task. Read it together with `README.md` and `AGENTS.md` before changing product direction, ingestion, enrichment, or the public interface.
 
@@ -27,7 +27,8 @@ The product is not intended to be a consumer restaurant directory or a generic f
 
 ## Core editorial decisions
 
-- **The public product is native-language as of 2026-07-25.** Every story is published in the language it was filed in: Austrian reporting stays German, and Global carries English, German and French side by side. Tiles show a language tag. An English edition is a future option, not the current base — see the decision record at the end of this file.
+- **The public product is native-language as of 2026-07-25.** Every story is published in the language it was filed in: Austrian reporting stays German, and Global carries English and German side by side. Tiles show a language tag. An English edition is a future option, not the current base — see the decision record at the end of this file.
+- **German and English are the only languages carried.** The single French source was dropped on 2026-07-25; see that day's second decision record.
 - Austria and Global are the only news editions. Vienna is prioritised inside Austria instead of being a separate, quieter edition.
 - AI is an editorial finishing layer, never the factual source. Feed evidence, official data, and attributable sources remain the basis of every item. **Nothing on the public site is currently AI-generated**: the enrichment stage runs with `--no-api`.
 - Reporting, first-party announcements, and social posts must remain visibly distinct.
@@ -133,6 +134,7 @@ Important commands and worker behavior are documented in `README.md`. The full u
 
 - 50 Python tests pass as of 2026-07-25.
 - 40 Python tests passed after the July 2026 redesign.
+- Run the suite as `PYTHONIOENCODING=utf-8 python -m unittest discover -s tests`. Without it, `test_enrich_austria` fails on a bare Windows console with a `UnicodeEncodeError` on `→`; that is the cp1252 console, not a code fault.
 - JavaScript syntax validation passed.
 - The static public bundle built successfully.
 - Nine market benchmarks refreshed with zero source errors.
@@ -150,7 +152,8 @@ After interface changes, verify the local preview at `http://127.0.0.1:4173/` on
 ## Known limitations and risks
 
 - **No editorial relevance gate remains.** The AI enrichment prompt used to set `publish=false` for recipes, adverts, non-Austrian items and text too thin to use, and it was withholding roughly a third of collected clusters. Switching the stage off removed that screen, and `isNewsworthyOpening` was removed separately. Only the per-source `filter_terms` at ingest still apply. If the feed drifts toward noise, the fix is a deterministic German-and-English relevance rule, ideally validated against what the AI screen used to reject.
-- **`relevanceScore()` is biased against German.** Its `operatorImpact` keyword list is English-only, so German stories hit that +22 bonus at 26% versus 45% for English, and French never does. The Austria locality bonus currently masks it. German and French vocabulary has not been added — an open decision.
+- **`relevanceScore()`'s remaining German shortfall is editorial mix, not vocabulary.** German operator vocabulary was added on 2026-07-25, taking the German hit rate on the +22 `operatorImpact` bonus from 25% to 33% against 42% for English. Backtesting showed the rest of that gap is real: of the 157 German clusters the English-only list missed, most were wine tastings, chef moves and festivals, which should not score an operator bonus. Do not close the remaining gap by loosening the pattern.
+- **German bare stems are traps in this feed, and the pattern deliberately uses compounds instead.** A `Preis` is as often a prize as a price and matched wine-guide items; `Gehalt` is a wine's body before it is a salary and matched `Riesling 2025 gehaltvoll`; `Gewinner` are competition winners; `gesetzt` is not a law. Any future addition to `OPERATOR_IMPACT_PATTERN` should be backtested the same way before shipping.
 - Publisher-feed image availability does not establish republication rights. A production thumbnail-rights and licensing policy is still required. `image_usage` now records provenance (`feed_provided` / `none`) rather than an unfulfilled review, and the UI treats a publisher's own feed thumbnail as cleared.
 - Many publishers expose only thin excerpts, so summaries must remain proportionate to available evidence.
 - Existing cached headlines retain older structures; the improved headline prompt affects new or explicitly regenerated enrichment.
@@ -162,11 +165,12 @@ After interface changes, verify the local preview at `http://127.0.0.1:4173/` on
 ## Recommended next product review
 
 1. Watch the Austria feed for noise now that both relevance gates are gone, and build a deterministic screen if it drifts.
-2. Decide whether to add German and French vocabulary to `relevanceScore()`'s `operatorImpact` list.
-3. Expand Austrian business, economy, supplier, and company source coverage.
-4. Improve event-source breadth beyond the current eleven verified events.
-5. Reduce the deployed payload: `data/live-news.js` is roughly 520 KB of a 1.1 MB bundle.
-6. Consider accessibility of the calendar month grid, which is currently 42 divs with no grid semantics.
+2. Expand Austrian business, economy, supplier, and company source coverage.
+3. Improve event-source breadth beyond the current eleven verified events.
+4. Reduce the deployed payload: `data/live-news.js` is roughly 520 KB of a 1.1 MB bundle.
+5. Consider accessibility of the calendar month grid, which is currently 42 divs with no grid semantics.
+
+Item 2 of the previous list — German and French ranking vocabulary — was settled on 2026-07-25. German was added; French was removed from the product instead.
 
 ## Decision record — 2026-07-25
 
@@ -179,4 +183,15 @@ The whole day's work sits in `git log`; these are the decisions behind it.
 - **Clustering was tightened, not loosened.** Names now match by whole-word containment, because German binds a brand to the noun before it ("ARION Jewelry" vs "Schmuckmarke ARION Jewelry"). Two earlier attempts were rejected by backtesting: rare-token matching produced 22 merges that were nearly all wrong, and exact phrase equality produced three false merges from incidental excerpt mentions. The shipped rule merges five clusters across the corpus, all correct.
 - **Stock artwork removed**, because with a third of stories imageless the same four photographs repeated down the page and implied photography MISE does not have.
 - **Three feeds are blocked to cloud runners** — foodservice, NÖN and BVZ return HTTP 403 to GitHub's IPs while working from a residential connection. They are `rate_limited_review`, not deleted.
+
+## Decision record — 2026-07-25, ranking and language (commits `24eabbb`, `13da98c`)
+
+Recorded 26 July. These two commits closed item 2 of the previous review list.
+
+- **German operator vocabulary was added to `relevanceScore()`** (`24eabbb`). The keyword list had been English-only since before the product went native-language, so German stories reached the +22 `operatorImpact` bonus at 25% against 42% for English.
+- **Backtesting changed the shape of that fix, and should change the next one too.** The premise — that the gap was purely vocabulary — turned out to be half wrong. Of the 157 German clusters the old list missed, only about 17 were genuine operator stories; the rest were wine tastings, chef moves and festivals that correctly earn no bonus. So a precise compound list shipped rather than a broad stem list. German went to 33%, English was unchanged with zero regressions, and all 17 newly matched stories were inspected individually.
+- **Bare German stems were rejected as false-positive traps.** `Preis` matched wine guides because it means prize as often as price; `Gehalt` matched `Riesling 2025 gehaltvoll` because it is a wine's body before it is a salary; `Gewinner` are competition winners; `gesetzt` is not a law. `OPERATOR_IMPACT_PATTERN` therefore uses `preiserhöhung`, `lohnkosten`, `gesetzlich` and similar compounds. This is the same discipline that rejected two clustering rules the day before.
+- **Measured product effect, not just hit rate.** In the Austria feed the `Teuerung` monitor moved sixth to third, `Neun von zehn Betrieben finden kaum Personal` and the Taflo expansion entered the top 20, and two soft sustainability items left it. The Top News trio was unchanged, because topic diversity in `selectDailyBriefing()` dominates the lead selection.
+- **French was removed from the product rather than ranked** (`13da98c`). The user's call. Gault&Millau International was the only French source and the only reason the feed carried a third language; its nine items were gala evenings, a Guide Jaune launch and a magazine issue — guide business, not industry reporting, and nothing a Vienna operator needs. Adding French ranking vocabulary would have promoted content the audience does not read. `Gault&Millau Austria` is German, Austria edition, and stays.
+- The registry went 101 sources to 100, 73 active feeds to 72. Because `ingest.py` rebuilds `articles.json` from the active registry each run rather than accumulating history, the nine French clusters cleared on the next refresh with no data edit. Verified on the deployed bundle: 240 German, 210 English, no French.
 
