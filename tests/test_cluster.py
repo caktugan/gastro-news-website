@@ -356,6 +356,49 @@ class RewrittenAnnouncementTests(unittest.TestCase):
         self.assertEqual(cluster_score(left, right, rare_tokens={"kastner"}), 0.0)
 
 
+class GermanCompoundFingerprintTests(unittest.TestCase):
+    """One hyper-specific compound plus a second rare token (the
+    Vermietercoaches case)."""
+
+    def article(self, source_id: str, title: str, language: str = "de") -> dict:
+        return {
+            "edition": "austria",
+            "language": language,
+            "source_id": source_id,
+            "title": title,
+            "summary": "",
+            "published_at": "2026-07-29T13:00:00Z",
+        }
+
+    def test_compound_plus_second_rare_token_joins_the_pair(self):
+        left = self.article("oegz-gast", "Neue Vermietercoaches in Tirol")
+        right = self.article("ahgz-at", "Vermietercoaches: Tirol baut Qualitätsnetz für Vermieter aus")
+        self.assertEqual(
+            cluster_score(left, right, rare_tokens={"vermietercoaches", "tirol"}), 0.70
+        )
+
+    def test_a_single_long_token_is_not_proof(self):
+        # "Auszeichnung" is 12 characters and can headline two unrelated award
+        # stories filed the same week.
+        left = self.article("oegz-gast", "Auszeichnung für Salzburger Küche")
+        right = self.article("ahgz-at", "Auszeichnung geht nach Kärnten")
+        self.assertEqual(cluster_score(left, right, rare_tokens={"auszeichnung"}), 0.0)
+
+    def test_two_short_rare_tokens_are_not_proof(self):
+        # Two regions reporting half-year tourism numbers share "ersten" and
+        # "halbjahr" without being one story.
+        left = self.article("ahgz-at", "Wien-Tourismus: mehr Nächtigungen im ersten Halbjahr")
+        right = self.article("oegz-gast", "Kärntner Tourismus mit Zuwächsen im ersten Halbjahr")
+        self.assertEqual(cluster_score(left, right, rare_tokens={"ersten", "halbjahr"}), 0.0)
+
+    def test_the_fingerprint_rule_is_german_only(self):
+        left = self.article("green-queen", "Sustainability breakthrough in packaging", language="en")
+        right = self.article("agfundernews", "Sustainability funding for packaging startups", language="en")
+        self.assertEqual(
+            cluster_score(left, right, rare_tokens={"sustainability", "packaging"}), 0.0
+        )
+
+
 class TimeWindowTests(unittest.TestCase):
     def entry(self, published_at):
         return {"published_at": published_at}

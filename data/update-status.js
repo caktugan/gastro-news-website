@@ -1,33 +1,33 @@
 window.MISE_UPDATE_STATUS = {
   "schema_version": 1,
-  "generated_at": "2026-07-30T18:45:16+00:00",
-  "overall_status": "current",
-  "issue_count": 0,
+  "generated_at": "2026-07-30T18:58:15+00:00",
+  "overall_status": "partial",
+  "issue_count": 8,
   "stages": [
     {
       "id": "news",
       "label": "News feeds",
       "status": "current",
-      "completed_at": "2026-07-30T18:45:06+00:00",
-      "duration_ms": 3644,
+      "completed_at": "2026-07-30T18:58:07+00:00",
+      "duration_ms": 3477,
       "summary": "Clusters rebuilt from cached articles · 494 items",
       "issues": 0
     },
     {
       "id": "markets",
       "label": "Cost benchmarks",
-      "status": "current",
-      "completed_at": "2026-07-30T18:45:08+00:00",
-      "duration_ms": 2773,
+      "status": "partial",
+      "completed_at": "2026-07-30T18:58:08+00:00",
+      "duration_ms": 1415,
       "summary": "9 official benchmarks · 0 AI requests",
-      "issues": 0
+      "issues": 8
     },
     {
       "id": "trends",
       "label": "Trend radar",
       "status": "current",
-      "completed_at": "2026-07-30T18:45:08+00:00",
-      "duration_ms": 178,
+      "completed_at": "2026-07-30T18:58:08+00:00",
+      "duration_ms": 189,
       "summary": "5 evidence-backed signals · 0 AI requests",
       "issues": 0
     },
@@ -35,8 +35,8 @@ window.MISE_UPDATE_STATUS = {
       "id": "social",
       "label": "Social source directory",
       "status": "current",
-      "completed_at": "2026-07-30T18:45:09+00:00",
-      "duration_ms": 97,
+      "completed_at": "2026-07-30T18:58:08+00:00",
+      "duration_ms": 116,
       "summary": "8 catalogued channels · access unverified · 0 posts retrieved",
       "issues": 0
     },
@@ -44,8 +44,8 @@ window.MISE_UPDATE_STATUS = {
       "id": "events",
       "label": "Events calendar",
       "status": "current",
-      "completed_at": "2026-07-30T18:45:16+00:00",
-      "duration_ms": 7010,
+      "completed_at": "2026-07-30T18:58:14+00:00",
+      "duration_ms": 6047,
       "summary": "11 of 11 official pages verified",
       "issues": 0
     },
@@ -53,9 +53,9 @@ window.MISE_UPDATE_STATUS = {
       "id": "enrichment",
       "label": "English edition",
       "status": "current",
-      "completed_at": "2026-07-30T18:45:16+00:00",
-      "duration_ms": 216,
-      "summary": "21 English briefs · gemini · 153 pending",
+      "completed_at": "2026-07-30T18:58:15+00:00",
+      "duration_ms": 202,
+      "summary": "21 English briefs · gemini · 152 pending",
       "issues": 0
     }
   ]

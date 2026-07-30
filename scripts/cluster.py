@@ -207,6 +207,17 @@ def cluster_score(left: dict, right: dict, rare_tokens: set[str] | None = None) 
         if len(excerpt_matches) >= 2:
             return 0.70
 
+    # German headlines often fingerprint a story with one hyper-specific
+    # compound ("Vermietercoaches") while sharing no other vocabulary with a
+    # rewrite. One long compound alone is not proof — the corpus carries
+    # semi-generic 12-char words like "Auszeichnung" — so a second shared rare
+    # token is required as corroboration. German only: long English words
+    # ("sustainability") are still generic.
+    if different_publishers and rare_tokens and left.get("language") == "de":
+        shared_rare = shared & rare_tokens
+        if len(shared_rare) >= 2 and any(len(word) >= 12 for word in shared_rare):
+            return 0.70
+
     # Three shared distinctive words is the minimum. This avoids grouping
     # articles that merely share a company, city, award, or broad event theme.
     if len(shared) >= 4 and jaccard >= 0.42:
