@@ -2,7 +2,15 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.cluster import STOPWORDS, build_clusters, build_payload, shared_entities, within_time_window, write_payload
+from scripts.cluster import (
+    STOPWORDS,
+    build_clusters,
+    build_payload,
+    cluster_score,
+    shared_entities,
+    within_time_window,
+    write_payload,
+)
 
 
 class ClusterMetadataTests(unittest.TestCase):
@@ -291,6 +299,104 @@ class ClusterMetadataTests(unittest.TestCase):
             self.assertNotIn('"article_id"', browser_bundle)
             self.assertIn('"coverage_pattern":"independently_reported"', browser_bundle)
             self.assertIn('"source_type":"trade_press"', browser_bundle)
+
+
+class RewrittenAnnouncementTests(unittest.TestCase):
+    """Same press release, different headline vocabulary (the Kastner case)."""
+
+    def article(self, source_id: str, title: str, summary: str) -> dict:
+        return {
+            "edition": "austria",
+            "language": "de",
+            "source_id": source_id,
+            "title": title,
+            "summary": summary,
+            "published_at": "2026-07-29T13:00:00Z",
+        }
+
+    def test_shared_brand_plus_two_excerpt_entities_join_the_pair(self):
+        left = self.article(
+            "gastroportal-at",
+            "KASTNER strukturiert Standort Wien um",
+            "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien nach Eisenstadt und Wien Nord steht die Umstrukturierung an.",
+        )
+        right = self.article(
+            "ahgz-at",
+            "Großhandel: Kastner bläst Wien-Ausbau ab",
+            "Nach der Verlagerung vom Großmarkt Wien nach Eisenstadt und Wien Nord verfolgt Kastner die Investition nicht weiter.",
+        )
+        self.assertEqual(cluster_score(left, right, rare_tokens={"kastner"}), 0.70)
+
+    def test_one_shared_excerpt_entity_is_not_enough(self):
+        left = self.article(
+            "gastroportal-at",
+            "KASTNER strukturiert Standort Wien um",
+            "Die Verlagerung vom Großmarkt Wien wird vorbereitet.",
+        )
+        right = self.article(
+            "ahgz-at",
+            "Großhandel: Kastner bläst Wien-Ausbau ab",
+            "Kastner verfolgt die Investition am Großmarkt Wien nicht weiter.",
+        )
+        self.assertEqual(cluster_score(left, right, rare_tokens={"kastner"}), 0.0)
+
+    def test_shared_entities_without_a_shared_rare_headline_token_stay_apart(self):
+        # Two different companies both moving goods via the same market halls
+        # must not merge just because the excerpts name the same places.
+        left = self.article(
+            "gastroportal-at",
+            "Metro erweitert Logistikkapazität",
+            "Der Großhändler baut am Großmarkt Wien aus und beliefert Wien Nord.",
+        )
+        right = self.article(
+            "ahgz-at",
+            "Transgourmet plant neue Standorte",
+            "Auch am Großmarkt Wien und in Wien Nord wird investiert.",
+        )
+        self.assertEqual(cluster_score(left, right, rare_tokens={"kastner"}), 0.0)
+
+
+class GermanCompoundFingerprintTests(unittest.TestCase):
+    """One hyper-specific compound plus a second rare token (the
+    Vermietercoaches case)."""
+
+    def article(self, source_id: str, title: str, language: str = "de") -> dict:
+        return {
+            "edition": "austria",
+            "language": language,
+            "source_id": source_id,
+            "title": title,
+            "summary": "",
+            "published_at": "2026-07-29T13:00:00Z",
+        }
+
+    def test_compound_plus_second_rare_token_joins_the_pair(self):
+        left = self.article("oegz-gast", "Neue Vermietercoaches in Tirol")
+        right = self.article("ahgz-at", "Vermietercoaches: Tirol baut Qualitätsnetz für Vermieter aus")
+        self.assertEqual(
+            cluster_score(left, right, rare_tokens={"vermietercoaches", "tirol"}), 0.70
+        )
+
+    def test_a_single_long_token_is_not_proof(self):
+        # "Auszeichnung" is 12 characters and can headline two unrelated award
+        # stories filed the same week.
+        left = self.article("oegz-gast", "Auszeichnung für Salzburger Küche")
+        right = self.article("ahgz-at", "Auszeichnung geht nach Kärnten")
+        self.assertEqual(cluster_score(left, right, rare_tokens={"auszeichnung"}), 0.0)
+
+    def test_two_short_rare_tokens_are_not_proof(self):
+        # Two regions reporting half-year tourism numbers share "ersten" and
+        # "halbjahr" without being one story.
+        left = self.article("ahgz-at", "Wien-Tourismus: mehr Nächtigungen im ersten Halbjahr")
+        right = self.article("oegz-gast", "Kärntner Tourismus mit Zuwächsen im ersten Halbjahr")
+        self.assertEqual(cluster_score(left, right, rare_tokens={"ersten", "halbjahr"}), 0.0)
+
+    def test_the_fingerprint_rule_is_german_only(self):
+        left = self.article("green-queen", "Sustainability breakthrough in packaging", language="en")
+        right = self.article("agfundernews", "Sustainability funding for packaging startups", language="en")
+        self.assertEqual(
+            cluster_score(left, right, rare_tokens={"sustainability", "packaging"}), 0.0
+        )
 
 
 class TimeWindowTests(unittest.TestCase):

@@ -1,6 +1,6 @@
 window.MISE_MARKETS = {
-  "generated_at": "2026-07-30T17:53:05+00:00",
-  "status": "current",
+  "generated_at": "2026-07-30T18:58:08+00:00",
+  "status": "partial",
   "ai_requests": 0,
   "methodology": "Official reference series only. Values are directional wholesale or macro benchmarks, not supplier quotes.",
   "benchmarks": [
@@ -18,7 +18,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/cereal/prices?memberStateCodes=AT&productCodes=BLTPAN",
       "description": "Austria national-average breadmaking common wheat reference price.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2025-12-21",
@@ -68,7 +68,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-19",
           "value": 200.0
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "at-raw-milk",
@@ -84,7 +85,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/rawMilk/prices?memberStateCodes=AT&products=Raw+milk",
       "description": "Austria monthly raw-milk price reported by the Member State.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2025-08-31",
@@ -134,7 +135,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-31",
           "value": 45.0
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "at-barn-eggs",
@@ -150,7 +152,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/poultry/egg/prices?memberStateCodes=AT&farmingMethods=Barn",
       "description": "Austria wholesale reference for Class A barn eggs; a directional purchasing-cost benchmark.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-10",
@@ -200,7 +202,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 312.18
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "at-whole-broiler",
@@ -216,7 +219,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/poultry/prices?memberStateCodes=AT&products=Whole+broiler+%2865%25%29",
       "description": "Austria selling-price reference for whole broiler chicken, reported per 100 kg.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-10",
@@ -266,7 +269,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 372.17
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "at-pigmeat-e",
@@ -282,7 +286,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/pigmeat/prices?memberStateCodes=AT",
       "description": "Austria weekly class E pig-carcass price; a directional meat-cost benchmark.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-10",
@@ -332,7 +336,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 167.35
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "eu-butter",
@@ -348,7 +353,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/dairy/prices?memberStateCodes=EU&products=BUTTER",
       "description": "European Union weekly butter reference price; Austria does not publish this series consistently.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-10",
@@ -398,7 +403,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 398.33
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "eu-sunflower-oil",
@@ -414,7 +420,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/oilseeds/prices?products=Crude+sunflower+oil&markets=Milano",
       "description": "Crude sunflower-oil wholesale reference from Milan; a directional EU input-cost proxy, not an Austrian supplier quote.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-03",
@@ -464,7 +470,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 1275.0
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "it-extra-virgin-olive-oil",
@@ -480,7 +487,7 @@ window.MISE_MARKETS = {
       "source": "European Commission",
       "source_url": "https://api.tech.ec.europa.eu/agrifood/api/oliveOil/prices?memberStateCodes=IT&products=Extra+virgin+olive+oil+%28up+to+0.8%25%29",
       "description": "Italian national-average bulk extra-virgin olive-oil reference, converted from €/100 kg to €/kg.",
-      "stale": false,
+      "stale": true,
       "history": [
         {
           "date": "2026-05-10",
@@ -530,7 +537,8 @@ window.MISE_MARKETS = {
           "date": "2026-07-26",
           "value": 4.93
         }
-      ]
+      ],
+      "cache_fallback": true
     },
     {
       "id": "eur-usd",
@@ -599,5 +607,38 @@ window.MISE_MARKETS = {
       ]
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "benchmark": "at-bread-wheat",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "at-raw-milk",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "at-barn-eggs",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "at-whole-broiler",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "at-pigmeat-e",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "eu-butter",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "eu-sunflower-oil",
+      "message": "HTTP Error 500: Internal Server Error"
+    },
+    {
+      "benchmark": "it-extra-virgin-olive-oil",
+      "message": "HTTP Error 500: Internal Server Error"
+    }
+  ]
 };
