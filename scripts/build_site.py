@@ -11,8 +11,6 @@ OUTPUT = ROOT / "dist"
 PUBLIC_FILES = ("index.html", "app.js", "styles.css")
 PUBLIC_DATA = (
     "live-news.js",
-    "austria-english.js",
-    "austria-auto.js",
     "events.js",
     "markets.js",
     "trends.js",

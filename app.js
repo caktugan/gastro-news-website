@@ -1,5 +1,4 @@
 const stories = {
-  vienna: [],
   austria: [
     {
       id: "vienna-dining-wave",
@@ -272,21 +271,18 @@ const stories = {
   ]
 };
 
-stories.austria = [
-  ...stories.vienna.map((story) => ({ ...story, edition: "Austria" })),
-  ...stories.austria
-];
-stories.vienna = [];
-
 // An image the publisher itself put in its public feed needs no further rights
 // check; anything else stays in the editorial queue.
 const CLEARED_IMAGE_USAGE = new Set(["feed_provided", "permitted"]);
 
 // A story either carries the publisher's own image or it carries none. Category
 // stock art used to stand in, which made unrelated stories look alike and
-// implied photography MISE does not have.
+// implied photography MISE does not have. The lead image is shown only when its
+// usage value is cleared; the per-source fallback is safe because every source
+// image_url is extracted from the publisher's own feed.
 function storyImageForCluster(cluster) {
-  const candidate = cluster.image_url || cluster.sources?.find((source) => source.image_url)?.image_url;
+  const lead = CLEARED_IMAGE_USAGE.has(cluster.image_usage) ? cluster.image_url : null;
+  const candidate = lead || cluster.sources?.find((source) => source.image_url)?.image_url;
   return /^https:\/\//.test(candidate || "") ? candidate : null;
 }
 
@@ -302,20 +298,28 @@ function storyVisual(story, className) {
     : `<div class="${className} feed-image-placeholder" data-topic="${safeText(story.topic)}" aria-hidden="true">${storyGlyph(story)}</div>`;
 }
 
+const CLOSED_STATUS_PATTERN = /closed|closes|closing|closure|to close|will close|geschlossen|schlie(?:\u00df|ss)t/;
+const OPENING_SOON_PATTERN = /to open|opening soon|will open|pre-opening|scheduled|angekundigt|kommt nach|eroffnet im|eroffnet am/;
+const NEWLY_OPENED_PATTERN = /\bopened\b|\bopens\b|\bnow open\b|\blaunches\b|neueroffnung|neu eroffnet|eroffnete|hat eroffnet/;
+
+function foldForMatching(value) {
+  return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function inferOpeningStatus(title, summary) {
-  const text = `${title || ""} ${summary || ""}`.toLowerCase();
-  const foldedText = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  const titleText = String(title || "").toLowerCase();
-  const foldedTitle = titleText.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (/closed|closes|closing|closure|to close|will close|geschlossen|schlie(?:ß|ss)t/.test(titleText)) return "Closed";
-  if (/to open|opening soon|will open|pre-opening|scheduled|angekundigt|kommt nach|eroffnet im|eroffnet am/.test(foldedTitle)) return "Opening soon";
-  if (/\bopened\b|\bopens\b|\bnow open\b|\blaunches\b|neueroffnung|neu eroffnet|eroffnete|hat eroffnet/.test(foldedTitle)) return "Newly opened";
-  if (/insolven/.test(text) && !/closed|closes|closing|closure|to close|will close|geschlossen/.test(text)) return "Unconfirmed";
-  if (/\bclosing\b|\bto close\b|\bwill close\b/.test(text)) return "Closed";
-  if (/closed|closes|closure|insolven|geschlossen|schlie(?:ß|ss)t/.test(text)) return "Closed";
-  if (/to open|opening soon|will open|pre-opening|scheduled|angekündigt|kommt nach|eröffnet im|eröffnet am/.test(text)) return "Opening soon";
-  if (/rumou?r|geplant|plant ein/.test(text)) return "Unconfirmed";
-  if (/\bopened\b|\bopens\b|\bnow open\b|\blaunches\b|neueroffnung|neu eroffnet|eroffnete|hat eroffnet/.test(foldedText)) return "Newly opened";
+  const foldedTitle = foldForMatching(title);
+  const foldedText = `${foldedTitle} ${foldForMatching(summary)}`;
+  // The headline outranks the body: a closure in the title is a closure story
+  // even when the body mentions an earlier opening. Vocabulary is matched on
+  // accent-folded text (ö→o); ß survives folding, so both spellings appear.
+  if (CLOSED_STATUS_PATTERN.test(foldedTitle)) return "Closed";
+  if (OPENING_SOON_PATTERN.test(foldedTitle)) return "Opening soon";
+  if (NEWLY_OPENED_PATTERN.test(foldedTitle)) return "Newly opened";
+  if (/insolven/.test(foldedText) && !CLOSED_STATUS_PATTERN.test(foldedText)) return "Unconfirmed";
+  if (CLOSED_STATUS_PATTERN.test(foldedText) || /insolven/.test(foldedText)) return "Closed";
+  if (OPENING_SOON_PATTERN.test(foldedText)) return "Opening soon";
+  if (/rumou?r|geplant|plant ein/.test(foldedText)) return "Unconfirmed";
+  if (NEWLY_OPENED_PATTERN.test(foldedText)) return "Newly opened";
   return "Unconfirmed";
 }
 
@@ -443,7 +447,11 @@ function renderPipelineHealth() {
 
 function storyTopic(cluster) {
   const evidence = `${cluster.title || ""} ${cluster.summary || ""}`.toLowerCase();
-  const directOpening = /\b(neueröffnung|eröffnet|neu in|neues lokal|neues restaurant|opening soon|opens|opened|new restaurant|new café|new cafe|new bar|schließt|geschlossen|closes|closure)\b/i;
+  // The plural "Neueröffnungen" is listed explicitly: \b sits between "g" and
+  // "e", so the bare stem with a trailing \b misses it. Wider inflections like
+  // "eröffnete" stay out — backtesting showed they pull in anniversary and
+  // advice stories.
+  const directOpening = /\b(neueröffnung(?:en)?|eröffnet|neu in|neues lokal|neues restaurant|opening soon|opens|opened|new restaurant|new café|new cafe|new bar|schließt|geschlossen|closes|closure)\b/i;
   const venueLaunch = /\b(launches|startet|eröffnung)\b.{0,70}\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b|\b(restaurant|café|cafe|bar|bistro|venue|lokal|gastronomie|hotel)\b.{0,70}\b(launches|startet|eröffnung)\b/i;
   if (directOpening.test(evidence) || venueLaunch.test(evidence)) return "Openings";
   if (/insolven|bankrupt|umsatz|revenue|gewinn|profit|verlust|loss|übernahme|acquisition|fusion|merger|invest|expan|franchise|kette|chain|gruppe|group|unternehmen|company|markt|market|preis|price|kosten|cost|miete|rent|steuer|tax|lohn|wage|kollektivvertrag|collective agreement|personal|staffing|arbeitsmarkt|labour|labor|tourismus|tourism|hotellerie|wholesale|supplier|lieferant/.test(evidence)) return "Business";
@@ -455,7 +463,8 @@ function storyTopic(cluster) {
 // Austrian reporting is German and stays German. Nothing is translated for
 // display, so no story waits on a model to become visible and the words on the
 // tile are the publisher's own.
-const VIENNA_PATTERN = /\bwien\b|\bwiener\b|vienna|döbling|neubau|alsergrund|leopoldstadt|josefstadt|favoriten|hietzing|währing|ottakring|meidling|donaustadt|floridsdorf|landstraße|mariahilf/i;
+// "Wiener Neustadt" is a Lower Austrian city, not Vienna — hence the lookahead.
+const VIENNA_PATTERN = /\bwien\b|\bwiener\b(?!\s+neustadt)|vienna|döbling|neubau|alsergrund|leopoldstadt|josefstadt|favoriten|hietzing|währing|ottakring|meidling|donaustadt|floridsdorf|landstraße|mariahilf/i;
 const REGION_PATTERNS = [
   [/salzburg/i, "Salzburg"],
   [/tirol|innsbruck/i, "Tirol"],
@@ -463,7 +472,7 @@ const REGION_PATTERNS = [
   [/steiermark|graz/i, "Steiermark"],
   [/kärnten|klagenfurt|villach/i, "Kärnten"],
   [/oberösterreich|linz|wels/i, "Oberösterreich"],
-  [/niederösterreich|krems|wachau|st\. pölten/i, "Niederösterreich"],
+  [/niederösterreich|krems|wachau|st\. pölten|wiener neustadt/i, "Niederösterreich"],
   [/burgenland|eisenstadt/i, "Burgenland"],
 ];
 
@@ -475,13 +484,17 @@ function inferLocation(text) {
   return "Austria";
 }
 
-function liveAustriaStories() {
+// One mapper for both editions: the two per-edition variants had drifted apart
+// (the Austria branch silently dropped the evidence-brief bullets).
+function liveStories(edition) {
   const payload = window.MISE_LIVE_NEWS;
   const clusters = payload?.clusters;
   if (!Array.isArray(clusters)) return [];
+  const isAustria = edition === "austria";
 
   return clusters
-    .filter((cluster) => cluster.edition === "austria")
+    // Every language the collector holds, each shown as published.
+    .filter((cluster) => cluster.edition === edition)
     .map((cluster) => {
       const sources = (cluster.sources || [])
         .filter((source) => /^https:\/\//.test(source.url || ""))
@@ -489,117 +502,52 @@ function liveAustriaStories() {
       const lead = sources[0];
       if (!lead) return null;
       const topic = storyTopic(cluster);
-      const sourceNames = sources.map((source) => safeText(source.source_name));
-      const excerpt = cluster.summary || `Meldung von ${lead.source_name}.`;
+      const excerpt = cluster.summary || (isAustria
+        ? `Meldung von ${lead.source_name}.`
+        : `Latest reporting from ${lead.source_name}.`);
       return {
-        id: `live-at-${cluster.id}`,
-        edition: "Austria",
+        id: isAustria ? `live-at-${cluster.id}` : `live-${cluster.id}`,
+        edition: isAustria ? "Austria" : "Global",
         topic,
-        language: cluster.language || "de",
-        location: inferLocation(`${cluster.title || ""} ${cluster.summary || ""}`),
+        language: cluster.language || (isAustria ? "de" : "en"),
+        location: isAustria
+          ? inferLocation(`${cluster.title || ""} ${cluster.summary || ""}`)
+          : lead.country === "US" ? "United States" : lead.country || "Global",
         time: relativeTime(cluster.published_at),
         title: safeText(cluster.title),
         deck: safeText(excerpt),
         summary: safeText(excerpt),
         image: storyImageForCluster(cluster),
-        imageCandidate: cluster.image_url || null,
-        imageUsage: cluster.image_usage || "review_required",
-      imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
         sources: cluster.source_count || sources.length,
-        initials: sourceNames.map(sourceInitials),
-        sourceNames,
+        initials: sources.map((source) => safeText(sourceInitials(source.source_name))),
+        sourceNames: sources.map((source) => safeText(source.source_name)),
         sourceLinks: sources.map((source) => ({
           name: safeText(source.source_name),
           title: safeText(source.title),
           url: source.url,
-          initial: sourceInitials(source.source_name),
+          initial: safeText(sourceInitials(source.source_name)),
           role: source.corroboration_role || "independent_editorial",
           sourceType: source.source_type || "publisher"
         })),
-        brief: [],
-        briefType: "source_excerpt",
-        clusterConfidence: cluster.cluster_confidence,
+        brief: (cluster.brief?.bullets || []).map((bullet) => safeText(bullet.text)),
         independentSources: cluster.independent_source_count || 0,
         coveragePattern: cluster.coverage_pattern || "single_source",
         isCluster: (cluster.source_count || sources.length) > 1,
         isLive: true,
-        isTranslated: false,
         summaryProvenance: "source_original",
-        reviewStatus: cluster.review_status || "source_metadata_only",
         openingStatus: topic === "Openings" ? inferOpeningStatus(cluster.title, cluster.summary) : null,
-        publishedAt: cluster.published_at,
-        url: lead.url
+        publishedAt: cluster.published_at
       };
     })
     .filter(Boolean);
 }
 
-function liveGlobalStories() {
-  const payload = window.MISE_LIVE_NEWS;
-  const clusters = payload?.clusters;
-  if (!Array.isArray(clusters)) return [];
-
-  return clusters
-    // Every language the collector holds, each shown as published.
-    .filter((cluster) => cluster.edition === "global")
-    .map((cluster) => {
-      const sources = (cluster.sources || [])
-        .filter((source) => /^https:\/\//.test(source.url || ""))
-        .filter((source, index, all) => all.findIndex((candidate) => candidate.source_name === source.source_name) === index);
-      const lead = sources[0];
-      if (!lead) return null;
-      const topic = storyTopic(cluster);
-      const sourceNames = sources.map((source) => safeText(source.source_name));
-      const initials = sourceNames.map(sourceInitials);
-      return {
-      id: `live-${cluster.id}`,
-      edition: "Global",
-      topic,
-      language: cluster.language || "en",
-      location: lead.country === "US" ? "United States" : lead.country || "Global",
-      time: relativeTime(cluster.published_at),
-      title: safeText(cluster.title),
-      deck: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
-      summary: safeText(cluster.summary || `Latest reporting from ${lead.source_name}.`),
-      image: storyImageForCluster(cluster),
-      imageCandidate: cluster.image_url || null,
-      imageUsage: cluster.image_usage || "review_required",
-      imageFromFeed: CLEARED_IMAGE_USAGE.has(cluster.image_usage),
-      sources: cluster.source_count || sources.length,
-      initials,
-      sourceNames,
-      sourceLinks: sources.map((source) => ({
-        name: safeText(source.source_name),
-        title: safeText(source.title),
-        url: source.url,
-        initial: sourceInitials(source.source_name),
-        role: source.corroboration_role || "independent_editorial",
-        sourceType: source.source_type || "publisher"
-      })),
-      brief: (cluster.brief?.bullets || []).map((bullet) => safeText(bullet.text)),
-      briefType: cluster.brief?.type,
-      clusterConfidence: cluster.cluster_confidence,
-      independentSources: cluster.independent_source_count || 0,
-      coveragePattern: cluster.coverage_pattern || "single_source",
-      isCluster: (cluster.source_count || sources.length) > 1,
-      isLive: true,
-      isTranslated: false,
-      summaryProvenance: "source_original",
-      reviewStatus: cluster.review_status || cluster.brief?.review_status || "source_metadata_only",
-      openingStatus: topic === "Openings" ? inferOpeningStatus(cluster.title, cluster.summary) : null,
-      publishedAt: cluster.published_at,
-      url: lead.url
-    };
-    })
-    .filter(Boolean);
-}
-
-const liveAustrians = liveAustriaStories();
+const liveAustrians = liveStories("austria");
 if (liveAustrians.length) {
   stories.austria = liveAustrians;
 }
 
-const liveGlobals = liveGlobalStories();
+const liveGlobals = liveStories("global");
 if (liveGlobals.length) stories.global = liveGlobals;
 
 function readSavedStories() {
@@ -666,7 +614,6 @@ const searchInput = document.querySelector("#search-input");
 const searchResults = document.querySelector("#search-results");
 const toast = document.querySelector("#toast");
 const scrollSentinel = document.querySelector("#scroll-sentinel");
-const contextPanel = document.querySelector("#context-panel");
 const newsView = document.querySelector("#news-view");
 const calendarView = document.querySelector("#calendar-view");
 const trackerView = document.querySelector("#tracker-view");
@@ -679,6 +626,14 @@ const marketStrip = document.querySelector("#market-strip");
 let storyReturnFocus = null;
 let searchReturnFocus = null;
 let eventReturnFocus = null;
+
+// While a drawer or the search panel is open, the page behind it is inert so
+// screen-reader virtual cursors cannot wander behind the modal (the Tab trap
+// alone only covers keyboard focus).
+function setBackgroundInert(flag) {
+  const shell = document.querySelector(".app-shell");
+  if (shell) shell.inert = flag;
+}
 
 const bookmarkIcon = `
   <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"></path></svg>
@@ -695,20 +650,16 @@ function currentStories() {
     items = [...state.saved]
       .map((id) => currentById.get(id) || state.savedSnapshots.get(id))
       .filter(Boolean);
-  } else if (state.section === "openings") {
-    items = stories.austria.filter((story) => story.topic === "Openings");
-  } else if (state.section === "review") {
-    items = allStories().filter((story) => story.isLive && (
-      ["automated_unreviewed", "source_metadata_only"].includes(story.reviewStatus)
-      || story.coveragePattern === "likely_syndicated"
-      || (story.imageCandidate && !story.imageFromFeed)
-    ));
   } else {
     items = stories[state.section] || [];
   }
-  return [...items].sort((left, right) => state.sort === "latest"
-    ? new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0)
-    : relevanceScore(right) - relevanceScore(left));
+  if (state.sort === "latest") {
+    return [...items].sort((left, right) => new Date(right.publishedAt || 0) - new Date(left.publishedAt || 0));
+  }
+  // Score once per story, not once per comparison — the comparator otherwise
+  // recomputes a Date.now()-based score O(n log n) times per render.
+  const scores = new Map(items.map((story) => [story.id, relevanceScore(story)]));
+  return [...items].sort((left, right) => scores.get(right.id) - scores.get(left.id));
 }
 
 function sourceStack(story) {
@@ -789,7 +740,7 @@ function storyByline(story) {
 
 function briefingLeadCard(story) {
   return `
-    <article class="briefing-lead" data-story="${story.id}" tabindex="0" aria-label="Read lead briefing: ${story.title}">
+    <article class="briefing-lead" data-story="${safeText(story.id)}" role="button" tabindex="0" aria-label="Read lead briefing: ${story.title}">
       ${storyVisual(story, "briefing-visual")}
       ${saveButton(story, "hero-save")}
       <div class="briefing-lead-copy">
@@ -804,11 +755,11 @@ function briefingLeadCard(story) {
 
 function briefingSecondaryCard(story) {
   return `
-    <article class="briefing-secondary" data-story="${story.id}" tabindex="0" aria-label="Read briefing: ${story.title}">
+    <article class="briefing-secondary" data-story="${safeText(story.id)}" role="button" tabindex="0" aria-label="Read briefing: ${story.title}">
       ${storyVisual(story, "briefing-visual")}
       ${saveButton(story, "briefing-save")}
       <div class="briefing-secondary-copy">
-        <span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>
+        <span class="feed-topic" data-topic="${safeText(story.topic)}">${story.topic} · ${story.location}</span>
         <h3>${story.title}</h3>
       </div>
     </article>`;
@@ -849,14 +800,14 @@ function composeFeed(items) {
 }
 
 function feedCard({ story, role }) {
-  const kicker = `<span class="feed-topic" data-topic="${story.topic}">${story.topic} · ${story.location}</span>`;
+  const kicker = `<span class="feed-topic" data-topic="${safeText(story.topic)}">${story.topic} · ${story.location}</span>`;
   const status = story.openingStatus
     ? `<span class="status-badge" data-status="${story.openingStatus}">${story.openingStatus}</span>`
     : "";
 
   if (role === "brief") {
     return `
-      <article class="feed-story feed-story--brief" data-story="${story.id}" data-topic="${safeText(story.topic)}" tabindex="0" aria-label="Read ${story.title}">
+      <article class="feed-story feed-story--brief" data-story="${safeText(story.id)}" data-topic="${safeText(story.topic)}" role="button" tabindex="0" aria-label="Read ${story.title}">
         <div class="feed-copy">
           ${kicker}
           ${status}
@@ -867,7 +818,7 @@ function feedCard({ story, role }) {
   }
 
   return `
-    <article class="feed-story feed-story--${role}" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+    <article class="feed-story feed-story--${role}" data-story="${safeText(story.id)}" role="button" tabindex="0" aria-label="Read ${story.title}">
       ${storyVisual(story, "feed-image")}
       <div class="feed-copy">
         ${kicker}
@@ -906,6 +857,19 @@ function marketSparkline(history, direction) {
     </svg>`;
 }
 
+function marketFigures(item, missingChangeLabel = "No comparison") {
+  const change = Number(item.change_pct);
+  const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
+  const changeLabel = Number.isFinite(change)
+    ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
+    : missingChangeLabel;
+  const value = new Intl.NumberFormat("en-GB", {
+    minimumFractionDigits: item.display_decimals || 0,
+    maximumFractionDigits: item.display_decimals || 0
+  }).format(Number(item.value));
+  return { direction, changeLabel, value };
+}
+
 function marketScopeGroup(scope) {
   const label = String(scope || "");
   if (label.startsWith("Austria")) return "Austria";
@@ -929,15 +893,7 @@ function renderMarkets() {
       <div class="market-group">
         <h4 class="market-group-heading">${safeText(groupLabel)}</h4>
         ${groupItems.map((item) => {
-          const change = Number(item.change_pct);
-          const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
-          const changeLabel = Number.isFinite(change)
-            ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
-            : "No comparison";
-          const value = new Intl.NumberFormat("en-GB", {
-            minimumFractionDigits: item.display_decimals || 0,
-            maximumFractionDigits: item.display_decimals || 0
-          }).format(Number(item.value));
+          const { direction, changeLabel, value } = marketFigures(item);
           return `
             <button class="market-row" data-market="${safeText(item.id)}" type="button" aria-label="View market detail for ${safeText(item.label)}">
               <span class="market-row-name">${safeText(item.label)}</span>
@@ -1003,15 +959,12 @@ function renderMarketDetail() {
   const container = document.querySelector("#market-detail");
   if (!container || !item) return;
   state.marketId = item.id;
-  const change = Number(item.change_pct);
-  const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
-  const changeLabel = Number.isFinite(change) ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%` : "No comparison";
-  const value = new Intl.NumberFormat("en-GB", {
-    minimumFractionDigits: item.display_decimals || 0,
-    maximumFractionDigits: item.display_decimals || 0
-  }).format(Number(item.value));
-  const period = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
-    .format(new Date(`${item.period}T12:00:00`));
+  const { direction, changeLabel, value } = marketFigures(item);
+  // One malformed period value from the pipeline must not blank the page.
+  const periodDate = new Date(`${item.period}T12:00:00`);
+  const period = Number.isNaN(periodDate.getTime())
+    ? safeText(item.period || "—")
+    : new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).format(periodDate);
   const historyValues = (item.history || []).map((entry) => Number(entry.value)).filter(Number.isFinite);
   const seriesHigh = historyValues.length ? Math.max(...historyValues).toLocaleString("en-GB") : "—";
   const seriesLow = historyValues.length ? Math.min(...historyValues).toLocaleString("en-GB") : "—";
@@ -1065,8 +1018,12 @@ function openEvent(id) {
   eventReturnFocus = document.activeElement;
   const colours = eventCategories(payload.events || []);
   const colour = colours.get(event.type) || "var(--accent)";
-  const range = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" })
-    .formatRange(new Date(`${event.startDate}T12:00:00`), new Date(`${(event.endDate || event.startDate)}T12:00:00`));
+  const rangeStart = new Date(`${event.startDate}T12:00:00`);
+  const rangeEnd = new Date(`${(event.endDate || event.startDate)}T12:00:00`);
+  // A malformed event date degrades to the raw value instead of a RangeError.
+  const range = Number.isNaN(rangeStart.getTime()) || Number.isNaN(rangeEnd.getTime())
+    ? String(event.startDate || "Date to be confirmed")
+    : new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric" }).formatRange(rangeStart, rangeEnd);
   const verified = event.verificationStatus === "stale"
     ? "Organiser page needs a recheck"
     : `Official page checked ${event.lastVerified || "recently"}`;
@@ -1091,6 +1048,7 @@ function openEvent(id) {
   eventOverlay.classList.add("open");
   eventOverlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+  setBackgroundInert(true);
   document.querySelector("#event-close").focus();
 }
 
@@ -1098,6 +1056,7 @@ function closeEvent() {
   eventOverlay.classList.remove("open");
   eventOverlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  setBackgroundInert(false);
   if (eventReturnFocus?.isConnected) eventReturnFocus.focus();
   eventReturnFocus = null;
 }
@@ -1117,9 +1076,9 @@ function renderCalendar() {
 
   document.querySelector("#calendar-filters").innerHTML = `
     <span class="calendar-filter-label">Filter</span>
-    <button class="calendar-chip ${state.eventFilter === "all" ? "active" : ""}" data-event-filter="all" type="button">All</button>
+    <button class="calendar-chip ${state.eventFilter === "all" ? "active" : ""}" data-event-filter="all" type="button" aria-pressed="${state.eventFilter === "all"}">All</button>
     ${[...colours.entries()].map(([name, colour]) => `
-      <button class="calendar-chip ${state.eventFilter === name ? "active" : ""}" data-event-filter="${safeText(name)}" type="button">
+      <button class="calendar-chip ${state.eventFilter === name ? "active" : ""}" data-event-filter="${safeText(name)}" type="button" aria-pressed="${state.eventFilter === name}">
         <span style="background:${colour}"></span>${safeText(name)}
       </button>`).join("")}`;
 
@@ -1233,13 +1192,7 @@ function trackerMovers() {
     .sort((left, right) => Math.abs(Number(right.change_pct) || 0) - Math.abs(Number(left.change_pct) || 0))
     .slice(0, 6)
     .map((item) => {
-      const change = Number(item.change_pct);
-      const direction = change > 0 ? "up" : change < 0 ? "down" : "flat";
-      const changeLabel = Number.isFinite(change) ? `${change > 0 ? "+" : ""}${change.toFixed(1)}%` : "—";
-      const value = new Intl.NumberFormat("en-GB", {
-        minimumFractionDigits: item.display_decimals || 0,
-        maximumFractionDigits: item.display_decimals || 0
-      }).format(Number(item.value));
+      const { direction, changeLabel, value } = marketFigures(item, "—");
       return `
         <div class="tracker-mover">
           <span>${safeText(item.label)} <i>${safeText(item.unit)}</i></span>
@@ -1288,17 +1241,19 @@ function renderTracker() {
   if (basis) document.querySelector("#tracker-movers-basis").textContent = basis;
 
   document.querySelectorAll("[data-tracker-filter]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.trackerFilter === state.trackerFilter);
+    const active = button.dataset.trackerFilter === state.trackerFilter;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
   });
 
   trackerList.innerHTML = items.length ? items.map((story) => {
     const date = new Date(story.publishedAt);
     const evidence = trackerEvidence(story);
     return `
-      <article class="tracker-entry" data-story="${story.id}" tabindex="0" aria-label="Read ${story.title}">
+      <article class="tracker-entry" data-story="${safeText(story.id)}" role="button" tabindex="0" aria-label="Read ${story.title}">
         <time datetime="${story.publishedAt}"><span>${new Intl.DateTimeFormat("en-GB", { weekday: "short" }).format(date)}</span><strong>${new Intl.DateTimeFormat("en-GB", { day: "2-digit" }).format(date)}</strong><small>${new Intl.DateTimeFormat("en-GB", { month: "short" }).format(date)}</small></time>
         <div class="tracker-copy">
-          <div><span class="feed-topic" data-topic="${story.topic}">${story.location}</span><span class="status-badge" data-status="${story.openingStatus || "Unconfirmed"}">${story.openingStatus || "Unconfirmed"}</span><span class="evidence-badge ${evidence.className}">${evidence.label}</span></div>
+          <div><span class="feed-topic" data-topic="${safeText(story.topic)}">${story.location}</span><span class="status-badge" data-status="${story.openingStatus || "Unconfirmed"}">${story.openingStatus || "Unconfirmed"}</span><span class="evidence-badge ${evidence.className}">${evidence.label}</span></div>
           <h3>${story.title}</h3>
           <p>${story.summary || story.deck}</p>
           ${storyMeta(story)}
@@ -1307,7 +1262,6 @@ function renderTracker() {
       </article>`;
   }).join("") : `<div class="empty-state">No ${state.trackerFilter === "all" ? "opening or closure reports" : state.trackerFilter.toLowerCase() + " reports"} were published during ${monthLabel}.</div>`;
   renderSocialWatch();
-  bindCards();
 }
 
 function humanizeSignalType(value) {
@@ -1341,7 +1295,10 @@ function renderPageShell() {
   trackerView.hidden = state.page !== "tracker";
   marketView.hidden = state.page !== "market";
   document.querySelectorAll("[data-page]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.page === state.page);
+    const active = button.dataset.page === state.page;
+    button.classList.toggle("active", active);
+    if (active) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
   });
   const freshness = document.querySelector("#freshness-label");
   const livePayload = window.MISE_LIVE_NEWS;
@@ -1379,58 +1336,41 @@ function render() {
   renderMarkets();
   const items = currentStories();
   const isSaved = state.section === "saved";
-  const isReview = state.section === "review";
 
   document.querySelectorAll("[data-section]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.section === state.section);
+    const active = button.dataset.section === state.section;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
   });
 
   const headings = {
     austria: "What Austria is talking about",
     global: "What the world is talking about",
-    saved: "Your saved briefings",
-    openings: "Austria opening signals",
-    review: "Stories awaiting editorial review"
+    saved: "Your saved briefings"
   };
   feedHeading.textContent = headings[state.section] || headings.austria;
   const briefingTitles = {
     austria: "Austria's top stories",
     global: "Global top stories",
-    saved: "Saved top stories",
-    openings: "Opening intelligence",
-    review: "Editorial review briefing"
+    saved: "Saved top stories"
   };
   document.querySelector("#daily-briefing-title").textContent = briefingTitles[state.section] || briefingTitles.austria;
 
-  filterRow.style.display = isSaved || isReview ? "none" : "flex";
+  filterRow.style.display = isSaved ? "none" : "flex";
   const livePayload = window.MISE_LIVE_NEWS;
-  const globalEnglishAvailable = livePayload?.clusters?.filter((cluster) => cluster.edition === "global" && cluster.language === "en").length || liveGlobals.length;
   document.querySelector("#austria-count").textContent = stories.austria.length;
   document.querySelector("#global-count").textContent = stories.global.length;
-  const freshness = document.querySelector("#freshness-label");
-  if (freshness) freshness.textContent = livePayload?.generated_at
-    ? `Updated ${relativeTime(livePayload.generated_at)}`
-    : "Sample dataset";
-  document.querySelector("#feed-status-label").textContent = state.section === "global" && liveGlobals.length
-    ? `${livePayload?.source_count || "Multiple"} live feeds · ${liveGlobals.length} recent of ${globalEnglishAvailable} English stories`
-    : ["austria", "openings", "review"].includes(state.section) && liveAustrians.length
-      ? `${livePayload?.source_count || "Multiple"} connected feeds · ${stories.austria.length} Austria briefings including Vienna`
-      : "Editorial prototype · Sample stories";
-
-  contextPanel.hidden = !isReview;
-  if (isReview) {
-    const syndicated = items.filter((story) => story.coveragePattern === "likely_syndicated").length;
-    const imageCandidates = items.filter((story) => story.imageCandidate && !story.imageFromFeed).length;
-    contextPanel.innerHTML = `
-      <div><p class="eyebrow">EDITORIAL CONTROL</p><h2>Review before trust.</h2><p>Automated translations, single-source claims and image candidates remain visibly reviewable before production publication.</p></div>
-      <div class="context-stats"><span><strong>${items.length}</strong>Unreviewed</span><span><strong>${syndicated}</strong>Shared-release risk</span><span><strong>${imageCandidates}</strong>Image rights checks</span></div>`;
-  }
+  document.querySelector("#feed-status-label").textContent = isSaved
+    ? `${state.saved.size} saved ${state.saved.size === 1 ? "briefing" : "briefings"}`
+    : state.section === "global" && liveGlobals.length
+      ? `${livePayload?.source_count || "Multiple"} live feeds · ${stories.global.length} global briefings in original language`
+      : state.section === "austria" && liveAustrians.length
+        ? `${livePayload?.source_count || "Multiple"} connected feeds · ${stories.austria.length} Austria briefings including Vienna`
+        : "Editorial prototype · Sample stories";
 
   if (!items.length) {
     const emptyMessages = {
       saved: "No saved stories yet. Use the bookmark on any briefing to keep it here.",
-      openings: "No opening or closure signals are available in the current briefing.",
-      review: "No stories currently require editorial review.",
       austria: "No Austria stories are available in the current briefing.",
       global: "No global stories are available in the current briefing."
     };
@@ -1438,7 +1378,7 @@ function render() {
     document.querySelector("#daily-briefing-status").textContent = "No briefing items available";
     heroLayout.style.gridTemplateColumns = "1fr";
     storyFeed.innerHTML = "";
-    bindCards();
+    scrollSentinel.hidden = true;
     return;
   }
 
@@ -1465,10 +1405,12 @@ function render() {
 
   const briefingIds = new Set(briefingItems.map((story) => story.id));
   const feedItems = filteredItems.filter((story) => !briefingIds.has(story.id));
-  const visibleFeedItems = feedItems.slice(0, state.visibleCount);
+  // Compose over the full list and slice afterwards: card roles then stay
+  // stable as infinite scroll widens the window, so loaded cards never reflow.
+  const visibleFeedItems = composeFeed(feedItems).slice(0, state.visibleCount);
 
   storyFeed.innerHTML = visibleFeedItems.length
-    ? composeFeed(visibleFeedItems).map(feedCard).join("")
+    ? visibleFeedItems.map(feedCard).join("")
     : `<div class="empty-state">No stories match this topic in the current briefing.</div>`;
   scrollSentinel.hidden = !feedItems.length || visibleFeedItems.length >= feedItems.length;
   const loadedCount = Math.min(filteredItems.length, visibleFeedItems.length + briefingItems.length);
@@ -1476,7 +1418,8 @@ function render() {
     ? `Showing ${loadedCount} of ${filteredItems.length} · loading more…`
     : `All ${filteredItems.length} stories loaded`;
 
-  bindCards();
+  bindImageFallbacks(heroLayout);
+  bindImageFallbacks(storyFeed);
 }
 
 // A publisher image that fails to load degrades to the imageless treatment
@@ -1490,31 +1433,35 @@ function bindImageFallbacks(root = document) {
       const topic = card.querySelector("[data-topic]")?.dataset.topic || "";
       frame.classList.add("feed-image-placeholder");
       frame.dataset.topic = topic;
-      frame.textContent = (card.querySelector("h3, h2, h4")?.textContent || "M").trim()[0].toUpperCase();
+      const heading = (card.querySelector("h3, h2, h4")?.textContent || "").trim();
+      frame.textContent = (heading[0] || "M").toUpperCase();
     }, { once: true });
   });
 }
 
-function bindCards() {
-  bindImageFallbacks();
+// Story cards and save buttons are handled by delegation: rendered markup can
+// be replaced freely without re-binding, and hidden views never accumulate
+// duplicate listeners.
+document.addEventListener("click", (event) => {
+  const saveButton = event.target.closest("[data-save]");
+  if (saveButton) {
+    toggleSaved(saveButton.dataset.save);
+    return;
+  }
+  const card = event.target.closest("[data-story]");
+  if (card) openStory(card.dataset.story);
+});
 
-  document.querySelectorAll("[data-story]").forEach((card) => {
-    card.addEventListener("click", () => openStory(card.dataset.story));
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openStory(card.dataset.story);
-      }
-    });
-  });
-
-  document.querySelectorAll("[data-save]").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.stopPropagation();
-      toggleSaved(button.dataset.save);
-    });
-  });
-}
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  // Native buttons and links handle their own keys.
+  if (event.target.closest("button, a, input")) return;
+  const card = event.target.closest("[data-story]");
+  if (card) {
+    event.preventDefault();
+    openStory(card.dataset.story);
+  }
+});
 
 function findStory(id) {
   return allStories().find((story) => story.id === id) || state.savedSnapshots.get(id);
@@ -1558,12 +1505,6 @@ function provenanceKicker(story) {
     const language = LANGUAGE_NAMES[story.language] || "the original language";
     return `Headline and standfirst exactly as the publisher filed them, in ${language}. MISE has not translated, rewritten or summarised this item.`;
   }
-  if (story.summaryProvenance === "manual") {
-    return "Headline and standfirst written by a MISE editor from the original German reporting.";
-  }
-  if (story.summaryProvenance === "ai") {
-    return "Headline, standfirst and summary machine-translated from the original German source and not yet editor-reviewed.";
-  }
   return "Drawn from source metadata only — no MISE summary has been written for this item yet.";
 }
 
@@ -1577,7 +1518,7 @@ function openStory(id) {
 
   const liveCoverage = story.isLive
     ? story.sourceLinks.map((source) => `
-      <a class="source-row" href="${source.url}" target="_blank" rel="noopener noreferrer">
+      <a class="source-row" href="${safeText(source.url)}" target="_blank" rel="noopener noreferrer">
         <span class="source-icon">${source.initial}</span>
         <p>${source.name}<small>${source.title}</small></p>
         <span>Read at source ↗</span>
@@ -1641,7 +1582,7 @@ function openStory(id) {
   drawerContent.innerHTML = `
     ${drawerHero}
     <div class="drawer-body">
-      <span class="feed-topic" data-topic="${story.topic}">${placeLabel} · ${story.topic}</span>
+      <span class="feed-topic" data-topic="${safeText(story.topic)}">${placeLabel} · ${story.topic}</span>
       <h2 id="drawer-title">${story.title}</h2>
       <p class="drawer-deck">${story.summary || story.deck}</p>
       <div class="drawer-meta">${storyMeta(story)}</div>
@@ -1659,6 +1600,7 @@ function openStory(id) {
   storyOverlay.classList.add("open");
   storyOverlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+  setBackgroundInert(true);
   document.querySelector("#drawer-close").focus();
 }
 
@@ -1666,6 +1608,7 @@ function closeStory() {
   storyOverlay.classList.remove("open");
   storyOverlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  setBackgroundInert(false);
   if (storyReturnFocus?.isConnected) storyReturnFocus.focus();
   storyReturnFocus = null;
 }
@@ -1676,7 +1619,11 @@ function switchSection(section) {
   if (["austria", "global"].includes(section)) state.newsSection = section;
   state.topic = "All";
   state.visibleCount = 18;
-  document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip.dataset.topic === "All"));
+  document.querySelectorAll(".filter-chip").forEach((chip) => {
+    const active = chip.dataset.topic === "All";
+    chip.classList.toggle("active", active);
+    chip.setAttribute("aria-pressed", String(active));
+  });
   render();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -1696,6 +1643,7 @@ function openSearch() {
   searchOverlay.classList.add("open");
   searchOverlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+  setBackgroundInert(true);
   searchInput.value = "";
   renderSearchResults("");
   window.setTimeout(() => searchInput.focus(), 100);
@@ -1705,21 +1653,34 @@ function closeSearch() {
   searchOverlay.classList.remove("open");
   searchOverlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  setBackgroundInert(false);
   if (searchReturnFocus?.isConnected) searchReturnFocus.focus();
   searchReturnFocus = null;
+}
+
+// Reverses safeText: story fields are HTML-escaped at ingestion, so the search
+// haystack must be decoded or queries spanning "&", "<" or quotes never match
+// (e.g. "gault&millau" against the stored "gault&amp;millau").
+function decodeEntities(value) {
+  return String(value || "")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&amp;", "&");
 }
 
 function renderSearchResults(query) {
   const term = query.trim().toLowerCase();
   const results = allStories().filter((story) => {
-    const haystack = `${story.title} ${story.summary || story.deck} ${story.topic} ${story.location} ${(story.sourceNames || []).join(" ")}`.toLowerCase();
+    const haystack = decodeEntities(`${story.title} ${story.summary || story.deck} ${story.topic} ${story.location} ${(story.sourceNames || []).join(" ")}`).toLowerCase();
     return !term || haystack.includes(term);
   }).slice(0, 20);
 
   searchResults.innerHTML = results.length
     ? results.map((story) => `
-      <button class="search-result" data-search-story="${story.id}" type="button">
-        ${story.image ? `<img src="${story.image}" alt="" loading="lazy" decoding="async" />` : `<span class="mini-placeholder"></span>`}
+      <button class="search-result" data-search-story="${safeText(story.id)}" type="button">
+        ${story.image ? `<img src="${safeText(story.image)}" alt="" loading="lazy" decoding="async" />` : `<span class="mini-placeholder"></span>`}
         <span><strong>${story.title}</strong><small>${story.edition} · ${story.topic} · ${story.sources} ${story.sources === 1 ? "source" : "sources"}</small></span>
       </button>
     `).join("")
@@ -1810,7 +1771,10 @@ document.querySelectorAll(".filter-chip").forEach((chip) => {
   chip.addEventListener("click", () => {
     state.topic = chip.dataset.topic;
     state.visibleCount = 18;
-    document.querySelectorAll(".filter-chip").forEach((item) => item.classList.toggle("active", item === chip));
+    document.querySelectorAll(".filter-chip").forEach((item) => {
+      item.classList.toggle("active", item === chip);
+      item.setAttribute("aria-pressed", String(item === chip));
+    });
     render();
   });
 });
@@ -1819,7 +1783,10 @@ document.querySelectorAll("[data-sort]").forEach((chip) => {
   chip.addEventListener("click", () => {
     state.sort = chip.dataset.sort;
     state.visibleCount = 18;
-    document.querySelectorAll("[data-sort]").forEach((item) => item.classList.toggle("active", item === chip));
+    document.querySelectorAll("[data-sort]").forEach((item) => {
+      item.classList.toggle("active", item === chip);
+      item.setAttribute("aria-pressed", String(item === chip));
+    });
     render();
   });
 });
@@ -1850,6 +1817,15 @@ document.addEventListener("keydown", (event) => {
     else if (eventOverlay.classList.contains("open")) closeEvent();
     else if (searchOverlay.classList.contains("open")) closeSearch();
   }
+});
+
+// The static markup ships the Mac shortcut; correct it for everyone else.
+const searchShortcut = document.querySelector(".header-search kbd");
+if (searchShortcut && !/mac/i.test(navigator.platform)) searchShortcut.textContent = "Ctrl K";
+
+// Give every toggle chip an initial pressed state matching its class.
+document.querySelectorAll(".filter-chip, .rank-chip, [data-tracker-filter]").forEach((chip) => {
+  chip.setAttribute("aria-pressed", String(chip.classList.contains("active")));
 });
 
 const formattedDate = new Intl.DateTimeFormat("en-GB", {
