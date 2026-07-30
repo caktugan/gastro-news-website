@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-30T17:53:13.192248Z",
+  "generated_at": "2026-07-30T18:45:16.278849Z",
   "status": "skipped_no_gemini_key",
   "provider": "gemini",
   "primary_provider": "gemini",
@@ -8,11 +8,11 @@
   "failover_notes": [],
   "model": "gemini-3.1-flash-lite",
   "prompt_version": 2,
-  "selected_cluster_count": 185,
+  "selected_cluster_count": 184,
   "manual_translation_count": 4,
-  "pending_before_run": 154,
+  "pending_before_run": 153,
   "processed_count": 0,
-  "remaining_pending_count": 154,
+  "remaining_pending_count": 153,
   "published_auto_count": 17,
   "daily_request_budget": {
     "utc_day": "2026-07-30",

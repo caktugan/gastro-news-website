@@ -3,7 +3,7 @@
   "generated_at": "2026-07-30T17:52:59.026478Z",
   "source_count": 72,
   "article_count": 494,
-  "cluster_count": 455,
+  "cluster_count": 454,
   "multi_source_cluster_count": 19,
   "independently_corroborated_cluster_count": 16,
   "clustering": {
@@ -10876,28 +10876,38 @@
       ]
     },
     {
-      "id": "b62fcc735487d277",
+      "id": "a0e113c646f54bec",
       "edition": "austria",
       "language": "de",
-      "topic": "Food & Wine",
-      "title": "KASTNER strukturiert Standort Wien um",
-      "summary": "Nach der Verlagerung der Zustellumsätze vom KASTNER Standort am Großmarkt Wien zu den gut ausgebauten Logistikstandorten in Eisenstadt und Wien Nord, steht nun die Umstrukturierung des Standorts in Wien an. Auch die Abholumsätze werden künftig verlagert. KASTNER hatte 2019 den Lebensmittel Cash+Carry-Betrieb der Firma GEKO am Großmarkt Wien übernommen. Die Corona-Pandemie führte zu erheblichen Einbußen […]",
-      "image_url": "https://gastroportal.at/wp-content/uploads/2026/07/2026-07-28_kastner_strukturiert_in_wien_um.webp",
+      "topic": "Business",
+      "title": "Großhandel: Kastner bläst Wien-Ausbau ab",
+      "summary": "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien (ehem. Großgrünmarkt) nach Eisenstadt und Wien Nord, verfolgt Kastner eine fällige Millioneninvestition am Standort nicht weiter.",
+      "image_url": "https://www.ahgz.at/news/media/16/kastner_wien_sd-157180-width300.jpeg",
       "image_usage": "feed_provided",
       "published_at": "2026-07-30T09:14:00Z",
-      "source_count": 2,
-      "independent_source_count": 2,
+      "source_count": 3,
+      "independent_source_count": 3,
       "coverage_pattern": "independently_reported",
-      "max_summary_similarity": 0.19,
-      "article_count": 2,
+      "max_summary_similarity": 0.214,
+      "article_count": 3,
       "cluster_confidence": "high",
       "similarity_scores": [
-        0.779
+        0.7,
+        0.7
       ],
       "brief": {
         "type": "extractive_evidence_brief",
         "review_status": "automated_unreviewed",
         "bullets": [
+          {
+            "text": "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien (ehem.",
+            "source_ids": [
+              "ahgz-at"
+            ],
+            "evidence_urls": [
+              "https://www.ahgz.at/gastro-und-gv/markt-und-produkte/grosshandel-kastner-blaest-wien-ausbau-ab-94661"
+            ]
+          },
           {
             "text": "Nach der Verlagerung der Zustellumsätze vom KASTNER Standort am Großmarkt Wien zu den gut ausgebauten Logistikstandorten in Eisenstadt und Wien Nord, steht nun die Umstrukturierung des Standorts in Wien an.",
             "source_ids": [
@@ -10920,6 +10930,21 @@
       },
       "review_status": "automated_unreviewed",
       "sources": [
+        {
+          "article_id": "cde49e83408e3653",
+          "source_id": "ahgz-at",
+          "source_name": "AHGZ Austria Gastro & GV",
+          "source_type": "trade_press",
+          "access": "paid_or_mixed",
+          "corroboration_role": "independent_editorial",
+          "country": "AT",
+          "language": "de",
+          "title": "Großhandel: Kastner bläst Wien-Ausbau ab",
+          "summary": "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien (ehem. Großgrünmarkt) nach Eisenstadt und Wien Nord, verfolgt Kastner eine fällige Millioneninvestition am Standort nicht weiter.",
+          "url": "https://www.ahgz.at/gastro-und-gv/markt-und-produkte/grosshandel-kastner-blaest-wien-ausbau-ab-94661",
+          "published_at": "2026-07-29T13:00:00Z",
+          "image_url": "https://www.ahgz.at/news/media/16/kastner_wien_sd-157180-width300.jpeg"
+        },
         {
           "article_id": "5b6d15131615721d",
           "source_id": "gastroportal-at",
@@ -13465,47 +13490,6 @@
           "url": "https://agfundernews.com/livestock-methane-reduction-brazilian-beef-pilot-generates-first-inset-credits-via-athian",
           "published_at": "2026-07-29T13:00:04Z",
           "image_url": null
-        }
-      ]
-    },
-    {
-      "id": "094a02bbfbcf06d5",
-      "edition": "austria",
-      "language": "de",
-      "topic": "Business",
-      "title": "Großhandel: Kastner bläst Wien-Ausbau ab",
-      "summary": "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien (ehem. Großgrünmarkt) nach Eisenstadt und Wien Nord, verfolgt Kastner eine fällige Millioneninvestition am Standort nicht weiter.",
-      "image_url": "https://www.ahgz.at/news/media/16/kastner_wien_sd-157180-width300.jpeg",
-      "image_usage": "feed_provided",
-      "published_at": "2026-07-29T13:00:00Z",
-      "source_count": 1,
-      "independent_source_count": 1,
-      "coverage_pattern": "single_source",
-      "max_summary_similarity": 0.0,
-      "article_count": 1,
-      "cluster_confidence": "single_source",
-      "similarity_scores": [],
-      "brief": {
-        "type": "feed_excerpt",
-        "review_status": "source_metadata_only",
-        "bullets": []
-      },
-      "review_status": "source_metadata_only",
-      "sources": [
-        {
-          "article_id": "cde49e83408e3653",
-          "source_id": "ahgz-at",
-          "source_name": "AHGZ Austria Gastro & GV",
-          "source_type": "trade_press",
-          "access": "paid_or_mixed",
-          "corroboration_role": "independent_editorial",
-          "country": "AT",
-          "language": "de",
-          "title": "Großhandel: Kastner bläst Wien-Ausbau ab",
-          "summary": "Nach der Verlagerung der Zustellumsätze vom Großmarkt Wien (ehem. Großgrünmarkt) nach Eisenstadt und Wien Nord, verfolgt Kastner eine fällige Millioneninvestition am Standort nicht weiter.",
-          "url": "https://www.ahgz.at/gastro-und-gv/markt-und-produkte/grosshandel-kastner-blaest-wien-ausbau-ab-94661",
-          "published_at": "2026-07-29T13:00:00Z",
-          "image_url": "https://www.ahgz.at/news/media/16/kastner_wien_sd-157180-width300.jpeg"
         }
       ]
     },

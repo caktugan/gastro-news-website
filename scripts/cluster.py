@@ -98,6 +98,11 @@ def summary_named_phrases(article: dict, rare_tokens: set[str]) -> set[str]:
     }
 
 
+def excerpt_phrases(article: dict) -> set[str]:
+    """Every usable capitalized phrase from the excerpt, regardless of rarity."""
+    return _usable_phrases(article, set(CAPITALIZED_PHRASE.findall(article.get("summary", ""))))
+
+
 def article_timestamp(article: dict) -> datetime | None:
     return parse_iso_datetime(article.get("published_at"))
 
@@ -189,6 +194,17 @@ def cluster_score(left: dict, right: dict, rare_tokens: set[str] | None = None) 
             or any(len(phrase.split()) >= 3 for phrase in matches)
             or filed_within_hours(left, right)
         ):
+            return 0.70
+
+    # Two publishers can rewrite the same announcement under headlines that
+    # share only the brand ("KASTNER strukturiert Standort Wien um" vs
+    # "Großhandel: Kastner bläst Wien-Ausbau ab"). A rare token shared by both
+    # headlines plus at least two multi-word proper names shared by both
+    # excerpts pins the pair to one story; either signal alone stays too weak
+    # to loosen the generic thresholds below.
+    if different_publishers and rare_tokens and (shared & rare_tokens):
+        excerpt_matches = shared_entities(excerpt_phrases(left), excerpt_phrases(right))
+        if len(excerpt_matches) >= 2:
             return 0.70
 
     # Three shared distinctive words is the minimum. This avoids grouping
