@@ -1,65 +1,64 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-22T19:11:39.864598Z",
-  "active_source_count": 63,
-  "successful_source_count": 63,
+  "generated_at": "2026-07-30T17:52:59.026478Z",
+  "active_source_count": 72,
+  "successful_source_count": 72,
   "failed_source_count": 0,
-  "items_before_deduplication": 444,
-  "items_after_deduplication": 442,
+  "items_before_deduplication": 498,
+  "items_after_deduplication": 494,
+  "items_missing_date": 0,
   "sources": [
     {
       "source_id": "oegz-gast",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 172
+      "duration_ms": 187
     },
     {
       "source_id": "rolling-pin",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 1047
+      "duration_ms": 1188
     },
     {
       "source_id": "bmluk-press",
       "status": "ok",
       "items_seen": 20,
       "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "text/xml;charset=UTF-8",
-      "duration_ms": 62
+      "duration_ms": 78
     },
     {
       "source_id": "verbrauchergesundheit-food",
       "status": "ok",
       "items_seen": 20,
       "items_kept": 2,
+      "items_missing_date": 0,
       "content_type": "text/xml;charset=UTF-8",
-      "duration_ms": 125
-    },
-    {
-      "source_id": "vienna-press",
-      "status": "ok",
-      "items_seen": 100,
-      "items_kept": 0,
-      "content_type": "text/xml;charset=utf-8",
-      "duration_ms": 2203
+      "duration_ms": 109
     },
     {
       "source_id": "ahgz",
       "status": "ok",
       "items_seen": 25,
-      "items_kept": 13,
+      "items_kept": 8,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 125
+      "duration_ms": 156
     },
     {
       "source_id": "eater",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=UTF-8",
       "duration_ms": 141
     },
@@ -68,38 +67,43 @@
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 78
+      "duration_ms": 109
     },
     {
       "source_id": "gaultmillau-at",
       "status": "ok",
       "items_seen": 10,
-      "items_kept": 8,
+      "items_kept": 9,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 297
+      "duration_ms": 313
     },
     {
       "source_id": "gastro-news-at",
       "status": "ok",
       "items_seen": 99,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 406
+      "duration_ms": 359
     },
     {
       "source_id": "keymedia-gastronomie",
       "status": "ok",
       "items_seen": 40,
-      "items_kept": 1,
+      "items_kept": 2,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 188
+      "duration_ms": 157
     },
     {
       "source_id": "ahgz-at",
       "status": "ok",
       "items_seen": 25,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
       "duration_ms": 140
     },
@@ -108,382 +112,412 @@
       "status": "ok",
       "items_seen": 24,
       "items_kept": 24,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 125
+      "duration_ms": 141
     },
     {
       "source_id": "wellbusiness",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 94
+      "duration_ms": 109
     },
     {
       "source_id": "prost-magazin",
       "status": "ok",
       "items_seen": 12,
-      "items_kept": 2,
+      "items_kept": 7,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 109
+      "duration_ms": 125
     },
     {
       "source_id": "hotel-design-at",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 2,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 391
+      "duration_ms": 313
     },
     {
       "source_id": "orf-vienna",
       "status": "ok",
-      "items_seen": 18,
+      "items_seen": 20,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 94
+      "duration_ms": 93
     },
     {
       "source_id": "vienna-press-service",
       "status": "ok",
       "items_seen": 100,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "text/xml;charset=utf-8",
-      "duration_ms": 2172
+      "duration_ms": 2110
     },
     {
       "source_id": "1000things-vienna",
       "status": "ok",
       "items_seen": 12,
       "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 453
+      "duration_ms": 515
     },
     {
       "source_id": "meinbezirk-vienna-gastro",
       "status": "ok",
       "items_seen": 25,
-      "items_kept": 6,
+      "items_kept": 4,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 281
+      "duration_ms": 266
     },
     {
       "source_id": "wiener-bezirksblatt",
       "status": "ok",
       "items_seen": 100,
-      "items_kept": 1,
+      "items_kept": 2,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 12031
+      "duration_ms": 1406
     },
     {
       "source_id": "culinarius-press",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 203
+      "duration_ms": 250
     },
     {
       "source_id": "wienerin-genuss",
       "status": "ok",
       "items_seen": 10,
-      "items_kept": 7,
+      "items_kept": 8,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 297
+      "duration_ms": 328
     },
     {
       "source_id": "weekend-genuss",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 78
+      "duration_ms": 94
     },
     {
       "source_id": "falter-wwei",
       "status": "ok",
       "items_seen": 100,
-      "items_kept": 1,
+      "items_kept": 2,
+      "items_missing_date": 0,
       "content_type": "application/xml;charset=UTF-8",
-      "duration_ms": 6203
+      "duration_ms": 6110
     },
     {
       "source_id": "alacarte-at",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 18391
+      "duration_ms": 20359
     },
     {
       "source_id": "biorama-at",
       "status": "ok",
       "items_seen": 30,
-      "items_kept": 3,
+      "items_kept": 4,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 844
+      "duration_ms": 875
     },
     {
       "source_id": "cash-at",
       "status": "ok",
       "items_seen": 25,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 265
+      "duration_ms": 328
     },
     {
       "source_id": "orf-lower-austria",
       "status": "ok",
-      "items_seen": 17,
-      "items_kept": 1,
+      "items_seen": 16,
+      "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 79
+      "duration_ms": 63
     },
     {
       "source_id": "orf-burgenland",
       "status": "ok",
-      "items_seen": 19,
-      "items_kept": 0,
+      "items_seen": 20,
+      "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
       "duration_ms": 93
     },
     {
       "source_id": "orf-upper-austria",
       "status": "ok",
-      "items_seen": 17,
-      "items_kept": 0,
+      "items_seen": 13,
+      "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 94
+      "duration_ms": 78
     },
     {
       "source_id": "orf-salzburg",
       "status": "ok",
       "items_seen": 18,
-      "items_kept": 0,
+      "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 109
+      "duration_ms": 94
     },
     {
       "source_id": "orf-styria",
       "status": "ok",
-      "items_seen": 17,
-      "items_kept": 1,
+      "items_seen": 18,
+      "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 79
+      "duration_ms": 94
     },
     {
       "source_id": "orf-carinthia",
       "status": "ok",
       "items_seen": 18,
       "items_kept": 0,
-      "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 93
-    },
-    {
-      "source_id": "orf-tirol",
-      "status": "ok",
-      "items_seen": 16,
-      "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
       "duration_ms": 78
     },
     {
-      "source_id": "orf-vorarlberg",
+      "source_id": "orf-tirol",
       "status": "ok",
       "items_seen": 19,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 110
+      "duration_ms": 94
+    },
+    {
+      "source_id": "orf-vorarlberg",
+      "status": "ok",
+      "items_seen": 20,
+      "items_kept": 0,
+      "items_missing_date": 0,
+      "content_type": "application/xml; charset=utf-8",
+      "duration_ms": 94
     },
     {
       "source_id": "derstandard-food",
       "status": "ok",
       "items_seen": 156,
-      "items_kept": 0,
+      "items_kept": 3,
+      "items_missing_date": 0,
       "content_type": "application/xml; charset=utf-8",
-      "duration_ms": 172
+      "duration_ms": 203
     },
     {
       "source_id": "kurier-genuss",
       "status": "ok",
       "items_seen": 20,
-      "items_kept": 1,
+      "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 500
+      "duration_ms": 343
     },
     {
       "source_id": "restaurant-business",
       "status": "ok",
       "items_seen": 50,
       "items_kept": 25,
+      "items_missing_date": 0,
       "content_type": "application/xml",
-      "duration_ms": 828
+      "duration_ms": 750
     },
     {
       "source_id": "hospitality-net",
       "status": "ok",
       "items_seen": 20,
-      "items_kept": 0,
+      "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 531
+      "duration_ms": 547
     },
     {
       "source_id": "nrn",
       "status": "ok",
       "items_seen": 50,
       "items_kept": 25,
+      "items_missing_date": 0,
       "content_type": "text/xml; charset=utf-8",
-      "duration_ms": 563
+      "duration_ms": 813
     },
     {
       "source_id": "the-caterer",
       "status": "ok",
       "items_seen": 30,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/xml;charset=UTF-8",
-      "duration_ms": 843
-    },
-    {
-      "source_id": "gaultmillau-international",
-      "status": "ok",
-      "items_seen": 10,
-      "items_kept": 9,
-      "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 422
+      "duration_ms": 1000
     },
     {
       "source_id": "the-spoon",
       "status": "ok",
       "items_seen": 500,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 1625
+      "duration_ms": 1453
     },
     {
       "source_id": "green-queen",
       "status": "ok",
       "items_seen": 10,
-      "items_kept": 8,
+      "items_kept": 9,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 141
+      "duration_ms": 296
     },
     {
       "source_id": "food-safety-news",
       "status": "ok",
       "items_seen": 15,
       "items_kept": 15,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 234
+      "duration_ms": 360
     },
     {
       "source_id": "efsa-news",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 125
+      "duration_ms": 265
     },
     {
       "source_id": "guardian-food",
       "status": "ok",
-      "items_seen": 31,
+      "items_seen": 30,
       "items_kept": 9,
+      "items_missing_date": 0,
       "content_type": "text/xml; charset=UTF-8",
-      "duration_ms": 188
+      "duration_ms": 219
     },
     {
       "source_id": "nyt-dining",
       "status": "ok",
       "items_seen": 24,
-      "items_kept": 7,
+      "items_kept": 8,
+      "items_missing_date": 0,
       "content_type": "application/xml",
-      "duration_ms": 140
+      "duration_ms": 844
     },
     {
       "source_id": "leadersnet-gastro",
       "status": "ok",
       "items_seen": 10,
-      "items_kept": 3,
+      "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "text/xml;charset=UTF-8",
-      "duration_ms": 125
+      "duration_ms": 297
     },
     {
       "source_id": "gastgewerbe-magazin",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 1328
-    },
-    {
-      "source_id": "food-service-de",
-      "status": "ok",
-      "items_seen": 25,
-      "items_kept": 20,
-      "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 157
+      "duration_ms": 1250
     },
     {
       "source_id": "qsr-magazine",
       "status": "ok",
       "items_seen": 25,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 359
+      "duration_ms": 172
     },
     {
       "source_id": "fsr-magazine",
       "status": "ok",
       "items_seen": 25,
       "items_kept": 20,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 563
+      "duration_ms": 265
     },
     {
       "source_id": "bar-restaurant",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 78
+      "duration_ms": 157
     },
     {
       "source_id": "agfundernews",
       "status": "ok",
       "items_seen": 50,
       "items_kept": 11,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 297
+      "duration_ms": 812
     },
     {
       "source_id": "ksv1870-insolvencies",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
-      "duration_ms": 125
+      "duration_ms": 141
     },
     {
       "source_id": "akv-newsroom",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 578
+      "duration_ms": 625
     },
     {
       "source_id": "brau-union-news",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 953
+      "duration_ms": 687
     },
     {
       "source_id": "berglandmilch-news",
       "status": "ok",
       "items_seen": 4,
       "items_kept": 4,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=utf-8",
       "duration_ms": 172
     },
@@ -492,27 +526,138 @@
       "status": "ok",
       "items_seen": 45,
       "items_kept": 1,
+      "items_missing_date": 0,
       "content_type": "text/xml",
-      "duration_ms": 265
+      "duration_ms": 234
     },
     {
       "source_id": "gourmet-report",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 10,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 219
+      "duration_ms": 235
     },
     {
       "source_id": "gast-klagenfurt",
       "status": "ok",
       "items_seen": 10,
       "items_kept": 0,
+      "items_missing_date": 0,
       "content_type": "application/rss+xml; charset=UTF-8",
-      "duration_ms": 1484
+      "duration_ms": 2562
+    },
+    {
+      "source_id": "rollingpin-people",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 10,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 907
+    },
+    {
+      "source_id": "rollingpin-konzepte-openings",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 10,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 890
+    },
+    {
+      "source_id": "rollingpin-industry-news",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 10,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 828
+    },
+    {
+      "source_id": "rollingpin-supplier-news",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 10,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 797
+    },
+    {
+      "source_id": "rollingpin-careers",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 10,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 766
+    },
+    {
+      "source_id": "salzburg24",
+      "status": "ok",
+      "items_seen": 20,
+      "items_kept": 0,
+      "items_missing_date": 0,
+      "content_type": "application/xml",
+      "duration_ms": 140
+    },
+    {
+      "source_id": "lebensmittelpraxis-de",
+      "status": "ok",
+      "items_seen": 13,
+      "items_kept": 6,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=utf-8",
+      "duration_ms": 282
+    },
+    {
+      "source_id": "fleischwirtschaft-de",
+      "status": "ok",
+      "items_seen": 25,
+      "items_kept": 12,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=utf-8",
+      "duration_ms": 140
+    },
+    {
+      "source_id": "fruchthandel-de",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 3,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=utf-8",
+      "duration_ms": 250
+    },
+    {
+      "source_id": "logistik-express",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 1,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=UTF-8",
+      "duration_ms": 703
+    },
+    {
+      "source_id": "verkehr-at",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 1,
+      "items_missing_date": 0,
+      "content_type": "text/xml;charset=UTF-8",
+      "duration_ms": 125
+    },
+    {
+      "source_id": "gs1-austria",
+      "status": "ok",
+      "items_seen": 10,
+      "items_kept": 3,
+      "items_missing_date": 0,
+      "content_type": "application/rss+xml; charset=utf-8",
+      "duration_ms": 141
     }
   ],
-  "cluster_count": 428,
-  "multi_source_cluster_count": 10,
-  "independently_corroborated_cluster_count": 9
+  "cluster_count": 455,
+  "multi_source_cluster_count": 19,
+  "independently_corroborated_cluster_count": 16
 }

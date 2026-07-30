@@ -1,7 +1,7 @@
 window.MISE_EVENTS = {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-25T15:00:42+00:00",
-  "checkedAt": "2026-07-25",
+  "generatedAt": "2026-07-30T17:53:12+00:00",
+  "checkedAt": "2026-07-30",
   "aiRequests": 0,
   "methodology": "Events publish only after their configured date and identity markers are found on an official organizer page. Expired events are removed automatically; feed-discovered leads remain in review.",
   "events": [
@@ -20,7 +20,7 @@ window.MISE_EVENTS = {
       "url": "https://viennacoffeefestival.cc/",
       "sourceId": "vienna-coffee-festival",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "fafga-2026",
@@ -37,7 +37,7 @@ window.MISE_EVENTS = {
       "url": "https://www.fafga.at/",
       "sourceId": "fafga",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "wko-gastronomy-seminar-september-2026",
@@ -54,7 +54,7 @@ window.MISE_EVENTS = {
       "url": "https://www.wko.at/veranstaltungen/70466989-64fd-44cf-aa0c-9d6706ccf9ef",
       "sourceId": "wko-gastronomy-seminar",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "wiener-kaiser-wiesn-2026",
@@ -71,7 +71,7 @@ window.MISE_EVENTS = {
       "url": "https://kaiserwiesn.at/en/",
       "sourceId": "wiener-kaiser-wiesn",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "vienna-wine-hiking-day-2026",
@@ -88,7 +88,7 @@ window.MISE_EVENTS = {
       "url": "https://www.wien.info/en/dine-drink/wine/wine-trail-366076",
       "sourceId": "vienna-wine-hiking-day",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "alles-fuer-den-gast-2026",
@@ -105,7 +105,7 @@ window.MISE_EVENTS = {
       "url": "https://www.gastmesse.at/en/",
       "sourceId": "alles-fuer-den-gast",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "wiener-kaffeesiederball-2027",
@@ -122,7 +122,7 @@ window.MISE_EVENTS = {
       "url": "https://www.kaffeesiederball.at/",
       "sourceId": "wiener-kaffeesiederball",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "biofach-2027",
@@ -139,7 +139,7 @@ window.MISE_EVENTS = {
       "url": "https://www.biofach.de/en",
       "sourceId": "biofach",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "prowein-2027",
@@ -156,7 +156,7 @@ window.MISE_EVENTS = {
       "url": "https://www.prowein.com/",
       "sourceId": "prowein",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "internorga-2027",
@@ -173,7 +173,7 @@ window.MISE_EVENTS = {
       "url": "https://www.internorga.com/en/",
       "sourceId": "internorga",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     },
     {
       "id": "anuga-2027",
@@ -190,8 +190,8 @@ window.MISE_EVENTS = {
       "url": "https://www.anuga.com/",
       "sourceId": "anuga",
       "verificationStatus": "verified",
-      "lastVerified": "2026-07-25"
+      "lastVerified": "2026-07-30"
     }
   ],
-  "reviewCandidateCount": 3
+  "reviewCandidateCount": 1
 };
