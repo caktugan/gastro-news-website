@@ -41,6 +41,55 @@ class UpdatePipelineTests(unittest.TestCase):
         self.assertEqual(payload["stages"][1]["status"], "current")
         self.assertEqual(payload["stages"][2]["status"], "skipped")
 
+    def test_pending_translations_are_not_counted_as_issues(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.json"
+            report.write_text(json.dumps({
+                "published_auto_count": 63,
+                "manual_translation_count": 0,
+                "remaining_pending_count": 86,
+                "provider": "gemini",
+                "status": "partial",
+                "errors": [],
+            }), encoding="utf-8")
+            with patch.dict("scripts.update.STAGE_META", {"enrichment": ("English edition", report)}):
+                health = stage_health(self.outcome("enrichment"))
+        # Untranslated stories are a budget decision, not a data problem: the
+        # header badge must not read "86 data issues" forever.
+        self.assertEqual(health["issues"], 0)
+        self.assertEqual(health["status"], "current")
+        self.assertIn("86 pending", health["summary"])
+
+    def test_enrichment_errors_still_mark_the_stage_partial(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.json"
+            report.write_text(json.dumps({
+                "published_auto_count": 10,
+                "remaining_pending_count": 0,
+                "provider": "gemini",
+                "errors": ["quota exceeded"],
+            }), encoding="utf-8")
+            with patch.dict("scripts.update.STAGE_META", {"enrichment": ("English edition", report)}):
+                health = stage_health(self.outcome("enrichment"))
+        self.assertEqual(health["issues"], 1)
+        self.assertEqual(health["status"], "partial")
+
+    def test_skip_fetch_does_not_stamp_the_stale_ingestion_report_as_fresh(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.json"
+            report.write_text(json.dumps({
+                "active_source_count": 10,
+                "successful_source_count": 8,
+                "failed_source_count": 2,
+                "items_after_deduplication": 120,
+            }), encoding="utf-8")
+            outcome = self.outcome("news")
+            outcome["reused_articles"] = True
+            with patch.dict("scripts.update.STAGE_META", {"news": ("News feeds", report)}):
+                health = stage_health(outcome)
+        self.assertIn("cached articles", health["summary"])
+        self.assertEqual(health["issues"], 0)
+
     def test_public_build_excludes_private_audit_json(self):
         with tempfile.TemporaryDirectory() as directory:
             output = build(Path(directory) / "dist")

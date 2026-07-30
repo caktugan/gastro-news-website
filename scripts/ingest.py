@@ -287,6 +287,34 @@ def write_outputs(articles: list[dict], report: dict, output: Path, report_path:
     return payload
 
 
+def ingest_sources(
+    active_sources: list[dict],
+    timeout: int,
+    fetcher=fetch_feed,
+) -> tuple[list[dict], list[dict]]:
+    """Fetch every source, isolating failures so one bad feed costs one source."""
+    fetched: list[dict] = []
+    source_reports: list[dict] = []
+    for source in active_sources:
+        try:
+            articles, source_report = fetcher(source, timeout)
+            fetched.extend(articles)
+            source_reports.append(source_report)
+        # http.client errors (IncompleteRead, BadStatusLine) are not OSError
+        # subclasses; without them one truncated response killed the whole run.
+        except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError, http.client.HTTPException) as error:
+            source_reports.append(
+                {
+                    "source_id": source["id"],
+                    "status": "error",
+                    "error": str(error),
+                    "items_kept": 0,
+                }
+            )
+            print(f"{source['id']}: ERROR {error}", file=sys.stderr)
+    return fetched, source_reports
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
@@ -302,25 +330,7 @@ def main() -> int:
         if source.get("status") == "active" and source.get("ingestion_mode") == "rss" and source.get("feed_url")
     ]
 
-    fetched: list[dict] = []
-    source_reports: list[dict] = []
-    for source in active_sources:
-        try:
-            articles, source_report = fetch_feed(source, args.timeout)
-            fetched.extend(articles)
-            source_reports.append(source_report)
-        # http.client errors (IncompleteRead, BadStatusLine) are not OSError
-        # subclasses; without them one truncated response killed the whole run.
-        except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError, http.client.HTTPException) as error:
-            source_reports.append(
-                {
-                    "source_id": source["id"],
-                    "status": "error",
-                    "error": str(error),
-                    "items_kept": 0,
-                }
-            )
-            print(f"{source['id']}: ERROR {error}", file=sys.stderr)
+    fetched, source_reports = ingest_sources(active_sources, args.timeout)
 
     fetched.sort(key=sort_key, reverse=True)
     articles = deduplicate(fetched)

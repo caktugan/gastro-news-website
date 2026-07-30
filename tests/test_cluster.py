@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.cluster import build_clusters, build_payload, shared_entities, write_payload
+from scripts.cluster import STOPWORDS, build_clusters, build_payload, shared_entities, within_time_window, write_payload
 
 
 class ClusterMetadataTests(unittest.TestCase):
@@ -291,6 +291,35 @@ class ClusterMetadataTests(unittest.TestCase):
             self.assertNotIn('"article_id"', browser_bundle)
             self.assertIn('"coverage_pattern":"independently_reported"', browser_bundle)
             self.assertIn('"source_type":"trade_press"', browser_bundle)
+
+
+class TimeWindowTests(unittest.TestCase):
+    def entry(self, published_at):
+        return {"published_at": published_at}
+
+    def test_articles_within_four_days_share_a_window(self):
+        self.assertTrue(within_time_window(
+            self.entry("2026-07-20T08:00:00Z"), self.entry("2026-07-23T08:00:00Z")
+        ))
+
+    def test_articles_beyond_four_days_do_not(self):
+        self.assertFalse(within_time_window(
+            self.entry("2026-07-20T08:00:00Z"), self.entry("2026-07-25T08:00:01Z")
+        ))
+
+    def test_missing_or_malformed_timestamps_never_block_clustering(self):
+        self.assertTrue(within_time_window(self.entry(None), self.entry("2026-07-20T08:00:00Z")))
+        self.assertTrue(within_time_window(self.entry("gestern"), self.entry("2026-07-20T08:00:00Z")))
+
+
+class StopwordTests(unittest.TestCase):
+    def test_current_and_adjacent_years_are_stopwords(self):
+        # Year-branded titles ("Guide 2027 …") must never contribute shared
+        # tokens; the window is computed so this survives New Year unedited.
+        from datetime import datetime, timezone
+        year = datetime.now(timezone.utc).year
+        for candidate in (str(year - 1), str(year), str(year + 1)):
+            self.assertIn(candidate, STOPWORDS)
 
 
 if __name__ == "__main__":

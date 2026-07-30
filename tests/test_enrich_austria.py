@@ -236,8 +236,50 @@ class EnrichmentTests(unittest.TestCase):
             enrich_austria.validate_batch([result("1")], stories)
 
     def test_manual_translation_ids(self) -> None:
-        ids = enrich_austria.manual_translation_ids(ROOT / "data" / "austria-english.js")
-        self.assertGreaterEqual(len(ids), 40)
+        # Fixture data, not the live file: asserting against data/ made this
+        # test fail on ordinary content edits rather than code bugs.
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "austria-english.js"
+            path.write_text(
+                'window.MISE_AUSTRIA_ENGLISH = {"translations": {\n'
+                '  "0123456789abcdef": {"title": "One"},\n'
+                '  "fedcba9876543210": {"title": "Two"}\n'
+                "}};\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                enrich_austria.manual_translation_ids(path),
+                {"0123456789abcdef", "fedcba9876543210"},
+            )
+            self.assertEqual(enrich_austria.manual_translation_ids(Path(directory) / "missing.js"), set())
+
+    def test_age_ceiling_excludes_old_and_undated_clusters(self) -> None:
+        now = datetime.now(timezone.utc)
+        fresh = cluster("f" * 16, "Wien aktuell")
+        fresh["published_at"] = (now - timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        old = cluster("0" * 16, "Wien damals")
+        old["published_at"] = (now - timedelta(days=120)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        undated = cluster("1" * 16, "Wien undatiert")
+        undated["published_at"] = None
+
+        selected = enrich_austria.select_clusters(
+            [fresh, old, undated], [{"id": "source", "priority": 50}], limit=10
+        )
+
+        self.assertEqual([item["id"] for item in selected], ["f" * 16])
+
+    def test_sharp_s_district_terms_receive_the_vienna_locality_boost(self) -> None:
+        # Regression: the haystack is casefolded (ß→ss); un-folded terms like
+        # "landstraße" could never match, silently dropping the Vienna boost.
+        now = datetime.now(timezone.utc)
+        district = cluster("a" * 16, "Neues Lokal auf der Landstraße")
+        neutral = cluster("b" * 16, "Neues Lokal in der Innenstadt")
+        priorities = {"source": 50}
+
+        district_score = enrich_austria.rank_score(district, priorities, now)
+        neutral_score = enrich_austria.rank_score(neutral, priorities, now)
+
+        self.assertEqual(district_score - neutral_score, 260 - 30)
 
     def test_mistral_request_uses_strict_schema(self) -> None:
         request = enrich_austria.build_mistral_request("mistral-small-2603", [cluster("1", "Wien opening")])
