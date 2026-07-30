@@ -9,6 +9,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+from pipeline_common import parse_iso_datetime, write_text_atomic
+
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT_PATH = ROOT / "data" / "clusters.json"
@@ -105,8 +107,10 @@ THEMES = [
 ]
 
 
-def parse_timestamp(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+def parse_timestamp(value: str | None) -> datetime | None:
+    # Tolerant: build_signals filters unparseable timestamps out up front, so a
+    # single malformed date degrades one cluster instead of crashing the stage.
+    return parse_iso_datetime(value)
 
 
 def compile_theme(theme: dict[str, Any]) -> re.Pattern[str]:
@@ -153,13 +157,14 @@ def evidence_item(cluster: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def build_signals(payload: dict[str, Any]) -> list[dict[str, Any]]:
-    generated = parse_timestamp(payload["generated_at"])
+    generated = parse_timestamp(payload.get("generated_at")) or datetime.now(timezone.utc)
     current_start = generated - timedelta(days=WINDOW_DAYS)
     previous_start = current_start - timedelta(days=WINDOW_DAYS)
-    clusters = [
-        cluster for cluster in payload.get("clusters", [])
-        if cluster.get("published_at") and parse_timestamp(cluster["published_at"]) >= previous_start
-    ]
+    clusters = []
+    for cluster in payload.get("clusters", []):
+        published = parse_timestamp(cluster.get("published_at"))
+        if published is not None and published >= previous_start:
+            clusters.append(cluster)
     current_total = sum(parse_timestamp(cluster["published_at"]) >= current_start for cluster in clusters)
     previous_total = len(clusters) - current_total
     signals = []
@@ -225,8 +230,8 @@ def build_payload(source: dict[str, Any]) -> dict[str, Any]:
 
 def write_payload(payload: dict[str, Any]) -> None:
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
-    JSON_OUTPUT.write_text(rendered + "\n", encoding="utf-8")
-    JS_OUTPUT.write_text(f"window.MISE_TRENDS = {rendered};\n", encoding="utf-8")
+    write_text_atomic(JSON_OUTPUT, rendered + "\n")
+    write_text_atomic(JS_OUTPUT, f"window.MISE_TRENDS = {rendered};\n")
 
 
 def main() -> int:

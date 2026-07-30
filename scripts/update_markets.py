@@ -21,13 +21,15 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 
+from pipeline_common import USER_AGENT, write_text_atomic
+
+
 ROOT = Path(__file__).resolve().parents[1]
 JSON_OUTPUT = ROOT / "data" / "markets.json"
 JS_OUTPUT = ROOT / "data" / "markets.js"
 
 EU_API = "https://api.tech.ec.europa.eu/agrifood/api"
 ECB_API = "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A"
-USER_AGENT = "MISE/1.0 (+local gastronomy industry briefing)"
 
 
 def fetch_text(url: str, timeout: int = 30) -> str:
@@ -369,10 +371,9 @@ def load_cached() -> dict[str, dict[str, Any]]:
 
 
 def write_payload(payload: dict[str, Any]) -> None:
-    JSON_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
-    JSON_OUTPUT.write_text(rendered + "\n", encoding="utf-8")
-    JS_OUTPUT.write_text(f"window.MISE_MARKETS = {rendered};\n", encoding="utf-8")
+    write_text_atomic(JSON_OUTPUT, rendered + "\n")
+    write_text_atomic(JS_OUTPUT, f"window.MISE_MARKETS = {rendered};\n")
 
 
 def main() -> int:

@@ -19,6 +19,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
+from pipeline_common import write_text_atomic
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CLUSTERS = ROOT / "data" / "clusters.json"
@@ -54,6 +56,12 @@ AUSTRIA_TERMS = {
 }
 FOREIGN_TERMS = {"deutschland", "germany", "frankfurt", "berlin", "münchen", "munich", "hamburg"}
 
+# evidence_text() casefolds the haystack, which folds ß to "ss" — the terms
+# must be folded the same way or "landstraße"/"ringstraße" can never match.
+VIENNA_TERMS = {term.casefold() for term in VIENNA_TERMS}
+AUSTRIA_TERMS = {term.casefold() for term in AUSTRIA_TERMS}
+FOREIGN_TERMS = {term.casefold() for term in FOREIGN_TERMS}
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -84,9 +92,11 @@ def rank_score(cluster: dict, source_priorities: dict[str, int], now: datetime) 
     published = parse_datetime(cluster.get("published_at"))
     age_hours = max(0.0, (now - published).total_seconds() / 3600)
     freshness = max(0, 180 - int(age_hours * 2))
+    # Priority defaults to 0 like cluster.py's — every registry source declares
+    # one explicitly, so the default only matters for malformed data.
     source_score = max(
-        (source_priorities.get(source.get("source_id", ""), 50) for source in cluster.get("sources", [])),
-        default=50,
+        (source_priorities.get(source.get("source_id", ""), 0) for source in cluster.get("sources", [])),
+        default=0,
     )
     locality = 260 if contains_any(text, VIENNA_TERMS) else 110 if contains_any(text, AUSTRIA_TERMS) else 30
     if contains_any(text, FOREIGN_TERMS) and not contains_any(text, VIENNA_TERMS | AUSTRIA_TERMS):
@@ -121,7 +131,7 @@ def select_clusters(
     limit: int,
     max_age_days: int = MAX_CLUSTER_AGE_DAYS,
 ) -> list[dict]:
-    priorities = {source["id"]: int(source.get("priority", 50)) for source in sources}
+    priorities = {source["id"]: int(source.get("priority", 0)) for source in sources}
     now = datetime.now(timezone.utc)
     candidates = []
     for cluster in clusters:
@@ -485,9 +495,9 @@ def write_browser_data(path: Path, cache: dict, selected: list[dict], excluded_i
         "generatedAt": utc_now(),
         "translations": translations,
     }
-    path.write_text(
+    write_text_atomic(
+        path,
         "window.MISE_AUSTRIA_AUTO = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n",
-        encoding="utf-8",
     )
     return len(translations)
 

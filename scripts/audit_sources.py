@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT = ROOT / "data" / "source-candidates.json"
 DEFAULT_OUTPUT = ROOT / "data" / "source-audit.json"
-USER_AGENT = "MISE-Source-Audit/0.1 (+local development; feed discovery only)"
+from pipeline_common import USER_AGENT
 SOCIAL_HOSTS = {
     "instagram.com": "instagram",
     "www.instagram.com": "instagram",

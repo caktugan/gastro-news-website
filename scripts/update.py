@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from pipeline_common import write_text_atomic
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,6 +53,9 @@ def run_stage(identifier: str, command: list[str]) -> dict[str, Any]:
         errors="replace",
         capture_output=True,
         check=False,
+        # Windows children default to cp1252 stdout; forcing UTF-8 keeps
+        # umlauts in stage messages from mojibaking into the status file.
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
     )
     if completed.stdout:
         print(completed.stdout.rstrip())
@@ -98,10 +104,15 @@ def stage_health(outcome: dict[str, Any]) -> dict[str, Any]:
         successful = int(report.get("successful_source_count", 0))
         failed = int(report.get("failed_source_count", 0))
         articles = int(report.get("items_after_deduplication", 0))
-        stage["summary"] = f"{successful} of {active} feeds responded · {articles} items"
-        stage["issues"] = failed
-        if failed:
-            stage["status"] = "partial"
+        if outcome.get("reused_articles"):
+            # --skip-fetch reruns clustering only; the ingestion report on disk
+            # describes an earlier fetch and must not be stamped as fresh.
+            stage["summary"] = f"Clusters rebuilt from cached articles · {articles} items"
+        else:
+            stage["summary"] = f"{successful} of {active} feeds responded · {articles} items"
+            stage["issues"] = failed
+            if failed:
+                stage["status"] = "partial"
     elif identifier == "markets":
         benchmarks = report.get("benchmarks", [])
         errors = report.get("errors", [])
@@ -127,9 +138,13 @@ def stage_health(outcome: dict[str, Any]) -> dict[str, Any]:
         published = int(report.get("published_auto_count", 0)) + int(report.get("manual_translation_count", 0))
         pending = int(report.get("remaining_pending_count", 0))
         provider = report.get("provider") or "cached"
+        errors = report.get("errors", [])
         stage["summary"] = f"{published} English briefs · {provider} · {pending} pending"
-        stage["issues"] = pending + len(report.get("errors", []))
-        if report.get("status") not in {"complete", "current"} or stage["issues"]:
+        # Untranslated stories are a deliberate budget decision, not a data
+        # problem — counting them as issues kept the header badge permanently
+        # alarmed. Only real errors mark the stage partial.
+        stage["issues"] = len(errors)
+        if errors:
             stage["status"] = "partial"
     return stage
 
@@ -155,10 +170,9 @@ def build_status(outcomes: list[dict[str, Any]], generated_at: str | None = None
 
 
 def write_status(payload: dict[str, Any]) -> None:
-    STATUS_JSON.parent.mkdir(parents=True, exist_ok=True)
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
-    STATUS_JSON.write_text(rendered + "\n", encoding="utf-8")
-    STATUS_JS.write_text(f"window.MISE_UPDATE_STATUS = {rendered};\n", encoding="utf-8")
+    write_text_atomic(STATUS_JSON, rendered + "\n")
+    write_text_atomic(STATUS_JS, f"window.MISE_UPDATE_STATUS = {rendered};\n")
 
 
 def main() -> int:
@@ -173,7 +187,7 @@ def main() -> int:
     parser.add_argument(
         "--max-api-requests",
         type=int,
-        help="Maximum Gemini/Mistral request attempts per UTC day (default 15).",
+        help="Maximum Gemini/Mistral request attempts per UTC day (default 25).",
     )
     parser.add_argument("--provider", choices=("auto", "gemini", "mistral"), default="auto")
     parser.add_argument("--model", help="Override the selected provider's default model for this run.")
@@ -187,7 +201,10 @@ def main() -> int:
     python = sys.executable
     outcomes = []
     news_command = [python, str(ROOT / "scripts" / ("cluster.py" if args.skip_fetch else "ingest.py"))]
-    outcomes.append(run_stage("news", news_command))
+    news_outcome = run_stage("news", news_command)
+    if args.skip_fetch:
+        news_outcome["reused_articles"] = True
+    outcomes.append(news_outcome)
 
     if args.skip_markets:
         outcomes.append(skipped_stage("markets"))
@@ -222,7 +239,10 @@ def main() -> int:
     status = build_status(outcomes)
     write_status(status)
     print(f"\nMISE refresh {status['overall_status']}: {status['issue_count']} issue(s).")
-    return 1 if any(outcome["exit_code"] not in {None, 0} for outcome in outcomes) else 0
+    # Only a news failure blocks the refresh: every other stage falls back to
+    # its cached payload and reports itself through the status file, whereas
+    # aborting here would freeze the whole site over one degraded sidebar.
+    return 1 if outcomes[0]["exit_code"] not in {None, 0} else 0
 
 
 if __name__ == "__main__":

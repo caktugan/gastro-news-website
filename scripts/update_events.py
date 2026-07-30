@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Any
 from urllib.request import Request, urlopen
 
+from pipeline_common import USER_AGENT, parse_iso_datetime, write_json_atomic, write_text_atomic
+
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / "data" / "event-sources.json"
@@ -22,7 +24,6 @@ JSON_OUTPUT = ROOT / "data" / "events.json"
 JS_OUTPUT = ROOT / "data" / "events.js"
 REVIEW_OUTPUT = ROOT / "data" / "event-review.json"
 REPORT_OUTPUT = ROOT / "data" / "event-update-report.json"
-USER_AGENT = "MISE/1.0 (+local gastronomy industry calendar)"
 
 EVENT_TERMS = re.compile(
     r"\b(festival|fair|trade show|tasting|seminar|workshop|conference|summit|expo|messe|"
@@ -48,7 +49,11 @@ class VisibleTextParser(HTMLParser):
 def fetch_text(url: str, timeout: int = 25) -> str:
     request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,*/*"})
     with urlopen(request, timeout=timeout) as response:
-        return response.read().decode("utf-8-sig", errors="replace")
+        # Honour the declared charset: a Latin-1 organiser page decoded as
+        # UTF-8 mojibakes every umlaut, which would make any marker containing
+        # one permanently fail validation and quietly demote the event.
+        charset = response.headers.get_content_charset() or "utf-8-sig"
+        return response.read().decode(charset, errors="replace")
 
 
 def page_text(markup: str) -> str:
@@ -110,9 +115,8 @@ def discover_candidates(cluster_payload: dict[str, Any], known_urls: set[str], t
         published_raw = cluster.get("published_at")
         if not published_raw:
             continue
-        try:
-            published = datetime.fromisoformat(published_raw.replace("Z", "+00:00")).astimezone(timezone.utc)
-        except ValueError:
+        published = parse_iso_datetime(published_raw)
+        if published is None:
             continue
         if published < cutoff:
             continue
@@ -201,10 +205,10 @@ def build_calendar(
 def write_outputs(payload: dict[str, Any], report: dict[str, Any], candidates: list[dict[str, Any]]) -> None:
     payload["reviewCandidateCount"] = len(candidates)
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
-    JSON_OUTPUT.write_text(rendered + "\n", encoding="utf-8")
-    JS_OUTPUT.write_text(f"window.MISE_EVENTS = {rendered};\n", encoding="utf-8")
-    REVIEW_OUTPUT.write_text(json.dumps({"generatedAt": payload["generatedAt"], "candidates": candidates}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    REPORT_OUTPUT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_text_atomic(JSON_OUTPUT, rendered + "\n")
+    write_text_atomic(JS_OUTPUT, f"window.MISE_EVENTS = {rendered};\n")
+    write_json_atomic(REVIEW_OUTPUT, {"generatedAt": payload["generatedAt"], "candidates": candidates})
+    write_json_atomic(REPORT_OUTPUT, report)
 
 
 def main() -> int:

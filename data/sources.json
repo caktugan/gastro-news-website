@@ -58,7 +58,7 @@
       "source_type": "official",
       "priority": 80,
       "default_topic": "Sustainability",
-      "filter_terms": ["lebensmittel", "gastronomie", "restaurant", "wein", "landwirtschaft", "kulinar", "ernährung", "getränk", "tourismus"],
+      "filter_terms": ["lebensmittel", "gastronomie", "restaurant", "wein", "landwirtschaft", "kulinar", "ernährung", "getränk", "tourismus", "weinbau", "weingut", "weinpreis"],
       "max_items": 15,
       "rights_note": "Official press feed. Store metadata and excerpt only; retain original attribution and link."
     },
@@ -75,7 +75,7 @@
       "source_type": "official",
       "priority": 85,
       "default_topic": "Food & Wine",
-      "filter_terms": ["lebensmittel", "getränk", "restaurant", "gastronomie", "wein", "fleisch", "milch", "rückruf", "tierseuche"],
+      "filter_terms": ["lebensmittel", "getränk", "restaurant", "gastronomie", "wein", "fleisch", "milch", "rückruf", "tierseuche", "weinbau", "weingut", "weinpreis"],
       "max_items": 15,
       "rights_note": "Official feed. Store metadata and excerpt only; retain original attribution and link."
     },
@@ -92,7 +92,7 @@
       "source_type": "trade_press",
       "priority": 85,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "food", "getränk", "wein", "café", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "food", "getränk", "wein", "café", "hotel", "weinbau", "weingut", "weinpreis"],
       "max_items": 20,
       "rights_note": "Use feed metadata and excerpt for discovery; link to the original; do not store article body or download publisher images."
     },
@@ -165,7 +165,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 88,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "café", "küche", "kulinar", "food", "getränk", "insolvenz", "neueröffnung", "hotel", "bar", "wirt", "wein", "bier", "brunch", "bbq"],
+      "filter_terms": ["gastronomie", "restaurant", "café", "küche", "kulinar", "food", "getränk", "insolvenz", "neueröffnung", "hotel", "bar", "wirt", "wein", "bier", "brunch", "bbq", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 20,
       "rights_note": "Use public feed metadata and excerpt only; link to the original article."
     },
@@ -184,7 +184,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 75,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "café", "kaffeehaus", "koch", "küche", "kulinar", "wirt", "hotel", "food"],
+      "filter_terms": ["gastronomie", "restaurant", "café", "kaffeehaus", "koch", "küche", "kulinar", "wirt", "hotel", "food", "wirtshaus", "gasthaus"],
       "max_items": 15,
       "rights_note": "Broad public feed filtered to gastronomy; store metadata and excerpt only."
     },
@@ -260,7 +260,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 78,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "hotel", "wirt", "küche", "food", "getränk", "bier", "wein", "hospitality"],
+      "filter_terms": ["gastronomie", "restaurant", "hotel", "wirt", "küche", "food", "getränk", "bier", "wein", "hospitality", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 20,
       "rights_note": "Use public feed metadata and excerpt only; link to the original."
     },
@@ -298,7 +298,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "küche", "kulinar", "lebensmittel", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "küche", "kulinar", "lebensmittel", "hotel", "wirtshaus", "gasthaus"],
       "max_items": 15,
       "rights_note": "Broad regional public feed filtered to gastronomy; store metadata and excerpt only."
     },
@@ -317,7 +317,7 @@
       "corroboration_role": "official_first_party",
       "priority": 94,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "café", "kaffee", "küche", "kulinar", "lebensmittel", "schanigarten", "markt", "naschmarkt", "marktamt", "wein", "weinbau", "weingut", "weinpreis", "heuriger", "winzer", "tourismus", "hotel", "hotellerie"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "café", "kaffee", "küche", "kulinar", "lebensmittel", "schanigarten", "markt", "naschmarkt", "marktamt", "wein", "weinbau", "weingut", "weinpreis", "heuriger", "winzer", "tourismus", "hotel", "hotellerie", "wirtshaus", "gasthaus"],
       "exclude_terms": ["disziplinarverfahren", "abteilungsleitung", "termine am"],
       "max_items": 20,
       "rights_note": "Official Vienna source. Store public feed metadata and excerpt only; first-party claims require independent corroboration."
@@ -358,7 +358,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 96,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "bar", "küche", "kulinar", "essen", "trinken", "bistro", "bäckerei", "genuss", "heuriger", "frühstück", "sommelier", "burger", "gastgarten", "speisen", "haubenküche", "sterneküche", "hotelier"],
+      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "bar", "küche", "kulinar", "essen", "trinken", "bistro", "bäckerei", "genuss", "heuriger", "frühstück", "sommelier", "burger", "gastgarten", "speisen", "haubenküche", "sterneküche", "hotelier", "wirtshaus", "gasthaus"],
       "filter_title_only": true,
       "max_items": 25,
       "rights_note": "Dedicated public gastronomy tag feed; store metadata and excerpt only."
@@ -378,7 +378,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 91,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "bar", "küche", "kulinar", "lebensmittel", "markt", "schanigarten"],
+      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "bar", "küche", "kulinar", "lebensmittel", "markt", "schanigarten", "wirtshaus", "gasthaus"],
       "filter_title_only": true,
       "max_items": 18,
       "rights_note": "Broad Vienna district feed filtered to gastronomy; metadata and excerpt only."
@@ -456,7 +456,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Food & Wine",
-      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "koch", "küche", "kulinar", "genuss", "essen", "trinken", "wein"],
+      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "café", "kaffeehaus", "koch", "küche", "kulinar", "genuss", "essen", "trinken", "wein", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 15,
       "rights_note": "Broad public feed filtered to gastronomy; store metadata and excerpt only."
     },
@@ -475,7 +475,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 93,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "beisl", "café", "kaffeehaus", "bar", "küche", "kulinar", "essen", "trinken"],
+      "filter_terms": ["gastronomie", "restaurant", "lokal", "wirt", "beisl", "café", "kaffeehaus", "bar", "küche", "kulinar", "essen", "trinken", "wirtshaus", "gasthaus"],
       "max_items": 15,
       "rights_note": "Use only public feed metadata/excerpts and original links; never bypass restricted content."
     },
@@ -513,7 +513,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 80,
       "default_topic": "Sustainability",
-      "filter_terms": ["gastronomie", "restaurant", "lebensmittel", "essen", "trinken", "küche", "kulinar", "landwirtschaft", "bio", "wein", "kaffee"],
+      "filter_terms": ["gastronomie", "restaurant", "lebensmittel", "essen", "trinken", "küche", "kulinar", "landwirtschaft", "bio", "wein", "kaffee", "weinbau", "weingut", "weinpreis"],
       "max_items": 15,
       "rights_note": "Broad public feed filtered to food systems and gastronomy; metadata and excerpt only."
     },
@@ -551,7 +551,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 84,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "heuriger", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "heuriger", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -570,7 +570,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "heuriger", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "heuriger", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -589,7 +589,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -608,7 +608,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -627,7 +627,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -646,7 +646,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -665,7 +665,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -684,7 +684,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Restaurants",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "lokal", "café", "küche", "kulinar", "lebensmittel", "wein", "hotel", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad regional feed filtered to gastronomy; metadata and excerpt only."
     },
@@ -703,7 +703,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 82,
       "default_topic": "Food & Wine",
-      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "kulinar", "wein", "essen", "lebensmittel", "wirt", "café"],
+      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "kulinar", "wein", "essen", "lebensmittel", "wirt", "café", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 15,
       "rights_note": "Broad public feed filtered to food and gastronomy. Do not bypass restricted articles."
     },
@@ -722,7 +722,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 78,
       "default_topic": "Food & Wine",
-      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "kulinar", "wein", "essen", "lebensmittel", "wirt", "café"],
+      "filter_terms": ["gastronomie", "restaurant", "koch", "küche", "kulinar", "wein", "essen", "lebensmittel", "wirt", "café", "wirtshaus", "gasthaus", "weinbau", "weingut", "weinpreis"],
       "max_items": 12,
       "rights_note": "Broad public feed filtered to food and gastronomy. Do not bypass restricted articles."
     },
@@ -931,7 +931,7 @@
       "corroboration_role": "mixed_editorial_and_releases",
       "priority": 72,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "hotel", "wirt", "kulinar", "food", "getränk", "café", "koch", "küche"],
+      "filter_terms": ["gastronomie", "restaurant", "hotel", "wirt", "kulinar", "food", "getränk", "café", "koch", "küche", "wirtshaus", "gasthaus"],
       "max_items": 10,
       "rights_note": "Broad public business feed filtered to gastronomy. Preserve press-release/advertorial context and link to the original."
     },
@@ -1191,7 +1191,7 @@
       "corroboration_role": "official_primary",
       "priority": 94,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "catering", "bäckerei", "imbiss"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "catering", "bäckerei", "imbiss", "wirtshaus", "gasthaus"],
       "max_items": 20,
       "rights_note": "Use public case-feed metadata and excerpts only. Attribute KSV1870 and distinguish filed/opened proceedings from editorial reporting."
     },
@@ -1210,7 +1210,7 @@
       "corroboration_role": "official_primary",
       "priority": 93,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "catering", "bäckerei", "imbiss"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "catering", "bäckerei", "imbiss", "wirtshaus", "gasthaus"],
       "max_items": 20,
       "rights_note": "Use public newsroom-feed metadata and excerpts only. Attribute AKV and retain the procedural status and publication date."
     },
@@ -1267,7 +1267,7 @@
       "corroboration_role": "independent_editorial",
       "priority": 79,
       "default_topic": "Business",
-      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "koch", "küche", "lebensmittel", "getränk", "tourismus"],
+      "filter_terms": ["gastronomie", "restaurant", "wirt", "hotel", "café", "kaffeehaus", "bar", "koch", "küche", "lebensmittel", "getränk", "tourismus", "wirtshaus", "gasthaus"],
       "max_items": 15,
       "rights_note": "Use public feed metadata and excerpt only; the broad feed is filtered to hospitality and food-industry terms."
     },

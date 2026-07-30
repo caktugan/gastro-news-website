@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from pipeline_common import write_text_atomic
+
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "data" / "signals.json"
@@ -62,8 +64,8 @@ def build_payload(source: dict[str, Any]) -> dict[str, Any]:
 
 def write_payload(payload: dict[str, Any]) -> None:
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
-    JSON_OUTPUT.write_text(rendered + "\n", encoding="utf-8")
-    JS_OUTPUT.write_text(f"window.MISE_SOCIAL_WATCH = {rendered};\n", encoding="utf-8")
+    write_text_atomic(JSON_OUTPUT, rendered + "\n")
+    write_text_atomic(JS_OUTPUT, f"window.MISE_SOCIAL_WATCH = {rendered};\n")
 
 
 def main() -> int:

@@ -13,9 +13,11 @@ import hashlib
 import json
 import re
 import unicodedata
-from datetime import datetime
+from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
+
+from pipeline_common import parse_iso_datetime, write_json_atomic, write_text_atomic
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,8 +31,13 @@ STOPWORDS = {
     "new", "of", "on", "or", "that", "the", "their", "this", "to", "with", "after", "into", "over",
     "der", "die", "das", "den", "dem", "des", "ein", "eine", "einer", "eines", "im", "in", "ist",
     "mit", "nach", "und", "von", "vor", "zu", "zur", "zum", "für", "auf", "aus", "bei", "wird",
-    "food", "restaurant", "restaurants", "world", "cup", "global", "latest", "news", "2026",
+    "food", "restaurant", "restaurants", "world", "cup", "global", "latest", "news",
 }
+# Year-branded coverage ("Guide 2026 …") shares its year token across unrelated
+# stories; computing the window instead of hardcoding one year keeps the guard
+# working after New Year without a manual edit.
+_CURRENT_YEAR = datetime.now(timezone.utc).year
+STOPWORDS.update(str(year) for year in range(_CURRENT_YEAR - 1, _CURRENT_YEAR + 2))
 
 # Company and venue names also appear in the feed excerpt when a publisher keeps
 # them out of the headline, so capitalized phrases are read from the summary as
@@ -92,13 +99,7 @@ def summary_named_phrases(article: dict, rare_tokens: set[str]) -> set[str]:
 
 
 def article_timestamp(article: dict) -> datetime | None:
-    value = article.get("published_at")
-    if not value:
-        return None
-    try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
-        return None
+    return parse_iso_datetime(article.get("published_at"))
 
 
 def within_time_window(left: dict, right: dict, days: int = 4) -> bool:
@@ -414,7 +415,7 @@ def build_payload(article_payload: dict, registry: dict) -> dict:
 
 
 def write_payload(payload: dict, cluster_path: Path, js_path: Path) -> None:
-    cluster_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_json_atomic(cluster_path, payload)
     cluster_fields = {
         "id", "edition", "language", "topic", "title", "summary", "image_url", "image_usage",
         "published_at", "source_count", "independent_source_count", "coverage_pattern",
@@ -435,9 +436,9 @@ def write_payload(payload: dict, cluster_path: Path, js_path: Path) -> None:
         if key not in {"articles", "clusters"}
     }
     browser_payload["clusters"] = browser_clusters
-    js_path.write_text(
+    write_text_atomic(
+        js_path,
         "window.MISE_LIVE_NEWS = " + json.dumps(browser_payload, ensure_ascii=False, separators=(",", ":")) + ";\n",
-        encoding="utf-8",
     )
 
 

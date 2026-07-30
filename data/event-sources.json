@@ -5,7 +5,7 @@
       "id": "vienna-coffee-festival",
       "active": true,
       "url": "https://viennacoffeefestival.cc/",
-      "required_markers": ["Vienna Coffee Festival", "11.", "13. September 2026"],
+      "required_markers": ["Vienna Coffee Festival", "Marx Halle", "13. September 2026"],
       "event": {
         "id": "vienna-coffee-festival-2026",
         "title": "Vienna Coffee Festival",

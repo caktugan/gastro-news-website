@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import http.client
 import json
 import re
 import sys
@@ -22,12 +23,13 @@ from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 from pathlib import Path
 
+from pipeline_common import USER_AGENT, parse_iso_datetime, write_json_atomic
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_REGISTRY = ROOT / "data" / "sources.json"
 DEFAULT_OUTPUT = ROOT / "data" / "articles.json"
 DEFAULT_REPORT = ROOT / "data" / "ingestion-report.json"
-USER_AGENT = "MISE-News-Prototype/0.1 (+local development; metadata-only RSS reader)"
 TRACKING_PARAMS = {"fbclid", "gclid", "mc_cid", "mc_eid", "ref", "source"}
 
 
@@ -122,10 +124,9 @@ def parse_date(value: str) -> str | None:
     try:
         parsed = parsedate_to_datetime(value)
     except (TypeError, ValueError, OverflowError):
-        try:
-            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-        except ValueError:
-            return None
+        parsed = parse_iso_datetime(value)
+    if parsed is None:
+        return None
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -242,6 +243,9 @@ def fetch_feed(source: dict, timeout: int) -> tuple[list[dict], dict]:
         "status": "ok",
         "items_seen": len(entries),
         "items_kept": len(articles),
+        # A feed that switches date format degrades silently otherwise: dated
+        # features (trends, ranking) just stop seeing its stories.
+        "items_missing_date": sum(1 for article in articles if not article["published_at"]),
         "content_type": content_type,
         "duration_ms": round((time.monotonic() - started) * 1000),
     }
@@ -271,7 +275,6 @@ def sort_key(article: dict) -> str:
 
 
 def write_outputs(articles: list[dict], report: dict, output: Path, report_path: Path) -> dict:
-    output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "schema_version": 1,
         "generated_at": report["generated_at"],
@@ -279,8 +282,8 @@ def write_outputs(articles: list[dict], report: dict, output: Path, report_path:
         "article_count": len(articles),
         "articles": articles,
     }
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_json_atomic(output, payload)
+    write_json_atomic(report_path, report)
     return payload
 
 
@@ -306,7 +309,9 @@ def main() -> int:
             articles, source_report = fetch_feed(source, args.timeout)
             fetched.extend(articles)
             source_reports.append(source_report)
-        except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError) as error:
+        # http.client errors (IncompleteRead, BadStatusLine) are not OSError
+        # subclasses; without them one truncated response killed the whole run.
+        except (urllib.error.URLError, TimeoutError, ET.ParseError, OSError, http.client.HTTPException) as error:
             source_reports.append(
                 {
                     "source_id": source["id"],
@@ -328,6 +333,7 @@ def main() -> int:
         "failed_source_count": sum(1 for item in source_reports if item["status"] == "error"),
         "items_before_deduplication": len(fetched),
         "items_after_deduplication": len(articles),
+        "items_missing_date": sum(int(item.get("items_missing_date", 0)) for item in source_reports),
         "sources": source_reports,
     }
     article_payload = write_outputs(articles, report, args.output, args.report)
@@ -340,7 +346,7 @@ def main() -> int:
     report["independently_corroborated_cluster_count"] = cluster_payload[
         "independently_corroborated_cluster_count"
     ]
-    args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_json_atomic(args.report, report)
     print(
         f"Ingested {len(articles)} items from {report['successful_source_count']} of "
         f"{report['active_source_count']} active feeds into {report['cluster_count']} clusters."
